@@ -9,14 +9,20 @@ import org.ideas2it.management.traineeservice.TraineeService;
 import org.ideas2it.management.trainerservice.TrainerService;
 import org.ideas2it.management.utils.ValidationUtil;
 
+import org.apache.log4j.Appender; 
+
 import java.util.ArrayList;
+import org.apache.log4j.BasicConfigurator;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;  
 import java.util.InputMismatchException;
 import java.util.List;
 import java.time.LocalDate; 
+import org.apache.log4j.Logger;
 import java.util.Map;
 import java.util.Scanner;
+
+
 
 /**
  * It can be implemented for input and output operation of trainer,trainee and manager.
@@ -27,16 +33,17 @@ public class EmployeeController {
     private ManagerService managerService = new ManagerService();	            	
     private TrainerService trainerService = new TrainerService();
     private TraineeService traineeService = new TraineeService();
-
+    private static Logger logger = Logger.getLogger(EmployeeController.class);
     private static boolean isContinue = true;
     private static int index = 0;
 
     public static void main(String[] args) throws CustomException {
 
 	EmployeeController controller = new EmployeeController();
+	BasicConfigurator.configure();
 	for (int iteration = 1; iteration <= 5; iteration++) {
 	    try {
-	        System.out.println("1.Trainee ,2.Trainer ,3.Manager, 4.exit");
+	        logger.info("1.Trainee ,2.Trainer ,3.Manager, 4.exit");
 	        int choice = scanner.nextInt();
 
 	        switch (choice) { 		
@@ -53,7 +60,7 @@ public class EmployeeController {
 			break;
 			
 		    case 4: 
-             	        System.out.println("Thank you");
+             	        logger.info("Thank you");
 		        isContinue = false;
 	   	        break;
 
@@ -79,7 +86,7 @@ public class EmployeeController {
      * 
      */
     public void trainee(int choice) {
-	System.out.println("1.Insert Details\n2.View details\n3.modify detail\n4.update detail\n5.delete Trainee data\n6.Default trainee");
+	logger.info("1.Insert Details\n2.View details\n3.modify detail\n4.update detail\n5.delete Trainee data\n6.Default trainee");
 	int option = scanner.nextInt();
 	switch (option) {				       
             case 1:
@@ -92,7 +99,7 @@ public class EmployeeController {
 
             case 3: 
 		index = findIndexOfTrainee();
-		System.out.println("Trainee detail");
+		logger.info("Trainee detail");
 		if (index >= 0) {
 		    updateEmployeeByOption(index, choice);
 		}
@@ -106,7 +113,7 @@ public class EmployeeController {
 		break;
 
 	    case 5:
-		System.out.println("Enter the employeeId you want to delete");
+		logger.info("Enter the employeeId you want to delete");
 	        String employeeId = scanner.next();
 		deleteEmployeeByEmployeeId(employeeId, choice);
 	        break;
@@ -116,7 +123,7 @@ public class EmployeeController {
 		break;
 
             default:
-                System.out.println("Thank you");
+                logger.info("Thank you");
 		System.exit(0);	   
 	}
     }
@@ -130,7 +137,7 @@ public class EmployeeController {
      * 
      */
     public void trainer(int choice) {
-	System.out.println("1.Insert Details \n2.View details\n3.Modify Trainer Detail\n4.Update Trainer Detail\n5.Delete Trainer data\n"
+	logger.info("1.Insert Details \n2.View details\n3.Modify Trainer Detail\n4.Update Trainer Detail\n5.Delete Trainer data\n"
 	    +"6.Default Trainer");
 	int option = scanner.nextInt();
 
@@ -145,7 +152,7 @@ public class EmployeeController {
 
             case 3: 
 		index = findIndexOfTrainer();
-		System.out.println("Trainee detail");
+		logger.info("Trainee detail");
 		if (index >= 0) {
 		    updateEmployeeByOption(index, choice);
 		}
@@ -159,7 +166,7 @@ public class EmployeeController {
 		break;
 
 	    case 5:
-		System.out.println("Enter the employeeId you want to delete");
+		logger.info("Enter the employeeId you want to delete");
 	        String employeeId = scanner.next();
 		deleteEmployeeByEmployeeId(employeeId, choice);
 	        break;
@@ -169,7 +176,7 @@ public class EmployeeController {
 	         break;
 
              default:
-                 System.out.println("Thank you");
+                 logger.info("Thank you");
 		 System.exit(0);	   
 	}
     }
@@ -182,7 +189,7 @@ public class EmployeeController {
      * 
      */
     public void manager() {
-	System.out.println("1.Insert Details\n2.View details\n3.Assign trainees\n4.View Allocated trainers");
+	logger.info("1.Insert Details\n2.View details\n3.Assign trainees\n4.View Allocated trainers");
 	int option = scanner.nextInt();
 
 	switch (option) {				       
@@ -223,7 +230,7 @@ public class EmployeeController {
 	    if (isCorrect) {
 		break;
             } else {
-	        System.out.println("enter valid input");
+	        logger.info("enter valid input");
 	        isContinue = true;
 	    }
 	}
@@ -241,13 +248,13 @@ public class EmployeeController {
     private long getMobileNo() {
 	String phoneNumber = null;
 	while (isContinue) {
-	    System.out.println("Enter your mobileNo");
+	    logger.info("Enter your mobileNo");
 	    phoneNumber = scanner.next();
 	    boolean isCorrect = ValidationUtil.validateInput(phoneNumber, ValidationUtil.PHONE_NO);
 	    if (isCorrect) {
 	        break;
             } else {
-	        System.out.println("enter valid input");
+	        logger.info("enter valid input");
 	        isContinue = true;
 	    }
 	}
@@ -263,19 +270,20 @@ public class EmployeeController {
      * @return it returns the date of birth to add trainees method.
      * 
      */
-    private String getDateOfBirth() {
+    private String getDateOfBirth() throws CustomException {
 	String dateOfBirth = null;
- 	while (isContinue) {
-    	    System.out.println("Enter your Date Of Birth in this format dd-mm-yyyy");
+	for (int iteration = 6; iteration >= 1  ;iteration--) {	    
+    	    logger.info("Enter your Date Of Birth in this format dd-mm-yyyy");
 	    dateOfBirth = scanner.next();
 	    boolean isCorrect = ValidationUtil.validateDateOfBirth(dateOfBirth);
-  	    if (isCorrect == true) {
+	    if (isCorrect) {
 	        break;
-            } else {
-	        System.out.println("enter valid input");
-	        isContinue = true;
-	    } 
-	}
+            } else if (iteration == 1) {
+	        throw new CustomException("your have entered invalid input ");
+	    } else {
+	        logger.info("you have only" + iteration + "chances to enter valid input");
+	    }
+	} 
 	return dateOfBirth;  
     }
 
@@ -304,13 +312,13 @@ public class EmployeeController {
     private byte getExperience() {
 	String trainerExperience = null;
 	while (isContinue) {
-    	    System.out.println("Enter your experience");
+    	    logger.info("Enter your experience");
 	    trainerExperience = scanner.next();
 	    boolean isCorrect = ValidationUtil.validateInput(trainerExperience, ValidationUtil.EXPERIENCE_REGEX);
 	    if (isCorrect) {
 	        break;
             } else {
-	        System.out.println("enter valid input");
+	        logger.info("enter valid input");
 	        isContinue = true;
 	    }
 	}
@@ -329,13 +337,13 @@ public class EmployeeController {
     private String getDepartment() {
  	String department = null;
 	while (isContinue) {
-     	    System.out.println("Enter your department");
+     	    logger.info("Enter your department");
 	    department = scanner.next();
 	    boolean isCorrect = ValidationUtil.validateInput(department, ValidationUtil.DEPARTMENT_REGEX);
 	    if (isCorrect) {
 	        break;
             } else {
-	        System.out.println("enter valid input");
+	        logger.info("enter valid input");
 	        isContinue = true;
 	    }
 	}
@@ -353,13 +361,13 @@ public class EmployeeController {
     private String getDesignation() {
 	String designation = null;
 	while (isContinue) {
-    	    System.out.println("Enter your designation");
+    	    logger.info("Enter your designation");
 	    designation = scanner.next();
 	    boolean isCorrect = ValidationUtil.validateInput(designation, ValidationUtil.DESIGNATION_REGEX);
 	    if (isCorrect ) {
 	        break;
             } else {
-	        System.out.println("enter valid input");
+	        logger.info("enter valid input");
 	        isContinue = true;
 	    }
 	}
@@ -390,13 +398,13 @@ public class EmployeeController {
     private String getEmailId() {
 	String emailId = null;
 	while (isContinue) {
-    	    System.out.println("Enter your emailId");
+    	    logger.info("Enter your emailId");
 	    emailId = scanner.next();
 	    boolean isCorrect = ValidationUtil.validateInput(emailId, ValidationUtil.MAILID_REGEX);
 	    if (isCorrect) {
 	        break;
             } else {
-	        System.out.println("enter valid input");
+	        logger.info("enter valid input");
 	        isContinue = true;
 	    }
 	}
@@ -414,13 +422,13 @@ public class EmployeeController {
     public String getGender () {
         String gender = null;
 	while (isContinue) {
-    	    System.out.println("Enter your gender");
+    	    logger.info("Enter your gender");
 	    gender = scanner.next();
 	    boolean isCorrect = ValidationUtil.validateGender(gender);
 	    if (isCorrect) {
 	        break;
             } else {
-	        System.out.println("enter valid input");
+	        logger.info("enter valid input");
 	        isContinue = true;
 	    }
 	}
@@ -435,19 +443,19 @@ public class EmployeeController {
      * @param choice Choice of a user to perform the task.
      */
     public void addEmployee(int choice) {
- 	System.out.println("Insert your Details \nEnter your firstName: ");
+ 	logger.info("Insert your Details \nEnter your firstName: ");
 	String firstName = getName();
-	System.out.println("Enter your lastName");
+	logger.info("Enter your lastName");
 	String lastName = getName();
 	String name = firstName + lastName;
-	System.out.println("Enter your address");
+	logger.info("Enter your address");
 	String address = scanner.next();
 	long mobileNo = getMobileNo();
 	String dateOfBirth = null;
 	try {
 	  dateOfBirth = getDateOfBirth();
 	} catch (CustomException e) {
-	   System.out.println(e);
+	   logger.error(e);
         }
 	int age = getAge(dateOfBirth);
 	String gender = getGender();
@@ -457,14 +465,14 @@ public class EmployeeController {
 	    String department = getDepartment();
 	    boolean isTraineeAdded = traineeService.addTrainee( name, age, address, mobileNo, dateOfBirth, gender, emailId, employeeId, department);
 	    if (isTraineeAdded) {
-	        System.out.println("ADDED SUCCESSFULLY");
+	        logger.info("ADDED SUCCESSFULLY");
 	    }
 	} else if (choice == 2) {
 	    Byte experience = getExperience();
 	    String designation = getDesignation();
 	    boolean isTrainerAdded = trainerService.addTrainer(name, age, address, mobileNo, dateOfBirth, gender, emailId, employeeId, experience, designation);
 	    if (isTrainerAdded) {
-	        System.out.println("ADDED SUCCESSFULLY");
+	        logger.info("ADDED SUCCESSFULLY");
 	    }
 	}
     }
@@ -480,11 +488,11 @@ public class EmployeeController {
     public void displayEmployee(int choice) {
 	if (choice == 1) {
 	    for(Trainee trainee : traineeService.getTrainee()) {
-	        System.out.println(trainee);	   
+	        logger.info(trainee);	   
 	    }
 	} else if (choice == 2) {
 	    for(Trainer trainer : trainerService.getTrainer()) {
-	    	System.out.println(trainer);	
+	    	logger.info(trainer);	
 	    }
 	}
     }
@@ -498,9 +506,9 @@ public class EmployeeController {
      *  
      */
     public int findIndexOfTrainee() {
-	System.out.println("Enter your emailId");
+	logger.info("Enter your emailId");
 	String mailId = scanner.next();
-	System.out.println("Enter your mobileNo");
+	logger.info("Enter your mobileNo");
 	long mobile = scanner.nextLong();
 	int index = traineeService.findIndexByEmailIdAndMobileNo(mailId, mobile);
 	return index;
@@ -516,20 +524,20 @@ public class EmployeeController {
      * 
      */
     public void updateEmployee(int index, int choice) {
-	    System.out.println("Enter your firstName");
+	    logger.info("Enter your firstName");
 	    String firstName = getName();
-	    System.out.println("Enter your lastName");
+	    logger.info("Enter your lastName");
 	    String lastName = getName();
 	    String name = firstName + lastName;
-	    System.out.println("Enter your address");
+	    logger.info("Enter your address");
 	    String address = scanner.next();
 	    long mobileNo = getMobileNo();
 	    String dateOfBirth = null;
 	    try {
-	        dateOfBirth = getDateOfBirth();
+	       dateOfBirth = getDateOfBirth();
 	    } catch (CustomException e) {
-		System.out.println(e);
-	    }
+	       logger.error(e);
+            }
 	    int age = getAge(dateOfBirth);
 	    String gender = getGender();
 	    String emailId = getEmailId();
@@ -539,7 +547,7 @@ public class EmployeeController {
 	    	boolean isTraineeUpdated = traineeService.updateTrainee(index, name, age, address, mobileNo, dateOfBirth, gender, emailId, 
                     employeeId, department);
 		if (isTraineeUpdated) {
-	            System.out.println("UPDATED SUCCESSFULLY");
+	            logger.info("UPDATED SUCCESSFULLY");
 		}
 	    } else if (choice == 2) {
 	        byte experience = getExperience();
@@ -547,7 +555,7 @@ public class EmployeeController {
 	        boolean isTrainerUpdated = trainerService.updateTrainer(index, name, age, address, mobileNo, dateOfBirth, gender, emailId,
                     employeeId, experience, designation);
 		if (isTrainerUpdated) {
-	            System.out.println("UPDATED SUCCESSFULLY");
+	            logger.info("UPDATED SUCCESSFULLY");
 		}
 	    }
     }
@@ -560,22 +568,22 @@ public class EmployeeController {
      */
     public void updateEmployeeByOption(int index, int choice) {
 	if (choice == 1) {
-	    System.out.println("Enter the number u want to modify 1.First name,2.Last name,3.age,4.address,5.mobileNo,6.Trainer id,7.department");
+	    logger.info("Enter the number u want to modify 1.First name,2.Last name,3.age,4.address,5.mobileNo,6.Trainer id,7.department");
 	    int option = scanner.nextInt();
-	    System.out.println("Enter new data");
+	    logger.info("Enter new data");
 	    String newData = scanner.next();
 	    boolean isTraineeUpdated = traineeService.updateTraineeByOption(option, newData);
 	    if (isTraineeUpdated) {
-		System.out.println("UPDATED SUCCESSFULLY");
+		logger.info("UPDATED SUCCESSFULLY");
 	    }
 	} else if (choice == 2) {
- 	    System.out.println("Enter the number u want to modify 1.First name,2.Last name,3.EmailId,4.Address,5.Designation,6.Gender");
+ 	    logger.info("Enter the number u want to modify 1.First name,2.Last name,3.EmailId,4.Address,5.Designation,6.Gender");
 	    int option = scanner.nextInt();
-	    System.out.println("Enter new data");
+	    logger.info("Enter new data");
 	    String newData = scanner.next();
 	    boolean isTrainerUpdated = trainerService.updateTrainerByOption(option, newData);
 	    if (isTrainerUpdated) {
-		System.out.println("UPDATED SUCCESSFULLY");
+		logger.info("UPDATED SUCCESSFULLY");
 	    }
     	} 
     }
@@ -593,12 +601,12 @@ public class EmployeeController {
 	if (choice == 1) {
             boolean isTraineeDeleted = traineeService.deleteTraineeByEmployeeId(employeeId);
 	    if (isTraineeDeleted) {
-                System.out.println("Trainee---deleted sucessfully");
+                logger.info("Trainee---deleted sucessfully");
 	    }
 	} else if (choice == 2) {
             boolean isTrainerDeleted = trainerService.deleteTrainerByEmployeeId(employeeId);
 	    if (isTrainerDeleted) {
-                System.out.println("Trainer---deleted sucessfully");
+                logger.info("Trainer---deleted sucessfully");
 	    }
 	}
     }
@@ -612,9 +620,9 @@ public class EmployeeController {
      * 
      */
     public int findIndexOfTrainer() {
-	System.out.println("Enter your emailId");
+	logger.info("Enter your emailId");
 	String mailId = scanner.next();
-	System.out.println("Enter your mobileNo");
+	logger.info("Enter your mobileNo");
 	long mobile = scanner.nextLong();
 	int index = trainerService.findIndexByEmailIdAndMobileNo( mailId, mobile);
 	return index;
@@ -628,9 +636,9 @@ public class EmployeeController {
      * 
      */
     public void addManager() {
-	System.out.println("Enter your emailId");
+	logger.info("Enter your emailId");
 	String mailId = scanner.next();
-	System.out.println("Enter your password");
+	logger.info("Enter your password");
 	String password = scanner.next();
 	managerService.addManager(mailId, password);
     }
@@ -643,7 +651,7 @@ public class EmployeeController {
      */
     public void displayManager() {
 	for (Manager manager : managerService.getManager()) {
-	    System.out.println(manager);	
+	    logger.info(manager);	
 	}
     }
 
@@ -654,9 +662,9 @@ public class EmployeeController {
      * 
      */
     public boolean managerLogin() {
-	System.out.println("Enter your emailId");
+	logger.info("Enter your emailId");
 	String mailId = scanner.next();
-	System.out.println("Enter your password");
+	logger.info("Enter your password");
 	String password = scanner.next();
 	boolean isAvailable = managerService.validateManagerByEmailIdAndPassword(mailId, password);
 	return isAvailable;
@@ -694,15 +702,15 @@ public class EmployeeController {
      */	
     public void assignTrainerForTrainee() {
 
-	System.out.println("Enter the trainer Id You want to select");
+	logger.info("Enter the trainer Id You want to select");
 	String trainerId = scanner.next();
   	boolean trainerIsAvailable = trainerService.findTrainerId(trainerId);
 
-	System.out.println("Enter the first trainee Id to assign this trainer");
+	logger.info("Enter the first trainee Id to assign this trainer");
       	String firstTraineeId = scanner.next();
 	boolean firstTraineeIsAvailable = traineeService.findTraineeId(firstTraineeId);
 
-	System.out.println("Enter the second trainee Id to assign this trainer");
+	logger.info("Enter the second trainee Id to assign this trainer");
 	String secondTraineeId = scanner.next();
 	boolean secondTraineeIsAvailable = traineeService.findTraineeId(secondTraineeId);
 	
@@ -710,7 +718,7 @@ public class EmployeeController {
 	if (isAlreadyAssigned) {
 	    managerService.assignedTrainees(firstTraineeId, secondTraineeId);
 	} else {
-	    System.out.println("The trainees are already assigned");
+	    logger.info("The trainees are already assigned");
 	    assignTrainerForTrainee();
         }
 	List<String> assignedTrainees = managerService.retrieveTrainees();
@@ -720,7 +728,7 @@ public class EmployeeController {
 	if (isAlreadyMapped) {
 	    managerService.assignTrainerForTrainee(trainerId, assignedTrainees);  
 	} else {
-	    System.out.println("The trainer and trainees are already assigned");
+	    logger.info("The trainer and trainees are already assigned");
             assignTrainerForTrainee();
 	}
     }
@@ -734,15 +742,15 @@ public class EmployeeController {
 	boolean isValidManager = managerLogin();
  	List<Trainee> trainees = traineeService.getTrainee();
  	List<Trainer> trainers = trainerService.getTrainer();
-	System.out.println("----------Trainees List-------");
+	logger.info("----------Trainees List-------");
         for (Trainee trainee : trainees) {
-	    System.out.println(trainee);
+	    logger.info(trainee);
 	}
-	System.out.println("----------Trainers List-------");
+	logger.info("----------Trainers List-------");
         for (Trainer trainer : trainers) {
-	    System.out.println(trainer);
+	    logger.info(trainer);
 	}	
-	System.out.println("1.Auto selection \n2.Manual selection");
+	logger.info("1.Auto selection \n2.Manual selection");
 	int option = scanner.nextInt();
 
 	switch (option) {
@@ -767,9 +775,9 @@ public class EmployeeController {
      */
     public void displayAllocatedTrainers() {
 	Map<String, List<String>> assignedMap = managerService.getAssignedMap();	
-	System.out.println("Allocated Trainers and Trainees");		      
+	logger.info("Allocated Trainers and Trainees");		      
 	for (Map.Entry<String, List<String>> hashmap : assignedMap.entrySet()) {    
-       	    System.out.println("TrainerId----- "+hashmap.getKey()+" = "+"Trainee Name------  "+hashmap.getValue());    
+       	    logger.info("TrainerId----- "+hashmap.getKey()+" = "+"Trainee Name------  "+hashmap.getValue());    
         }
     }
 }		      
