@@ -21,8 +21,7 @@ public class ValidationUtil {
     public static String NAME_PATTERN = "([A-Z][a-z]{2,30}\s*)+"; 
     public static String PHONE_NO = "^[6-9][0-9]{9}$";
     public static String EXPERIENCE_REGEX = "(^[0-9]\s*)+";
-    public static String DEPARTMENT_REGEX = "([a-z]\s*)+";
-    public static String DESIGNATION_REGEX = "(^[A-Za-z]\s*)+";
+    public static String DESIGNATION_REGEX = "([a-zA-Z]\s*)+";
     public static String MAILID_REGEX = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
 	
     /** 

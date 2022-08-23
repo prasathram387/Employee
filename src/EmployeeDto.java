@@ -1,6 +1,6 @@
-package org.ideas2it.management.model;
+package org.ideas2it.management.dto;
 
-public class Employee {
+public class EmployeeDto {
  
     private String firstName;
     private String lastName;
@@ -14,7 +14,7 @@ public class Employee {
     private byte experience;
     private String designation;
    
-    public Employee(String firstName, String lastName, String address, long mobileNo, String dateOfBirth, String gender, String emailId,
+    public EmployeeDto(String firstName, String lastName, String address, long mobileNo, String dateOfBirth, String gender, String emailId,
             String employeeId, int batch, byte experience, String designation) {
 
 	this.firstName = firstName;
@@ -72,7 +72,7 @@ public class Employee {
 
     public byte getExperience() {
        return experience;
-    }
+    } 
 
     public void setFirstName(String firstName) {
 	this.firstName = firstName;
@@ -117,4 +117,13 @@ public class Employee {
     public void setDesignation(String designation) {
 	this.designation = designation;
     }  
+
+    
+
+    public String toString() {
+    return "\n" +"Employee Details" +"\n"+"Name            :" + getFirstName()+getLastName() + "\n" + "Email Id        :" + getEmailId() +"\n"+
+		      "Gender          :"+getGender()+"\n"+"Date of Birth   :"+getDateOfBirth()+"\n" + "MobileNo        :" + getMobileNo()+
+		      "\n"  + "Address         :" +getAddress()+"\n" +"EmailId         :"+ getEmailId()+"\n" + "EmployeeId      :" + getEmployeeId()+
+		      "\n" + "Batch           :"+getBatch()+"\n"+"Experience      :"+getExperience()+"\n"+"Designation      :"+ getDesignation();
+    }
 }
