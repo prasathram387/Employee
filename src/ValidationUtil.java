@@ -1,5 +1,8 @@
 package org.ideas2it.management.utils;
 
+import org.ideas2it.management.constant.Constants;
+import org.ideas2it.management.exception.CustomException;
+
 import java.util.Date;
 import java.time.format.DateTimeFormatter;
 import java.time.Instant;
@@ -17,10 +20,8 @@ enum Gender {
 public class ValidationUtil {
 
     private static int COUNT = 0;
-    private static String COMPANY_NAME = "I2IT";
     public static String NAME_PATTERN = "([A-Z][a-z]{2,30}\s*)+"; 
     public static String PHONE_NO = "^[6-9][0-9]{9}$";
-    public static String EXPERIENCE_REGEX = "(^[0-9]\s*)+";
     public static String DESIGNATION_REGEX = "([a-zA-Z]\s*)+";
     public static String MAILID_REGEX = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
 	
@@ -48,7 +49,7 @@ public class ValidationUtil {
      */ 
     public static String generateEmployeeId() {
 	COUNT++;
-	String employeeId = COMPANY_NAME + COUNT;
+	String employeeId = Constants.COMPANY_ID_PREFIX + COUNT;
 	return employeeId;
     } 
 
@@ -61,14 +62,25 @@ public class ValidationUtil {
      * @return it returns the boolean to controller.
      * 
      */
-    public static boolean validateDateOfBirth(String dateOfBirth) {
+    public static boolean validateDateOfBirth(String dateOfBirth) throws CustomException {
    	boolean isContinue = true;
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 	try {
             Date date = formatter.parse(dateOfBirth);
 	    return true;
 	} catch(Exception e) {
-	    return false;
+	    throw new CustomException("enter valid date of birth",e);
+        }
+    }
+
+    public static boolean validateDateOfJoining(String dateOfJoining) throws CustomException {
+   	boolean isContinue = true;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+	try {
+            Date date = formatter.parse(dateOfJoining);
+	    return true;
+	} catch(Exception e) {
+	    throw new CustomException("enter valid date ",e);
         }
     }
     
@@ -96,6 +108,23 @@ public class ValidationUtil {
             age = 0; 
 	}
         return age;
+    }
+
+    public static int calculateExperience(String dateOfJoining) {
+        int experience = 0;
+	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+
+	try {
+            Date date = formatter.parse(dateOfJoining);
+            Instant instant = date.toInstant();
+            ZonedDateTime zone = instant.atZone(ZoneId.systemDefault());
+            LocalDate givenDate = zone.toLocalDate();
+            Period period = Period.between(givenDate, LocalDate.now());
+	    experience = period.getYears();
+	} catch (Exception exception) {
+            experience = 0; 
+	}
+        return experience;
     }
 
     /** 

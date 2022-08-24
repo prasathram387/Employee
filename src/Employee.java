@@ -11,11 +11,11 @@ public class Employee {
     private String emailId;
     private String employeeId;
     private int batch;
-    private byte experience;
+    private String dateOfJoining;
     private String designation;
    
     public Employee(String firstName, String lastName, String address, long mobileNo, String dateOfBirth, String gender, String emailId,
-            String employeeId, int batch, byte experience, String designation) {
+            String employeeId, int batch, String dateOfJoining, String designation) {
 
 	this.firstName = firstName;
 	this.lastName = lastName;
@@ -26,7 +26,7 @@ public class Employee {
 	this.emailId = emailId;
 	this.employeeId = employeeId;
 	this.batch = batch;
-	this.experience = experience;
+	this.dateOfJoining = dateOfJoining;
 	this.designation = designation;
     }
   	
@@ -70,8 +70,8 @@ public class Employee {
 	return batch;
     }
 
-    public byte getExperience() {
-       return experience;
+    public String getDateOfJoining() {
+        return dateOfJoining;
     }
 
     public void setFirstName(String firstName) {
@@ -110,8 +110,8 @@ public class Employee {
 	this.batch = batch;
     }
 
-    public void setExperience(byte experience) {
-	this.experience = experience;
+    public void setDateOfJoining(String dateOfJoining) {
+	this.dateOfJoining = dateOfJoining;
     }
 
     public void setDesignation(String designation) {

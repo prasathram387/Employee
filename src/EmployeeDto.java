@@ -11,11 +11,11 @@ public class EmployeeDto {
     private String emailId;
     private String employeeId;
     private int batch;
-    private byte experience;
+    private String dateOfJoining;
     private String designation;
    
     public EmployeeDto(String firstName, String lastName, String address, long mobileNo, String dateOfBirth, String gender, String emailId,
-            String employeeId, int batch, byte experience, String designation) {
+            String employeeId, int batch, String dateOfJoining, String designation) {
 
 	this.firstName = firstName;
 	this.lastName = lastName;
@@ -26,7 +26,7 @@ public class EmployeeDto {
 	this.emailId = emailId;
 	this.employeeId = employeeId;
 	this.batch = batch;
-	this.experience = experience;
+	this.dateOfJoining = dateOfJoining;
 	this.designation = designation;
     }
   	
@@ -70,9 +70,9 @@ public class EmployeeDto {
 	return batch;
     }
 
-    public byte getExperience() {
-       return experience;
-    } 
+    public String getDateOfJoining() {
+        return dateOfJoining;
+    }
 
     public void setFirstName(String firstName) {
 	this.firstName = firstName;
@@ -110,20 +110,18 @@ public class EmployeeDto {
 	this.batch = batch;
     }
 
-    public void setExperience(byte experience) {
-	this.experience = experience;
+    public void setDateOfJoining(String dateOfJoining) {
+	this.dateOfJoining = dateOfJoining;
     }
 
     public void setDesignation(String designation) {
 	this.designation = designation;
     }  
 
-    
-
     public String toString() {
     return "\n" +"Employee Details" +"\n"+"Name            :" + getFirstName()+getLastName() + "\n" + "Email Id        :" + getEmailId() +"\n"+
 		      "Gender          :"+getGender()+"\n"+"Date of Birth   :"+getDateOfBirth()+"\n" + "MobileNo        :" + getMobileNo()+
 		      "\n"  + "Address         :" +getAddress()+"\n" +"EmailId         :"+ getEmailId()+"\n" + "EmployeeId      :" + getEmployeeId()+
-		      "\n" + "Batch           :"+getBatch()+"\n"+"Experience      :"+getExperience()+"\n"+"Designation      :"+ getDesignation();
+		      "\n" + "Batch           :"+getBatch()+"\n"+"Designation      :"+ getDesignation();
     }
 }
