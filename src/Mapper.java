@@ -6,9 +6,11 @@ import org.ideas2it.management.model.Employee;
 public class Mapper {
 
     public Employee employeeDtoToEmployee(EmployeeDto employeeDto) {
+        System.out.println(employeeDto);
         Employee employee = new Employee(employeeDto.getFirstName(), employeeDto.getLastName(), employeeDto.getAddress(), employeeDto.getMobileNo(),
 	    employeeDto.getDateOfBirth(), employeeDto.getGender(), employeeDto.getEmailId(), employeeDto.getBatch(),
 	    employeeDto.getDateOfJoining(), employeeDto.getDesignation());
+        System.out.println(employee);
 	    return employee; 
 
     }

@@ -24,16 +24,20 @@ public class EmployeeService {
     private RoleDao roleDao = new RoleDao();
 
     public void addEmployee(EmployeeDto employeeDto, String roleName) throws CustomException {   
+        System.out.println(employeeDto);
 	Employee employee = mapper.employeeDtoToEmployee(employeeDto);
-        int employeeId = 0;
-        int roleId = 0;
-	employeeId = employeeDao.insertEmployee(employee);
-        roleId = roleDao.reteriveRoleByName(roleName);
+        System.out.println(employee);
+	int employeeId = employeeDao.insertEmployee(employee);
+        int roleId = roleDao.reteriveRoleByName(roleName);
         System.out.println("employee id--" + employeeId + "roleId" + roleId);
         roleDao.insertEmployeeRole(employeeId, roleId);	
     }
 
-   public List<EmployeeDto> getEmployee() throws CustomException {   
+   public int findEmployeeIdByEmail(String emailId) throws CustomException {
+       return employeeDao.searchEmployee(emailId);
+  }
+
+   public List<EmployeeDto> getAllEmployee() throws CustomException {   
         List<EmployeeDto> employeesDto = new ArrayList<EmployeeDto>();
         for (Employee employee : employeeDao.retrieveEmployee()) {
 	    EmployeeDto employeeDto = mapper.employeeToEmployeeDto(employee);
@@ -41,4 +45,15 @@ public class EmployeeService {
         }
         return employeesDto;	              
     }  
+
+    public int updateEmployee(EmployeeDto employeeDto, int employeeId) throws CustomException {   
+	Employee employee = mapper.employeeDtoToEmployee(employeeDto);
+	employeeId = employeeDao.updateEmployee(employee, employeeId);
+        return employeeId;	
+    }
+
+    public boolean deleteEmployeeById(int employeeId) throws CustomException{
+        boolean isDeleted = employeeDao.deleteEmployee(employeeId);
+        return isDeleted;
+    }
 }

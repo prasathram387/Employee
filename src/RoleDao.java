@@ -49,3 +49,4 @@ public class RoleDao extends BaseDao {
     }
 }            
 
+// select employee_detail.first_name, employee_detail.last_name, employee_detail.address, employee_detail.mobile_no, date_format(employee_detail.date_of_birth,"%d %M %y"), employee_detail.email_id, employee_detail.batch, date_format(employee_detail.date_of_joining,"%d %M %y"), employee_detail.designation, employee_roles.role_id from employee_roles inner join employee_detail on employee_detail.id = employee_roles.employee_id where employee_roles.role_id = '1';

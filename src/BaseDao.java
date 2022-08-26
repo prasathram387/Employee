@@ -16,6 +16,7 @@ public class BaseDao {
 	try { 
 	    Class.forName("com.mysql.jdbc.Driver");  
             connection = DriverManager.getConnection(Constants.URL, Constants.SQL_USER_NAME, Constants.SQL_PASSWORD); 
+            System.out.println("database connection created");
 	} catch (Exception e) {
             System.out.println(e.getMessage());
         }

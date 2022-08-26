@@ -50,7 +50,7 @@ public class ValidationUtil {
      */
     public static Date validateDateOfBirth(String dateOfBirth) throws CustomException {
    	boolean isContinue = true;
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-mm-yyyy");
 	try {
             Date date = formatter.parse(dateOfBirth);
 	    return date;

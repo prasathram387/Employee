@@ -114,6 +114,6 @@ public class EmployeeDto {
     return "\n" +"Employee Details" +"\n"+"Name            :" + getFirstName()+getLastName() + "\n" + "Email Id        :" + getEmailId() +"\n"+
 		      "Gender          :"+getGender()+"\n"+"Date of Birth   :"+getDateOfBirth()+"\n" + "MobileNo        :" + getMobileNo()+
 		      "\n"  + "Address         :" +getAddress()+"\n" +"EmailId         :"+ getEmailId()+"\n" +
-		      "\n" + "Batch           :"+getBatch()+"\n"+"Designation      :"+ getDesignation();
+		      "\n" + "Batch           :"+getBatch()+"\n"+"Designation      :"+ getDesignation()+"\n"+"dateofjoining  :"+getDateOfJoining();
     }
 }

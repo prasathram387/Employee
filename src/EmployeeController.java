@@ -45,7 +45,7 @@ public class EmployeeController {
 
 
     public void trainee(String userType) {
-	System.out.println("1.Insert Details\n2.View details\n3.modify detail\n4.update detail\n5.delete Trainee data\n6.Default trainee");
+	System.out.println("1.Insert Details\n2.View details\n3.update detail\n4.delete Trainee data");
 	int option = scanner.nextInt();
 	switch (option) {				       
             case 1:
@@ -53,13 +53,19 @@ public class EmployeeController {
                 break;
             case 2:
                 displayEmployee(userType);
+                break;
+            case 3:
+                updateEmployee(userType);
+                break;
+            case 4:
+                deleteEmployee(userType);
                 break;
          }
     }
 
 
     public void trainer(String userType) {
-	System.out.println("1.Insert Details\n2.View details\n3.modify detail\n4.update detail\n5.delete Trainer data\n6.Default trainer");
+	System.out.println("1.Insert Details\n2.View details\n3.update detail\n4.delete Trainer data");
 	int option = scanner.nextInt();
 	switch (option) {				       
             case 1:
@@ -67,6 +73,12 @@ public class EmployeeController {
                 break;
             case 2:
                 displayEmployee(userType);
+                break;
+            case 3:
+                updateEmployee(userType);
+                break;
+            case 4:
+                deleteEmployee(userType);
                 break;
          }
     }
@@ -135,14 +147,14 @@ public class EmployeeController {
     }
 
     private Date getDateOfBirth() throws CustomException {
-    	System.out.println("Enter your Date Of Birth in this format yyyy-mm-dd");
+    	System.out.println("Enter your Date Of Birth in this format dd-mm-yyyy");
 	String birthDate = scanner.next();
 	Date dateOfBirth = ValidationUtil.validateDateOfBirth(birthDate);
 	return dateOfBirth;  
     }
 
     private Date getDateOfJoining() throws CustomException{
-    	System.out.println("Enter your Date Of joining in this format yyyy-mm-dd");
+    	System.out.println("Enter your Date Of joining in this format dd-mm-yyyy");
 	String join_date = scanner.next();
 	Date dateOfJoining = ValidationUtil.validateDateOfJoining(join_date);
 	return dateOfJoining;  
@@ -234,13 +246,80 @@ public class EmployeeController {
     }
   
     public void displayEmployee(String userType) {
-	if (userType == "trainee") {
+	if (userType == "trainee" || userType == "trainer" || userType == "manager") {
             try {
-	        for (EmployeeDto employeeDto : employeeService.getEmployee()) {
+	        for (EmployeeDto employeeDto : employeeService.getAllEmployee()) {
 	            System.out.println(employeeDto);	   
 	        }
             } catch (CustomException error) {
                 System.out.println(error.getMessage());
+            }
+        }
+    }
+
+    public void updateEmployee(String userType) {
+	if (userType == "trainee" || userType == "trainer" || userType == "manager") {
+            System.out.println("Enter your EmailId");
+            String mailId = scanner.next();
+            int employeeId = 0;
+            try {
+                employeeId = employeeService.findEmployeeIdByEmail(mailId);
+            } catch (CustomException e) {
+                System.out.println(e);
+            }
+ 	    System.out.println("Insert your Details \nEnter your firstName: ");
+	    String firstName = getFirstName();
+	    System.out.println("Enter your lastName");
+	    String lastName = getLastName();
+	    System.out.println("Enter your address");
+	    String address = scanner.next();
+	    long mobileNo = getMobileNo();
+	    Date dateOfBirth = null;
+	    try {
+	        dateOfBirth = getDateOfBirth();
+	    } catch (CustomException e) {
+                System.out.println(e);
+            }
+	    int age = getAge(dateOfBirth);
+            String gender = null;
+            try {
+	        gender = getGender();
+            } catch (CustomException e) {
+                System.out.println(e);
+            }
+	    String emailId = getEmailId();
+	    Date dateOfJoining = null;
+	    try {
+	        dateOfJoining = getDateOfJoining();
+	    } catch (CustomException e) {
+                System.out.println(e);
+            }
+	    String designation = getDesignation();
+	    System.out.println("Enter the batch");
+	    int batch = scanner.nextInt();	    
+	    EmployeeDto employeeDto = new EmployeeDto(firstName, lastName, address, mobileNo, dateOfBirth, gender, emailId,
+                batch, dateOfJoining, designation);
+            System.out.println(employeeDto);
+            try {
+	        employeeService.updateEmployee(employeeDto, employeeId);
+            } catch (CustomException e) {
+                System.out.println(e);
+            }
+        } 
+    }
+
+    public void deleteEmployee(String userType) {
+	if (userType == "trainee" || userType == "trainer" || userType == "manager") {
+            System.out.println("Enter your EmailId");
+            String emailId = scanner.next();
+            try {
+                int employeeId = employeeService.findEmployeeIdByEmail(emailId);
+                boolean isAdded = employeeService.deleteEmployeeById(employeeId);
+                if (isAdded) {
+                    System.out.println("employee deleted successfully");
+                }
+            } catch (CustomException e) {
+                System.out.println(e);
             }
         }
     }
