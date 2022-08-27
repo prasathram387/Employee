@@ -1,4 +1,4 @@
-package org.ideas2it.management.exception;
+package com.ideas2it.management.exception;
 
 import java.lang.RuntimeException; 
 

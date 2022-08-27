@@ -1,4 +1,4 @@
-package org.ideas2it.management.constant;
+package com.ideas2it.management.constant;
 
 public class Constants {
 
@@ -9,5 +9,4 @@ public class Constants {
     public static final String TRAINEE = "trainee";
     public static final String MANAGER = "manager";
     public static final String COMPANY_ID_PREFIX = "I2I";
-
 }

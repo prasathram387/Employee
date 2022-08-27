@@ -1,9 +1,10 @@
-package org.ideas2it.management.dto;
+package com.ideas2it.management.dto;
 
 import java.util.Date;
 
 public class EmployeeDto {
  
+    private int id;
     private String firstName;
     private String lastName;
     private String address;
@@ -14,10 +15,14 @@ public class EmployeeDto {
     private int batch;
     private Date dateOfJoining;
     private String designation;
-   
-    public EmployeeDto(String firstName, String lastName, String address, long mobileNo, Date dateOfBirth, String gender, String emailId,
-            int batch, Date dateOfJoining, String designation) {
 
+    public EmployeeDto() {
+
+    }
+   
+    public EmployeeDto(int id, String firstName, String lastName, String address, long mobileNo, Date dateOfBirth, String gender, String emailId,
+            int batch, Date dateOfJoining, String designation) {
+        this.id = id;
 	this.firstName = firstName;
 	this.lastName = lastName;
 	this.address = address;
@@ -29,7 +34,11 @@ public class EmployeeDto {
 	this.dateOfJoining = dateOfJoining;
 	this.designation = designation;
     }
-  	
+
+    public int getId() {
+        return id;
+    }
+
     public String getFirstName() {
 	return firstName;
     }
@@ -68,6 +77,10 @@ public class EmployeeDto {
 
     public Date getDateOfJoining() {
         return dateOfJoining;
+    }
+
+    public void setId(int id) {
+	this.id = id;
     }
 
     public void setFirstName(String firstName) {

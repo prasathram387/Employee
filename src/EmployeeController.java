@@ -1,15 +1,14 @@
-package org.ideas2it.management.controller;
+package com.ideas2it.management.controller;
 
-import org.ideas2it.management.constant.Constants;
-import org.ideas2it.management.exception.CustomException;
-import org.ideas2it.management.dto.EmployeeDto;
-import org.ideas2it.management.service.EmployeeService;
-import org.ideas2it.management.utils.ValidationUtil;
+import com.ideas2it.management.constant.Constants;
+import com.ideas2it.management.exception.CustomException;
+import com.ideas2it.management.dto.EmployeeDto;
+import com.ideas2it.management.service.EmployeeService;
+import com.ideas2it.management.utils.DateUtil;
+import com.ideas2it.management.utils.ValidationUtil;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;  
+import java.util.Date;  
 import java.util.InputMismatchException;
 import java.util.List;
 import java.time.LocalDate; 
@@ -29,56 +28,66 @@ public class EmployeeController {
 
     public static void main(String[] args) throws CustomException {
 
-	EmployeeController controller = new EmployeeController();	
+	EmployeeController controller = new EmployeeController();
+	
 	System.out.println("1.Trainee ,2.Trainer ,3.Manager, 4.exit");
 	int choice = scanner.nextInt();
-
-	switch (choice) { 		
-	    case 1:
-	        controller.trainee(Constants.TRAINEE);
-	        break;
-	    case 2:
-	        controller.trainer(Constants.TRAINER);
-	        break;
+        while (isContinue) {
+	    switch (choice) { 		
+	        case 1:
+	            controller.trainee(Constants.TRAINEE);
+	            break;
+	        case 2:
+	            controller.trainer(Constants.TRAINER);
+	            break;
+            } 
         }
     }
 
-
     public void trainee(String userType) {
-	System.out.println("1.Insert Details\n2.View details\n3.update detail\n4.delete Trainee data");
+	System.out.println("1.Insert Details\n2.Display Trainee\n3.Update Trainee\n4.Delete Trainee data\n5.Modify Trainee");
 	int option = scanner.nextInt();
 	switch (option) {				       
             case 1:
-                addEmployee(userType);
+                addEmployee(userType, option);
                 break;
             case 2:
-                displayEmployee(userType);
+                displayEmployee();
                 break;
             case 3:
-                updateEmployee(userType);
+                addEmployee(userType, option);
                 break;
             case 4:
                 deleteEmployee(userType);
+                break;
+            case 5:
+                modifyEmployee(userType);
                 break;
          }
     }
 
 
     public void trainer(String userType) {
-	System.out.println("1.Insert Details\n2.View details\n3.update detail\n4.delete Trainer data");
+	System.out.println("1.Insert Details\n2.Display Trainer\n3.Update Trainer\n4.Delete Trainer\n5.All Employees\n6.Modify Trainer");
 	int option = scanner.nextInt();
 	switch (option) {				       
             case 1:
-                addEmployee(userType);
+                addEmployee(userType, option);
                 break;
             case 2:
-                displayEmployee(userType);
+                displayEmployee();
                 break;
             case 3:
-                updateEmployee(userType);
+                addEmployee(userType, option);
                 break;
             case 4:
                 deleteEmployee(userType);
+                break;
+            case 5:
+                displayAllEmployee(userType);
+                break;
+            case 6:
+                modifyEmployee(userType);
                 break;
          }
     }
@@ -86,6 +95,7 @@ public class EmployeeController {
     private String getFirstName() {
 	String firstName = null;	
 	while (isContinue) {
+            System.out.println("Enter your First Name");
 	    firstName = scanner.next();
 	    boolean isCorrect = ValidationUtil.validateInput(firstName, ValidationUtil.NAME_PATTERN);
 	    if (isCorrect) {
@@ -101,6 +111,7 @@ public class EmployeeController {
     private String getLastName() {
 	String lastName = null;	
 	while (isContinue) {
+            System.out.println("Enter your Last Name");
 	    lastName = scanner.next();
 	    boolean isCorrect = ValidationUtil.validateInput(lastName, ValidationUtil.NAME_PATTERN);
 	    if (isCorrect) {
@@ -149,14 +160,14 @@ public class EmployeeController {
     private Date getDateOfBirth() throws CustomException {
     	System.out.println("Enter your Date Of Birth in this format dd-mm-yyyy");
 	String birthDate = scanner.next();
-	Date dateOfBirth = ValidationUtil.validateDateOfBirth(birthDate);
+	Date dateOfBirth = DateUtil.validateDateOfBirth(birthDate);
 	return dateOfBirth;  
     }
 
     private Date getDateOfJoining() throws CustomException{
     	System.out.println("Enter your Date Of joining in this format dd-mm-yyyy");
 	String join_date = scanner.next();
-	Date dateOfJoining = ValidationUtil.validateDateOfJoining(join_date);
+	Date dateOfJoining = DateUtil.validateDateOfJoining(join_date);
 	return dateOfJoining;  
     }
 
@@ -203,103 +214,56 @@ public class EmployeeController {
     }
 
 
-    public void addEmployee(String userType) {
-	if (userType == "trainee" || userType == "trainer" || userType == "manager") {
- 	    System.out.println("Insert your Details \nEnter your firstName: ");
-	    String firstName = getFirstName();
-	    System.out.println("Enter your lastName");
-	    String lastName = getLastName();
-	    System.out.println("Enter your address");
-	    String address = scanner.next();
-	    long mobileNo = getMobileNo();
-	    Date dateOfBirth = null;
-	    try {
-	        dateOfBirth = getDateOfBirth();
-	    } catch (CustomException e) {
-                System.out.println(e);
-            }
-	    int age = getAge(dateOfBirth);
-            String gender = null;
-            try {
-	        gender = getGender();
-            } catch (CustomException e) {
-                System.out.println(e);
-            }
-	    String emailId = getEmailId();
-	    Date dateOfJoining = null;
-	    try {
-	        dateOfJoining = getDateOfJoining();
-	    } catch (CustomException e) {
-                System.out.println(e);
-            }
-	    String designation = getDesignation();
-	    System.out.println("Enter the batch");
-	    int batch = scanner.nextInt();	    
-	    EmployeeDto employeeDto = new EmployeeDto(firstName, lastName, address, mobileNo, dateOfBirth, gender, emailId,
-                batch, dateOfJoining, designation);
+    public void addEmployee(String userType,int option) {
+        EmployeeDto employeeDto = new EmployeeDto();
+        int employeeId = 0;
+        if (option == 1) {
+            employeeId = 0;
+            employeeDto.setId(employeeId);
+        } else if (option == 3) {
+            System.out.println("Enter your employee id");
+            employeeId = scanner.nextInt();
+            employeeDto.setId(employeeId);
+        }
+	employeeDto.setFirstName(getFirstName());
+	employeeDto.setLastName(getLastName());
+	System.out.println("Enter your address");
+	String address = scanner.next();
+        employeeDto.setAddress(address);
+	employeeDto.setMobileNo(getMobileNo());
+	Date dateOfBirth = null;
+	try {
+	    dateOfBirth = getDateOfBirth();
+	} catch (CustomException e) {
+            System.out.println(e);
+        }
+        employeeDto.setDateOfBirth(dateOfBirth);
+        String gender = null;
+        try {
+	    gender = getGender();
+        } catch (CustomException e) {
+            System.out.println(e);
+        }
+        employeeDto.setGender(gender);
+	employeeDto.setEmailId(getEmailId());
+	Date dateOfJoining = null;
+	try {
+	    dateOfJoining = getDateOfJoining();
+	} catch (CustomException e) {
+            System.out.println(e);
+        }
+        employeeDto.setDateOfJoining(dateOfJoining);
+	employeeDto.setDesignation(getDesignation());
+	System.out.println("Enter the batch");
+	int batch = scanner.nextInt();	    
+        employeeDto.setBatch(batch);
+        if (option == 1) {
             try {
 	        employeeService.addEmployee(employeeDto, userType);
             } catch (CustomException e) {
                 System.out.println(e);
             }
-        } 
-    }
-  
-    public void displayEmployee(String userType) {
-	if (userType == "trainee" || userType == "trainer" || userType == "manager") {
-            try {
-	        for (EmployeeDto employeeDto : employeeService.getAllEmployee()) {
-	            System.out.println(employeeDto);	   
-	        }
-            } catch (CustomException error) {
-                System.out.println(error.getMessage());
-            }
-        }
-    }
-
-    public void updateEmployee(String userType) {
-	if (userType == "trainee" || userType == "trainer" || userType == "manager") {
-            System.out.println("Enter your EmailId");
-            String mailId = scanner.next();
-            int employeeId = 0;
-            try {
-                employeeId = employeeService.findEmployeeIdByEmail(mailId);
-            } catch (CustomException e) {
-                System.out.println(e);
-            }
- 	    System.out.println("Insert your Details \nEnter your firstName: ");
-	    String firstName = getFirstName();
-	    System.out.println("Enter your lastName");
-	    String lastName = getLastName();
-	    System.out.println("Enter your address");
-	    String address = scanner.next();
-	    long mobileNo = getMobileNo();
-	    Date dateOfBirth = null;
-	    try {
-	        dateOfBirth = getDateOfBirth();
-	    } catch (CustomException e) {
-                System.out.println(e);
-            }
-	    int age = getAge(dateOfBirth);
-            String gender = null;
-            try {
-	        gender = getGender();
-            } catch (CustomException e) {
-                System.out.println(e);
-            }
-	    String emailId = getEmailId();
-	    Date dateOfJoining = null;
-	    try {
-	        dateOfJoining = getDateOfJoining();
-	    } catch (CustomException e) {
-                System.out.println(e);
-            }
-	    String designation = getDesignation();
-	    System.out.println("Enter the batch");
-	    int batch = scanner.nextInt();	    
-	    EmployeeDto employeeDto = new EmployeeDto(firstName, lastName, address, mobileNo, dateOfBirth, gender, emailId,
-                batch, dateOfJoining, designation);
-            System.out.println(employeeDto);
+        } else if (option == 3) {
             try {
 	        employeeService.updateEmployee(employeeDto, employeeId);
             } catch (CustomException e) {
@@ -307,20 +271,87 @@ public class EmployeeController {
             }
         } 
     }
+  
+    public void displayAllEmployee(String userType) {
+        try {
+	    for (EmployeeDto employeeDto : employeeService.getAllEmployee()) {
+	        System.out.println(employeeDto);	   
+	    }
+        } catch (CustomException error) {
+            System.out.println(error.getMessage());
+        }
+    }
+
+    public void displayEmployee() {
+        System.out.println("Enter the Employee Id");
+        int employeeId = scanner.nextInt(); 
+        try {
+            EmployeeDto employeeDto = employeeService.getEmployee(employeeId);
+	    System.out.println(employeeDto);	   
+        } catch (CustomException error) {
+            System.out.println(error.getMessage());
+        }
+    }
+
+    public void modifyEmployee(String userType) {
+        System.out.println("Enter your Employee Id");
+        int employeeId = scanner.nextInt();
+        try {
+            boolean isAvailable = employeeService.findEmployeeId(employeeId);
+            if (isAvailable) {
+	        System.out.println("1.First name 2.Last Name 3.address 4.Gender 5.Email Id 6.Designation");
+	        int option = scanner.nextInt();
+	        switch (option) {				       
+                    case 1:
+		        String firstName = getFirstName();
+                        employeeService.modifyEmployee("first_name", firstName, employeeId);
+                        break;
+                    case 2:
+		        String lastName = getLastName();
+                        employeeService.modifyEmployee("last_name", lastName, employeeId);
+                        break;
+                    case 3:
+                        System.out.println("Enter your address");
+		        String address = scanner.next();
+                        employeeService.modifyEmployee("address", address , employeeId);
+                        break;
+                    case 4:
+	                String gender = getGender();
+                        employeeService.modifyEmployee("gender", gender, employeeId);
+                        break;
+                    case 5:
+                        String emailId = getEmailId();
+                        employeeService.modifyEmployee("email_id", emailId, employeeId);
+                        break;
+                    case 6:
+                        String designation = getDesignation();
+                        employeeService.modifyEmployee("designation", designation, employeeId);
+                        break;
+                }
+
+            } else {
+            System.out.println("Id Not Found"); 
+            }
+        } catch (CustomException error) {
+            System.out.println(error.getMessage());
+        }
+    }
 
     public void deleteEmployee(String userType) {
-	if (userType == "trainee" || userType == "trainer" || userType == "manager") {
-            System.out.println("Enter your EmailId");
-            String emailId = scanner.next();
-            try {
-                int employeeId = employeeService.findEmployeeIdByEmail(emailId);
+        System.out.println("Enter your EmployeeId");
+        int employeeId = scanner.nextInt();
+        try {
+            boolean isAvailable = employeeService.findEmployeeId(employeeId);
+            if (isAvailable) {
                 boolean isAdded = employeeService.deleteEmployeeById(employeeId);
                 if (isAdded) {
                     System.out.println("employee deleted successfully");
                 }
-            } catch (CustomException e) {
-                System.out.println(e);
+            } else {
+                System.out.println("Your Id is not found");
             }
+        } catch (CustomException e) {
+            System.out.println(e);
         }
     }
 }

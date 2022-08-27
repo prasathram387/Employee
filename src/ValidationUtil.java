@@ -1,7 +1,7 @@
-package org.ideas2it.management.utils;
+package com.ideas2it.management.utils;
 
-import org.ideas2it.management.constant.Constants;
-import org.ideas2it.management.exception.CustomException;
+import com.ideas2it.management.constant.Constants;
+import com.ideas2it.management.exception.CustomException;
 
 import java.util.Date;
 import java.time.format.DateTimeFormatter;
@@ -37,36 +37,6 @@ public class ValidationUtil {
     public static boolean validateInput(String input, String regex ) {
 	boolean matcher = input.matches(regex);		   
 	return matcher;
-    }
-
-    /** 
-     * <p>
-     * To validate a date of birth.
-     * </p>
-     *
-     * @param dateOfBirth it gets a dateOfBirth from controller
-     * @return it returns the boolean to controller.
-     * 
-     */
-    public static Date validateDateOfBirth(String dateOfBirth) throws CustomException {
-   	boolean isContinue = true;
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-mm-yyyy");
-	try {
-            Date date = formatter.parse(dateOfBirth);
-	    return date;
-	} catch(Exception e) {
-	    throw new CustomException("enter valid date of birth",e);
-        }
-    }
-
-    public static Date validateDateOfJoining(String dateOfJoining) throws CustomException {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-	try {
-            Date date = formatter.parse(dateOfJoining);
-	    return date;
-	} catch(Exception e) {
-	    throw new CustomException("enter valid date ",e);
-        }
     }
     
     /** 
@@ -124,4 +94,9 @@ public class ValidationUtil {
              throw new CustomException("enter valid gender",e);
 	}		   
     }
+
+    public LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
+       return dateToConvert.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+}
+
 }

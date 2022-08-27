@@ -1,7 +1,7 @@
-package org.ideas2it.management.dao;  
+package com.ideas2it.management.dao;  
 
-import org.ideas2it.management.model.Employee;
-import org.ideas2it.management.exception.CustomException;
+import com.ideas2it.management.model.Employee;
+import com.ideas2it.management.exception.CustomException;
 
 import java.sql.Connection;
 import java.sql.*;

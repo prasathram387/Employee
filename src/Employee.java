@@ -1,23 +1,29 @@
-package org.ideas2it.management.model;
+package com.ideas2it.management.model;
 
 import java.util.Date;
+import java.time.LocalDate;
 
 public class Employee {
  
+    public int id;
     private String firstName;
     private String lastName;
     private String address;
     private long mobileNo;
-    private Date dateOfBirth; 
+    private LocalDate dateOfBirth; 
     private String gender;
     private String emailId;
     private int batch;
-    private Date dateOfJoining;
+    private LocalDate dateOfJoining;
     private String designation;
-   
-    public Employee(String firstName, String lastName, String address, long mobileNo, Date dateOfBirth, String gender, String emailId,
-            int batch, Date dateOfJoining, String designation) {
-
+  
+    public Employee() {
+    
+    }
+ 
+    public Employee(int id, String firstName, String lastName, String address, long mobileNo, LocalDate dateOfBirth, String gender, String emailId,
+            int batch, LocalDate dateOfJoining, String designation) {
+        this.id = id;
 	this.firstName = firstName;
 	this.lastName = lastName;
 	this.address = address;
@@ -28,6 +34,11 @@ public class Employee {
 	this.batch = batch;
 	this.dateOfJoining = dateOfJoining;
 	this.designation = designation;
+
+    }
+
+    public int getId() {
+        return id;
     }
   	
     public String getFirstName() {
@@ -46,7 +57,7 @@ public class Employee {
 	return mobileNo;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
 	return dateOfBirth;
     }
 
@@ -66,8 +77,12 @@ public class Employee {
 	return batch;
     }
 
-    public Date getDateOfJoining() {
+    public LocalDate getDateOfJoining() {
         return dateOfJoining;
+    }
+
+    public void setId(int id) {
+	this.id = id;
     }
 
     public void setFirstName(String firstName) {
@@ -86,7 +101,7 @@ public class Employee {
 	this.mobileNo = mobileNo;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
 	this.dateOfBirth = dateOfBirth;
     }
 
@@ -102,7 +117,7 @@ public class Employee {
 	this.batch = batch;
     }
 
-    public void setDateOfJoining(Date dateOfJoining) {
+    public void setDateOfJoining(LocalDate dateOfJoining) {
 	this.dateOfJoining = dateOfJoining;
     }
 
