@@ -1,6 +1,5 @@
 package com.ideas2it.management.model;
 
-import java.util.Date;
 import java.time.LocalDate;
 
 public class Employee {
@@ -16,13 +15,15 @@ public class Employee {
     private int batch;
     private LocalDate dateOfJoining;
     private String designation;
+    private LocalDate createdDate;
+    private LocalDate modifiedDate;
   
     public Employee() {
     
     }
  
     public Employee(int id, String firstName, String lastName, String address, long mobileNo, LocalDate dateOfBirth, String gender, String emailId,
-            int batch, LocalDate dateOfJoining, String designation) {
+            int batch, LocalDate dateOfJoining, String designation, LocalDate createdDate, LocalDate modifiedDate) {
         this.id = id;
 	this.firstName = firstName;
 	this.lastName = lastName;
@@ -34,6 +35,8 @@ public class Employee {
 	this.batch = batch;
 	this.dateOfJoining = dateOfJoining;
 	this.designation = designation;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
 
     }
 
@@ -81,6 +84,14 @@ public class Employee {
         return dateOfJoining;
     }
 
+    public LocalDate getCreatedDate() {
+	return createdDate;
+    }
+
+    public LocalDate getModifiedDate() {
+	return modifiedDate;
+    }
+
     public void setId(int id) {
 	this.id = id;
     }
@@ -124,4 +135,12 @@ public class Employee {
     public void setDesignation(String designation) {
 	this.designation = designation;
     }  
+
+    public void setCreatedDate(LocalDate createdDate) {
+	this.createdDate = createdDate;
+    }
+
+    public void setModifiedDate(LocalDate modifiedDate) {
+	this.modifiedDate = modifiedDate;
+    }
 }

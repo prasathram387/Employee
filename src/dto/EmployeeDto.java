@@ -15,13 +15,15 @@ public class EmployeeDto {
     private int batch;
     private Date dateOfJoining;
     private String designation;
+    private Date createdDate;
+    private Date modifiedDate;
 
     public EmployeeDto() {
 
     }
    
     public EmployeeDto(int id, String firstName, String lastName, String address, long mobileNo, Date dateOfBirth, String gender, String emailId,
-            int batch, Date dateOfJoining, String designation) {
+            int batch, Date dateOfJoining, String designation,  Date createdDate, Date modifiedDate) {
         this.id = id;
 	this.firstName = firstName;
 	this.lastName = lastName;
@@ -33,6 +35,8 @@ public class EmployeeDto {
 	this.batch = batch;
 	this.dateOfJoining = dateOfJoining;
 	this.designation = designation;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
     }
 
     public int getId() {
@@ -79,6 +83,14 @@ public class EmployeeDto {
         return dateOfJoining;
     }
 
+    public Date getCreatedDate() {
+	return createdDate;
+    }
+
+    public Date getModifiedDate() {
+	return modifiedDate;
+    }
+
     public void setId(int id) {
 	this.id = id;
     }
@@ -122,6 +134,14 @@ public class EmployeeDto {
     public void setDesignation(String designation) {
 	this.designation = designation;
     }  
+
+    public void setCreatedDate(Date createdDate) {
+	this.createdDate = createdDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+	this.modifiedDate = modifiedDate;
+    }
 
     public String toString() {
     return "\n" +"Employee Details" +"\n"+"Name            :" + getFirstName()+getLastName() + "\n" + "Email Id        :" + getEmailId() +"\n"+

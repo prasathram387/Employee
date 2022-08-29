@@ -2,7 +2,6 @@ package com.ideas2it.management.dao;
 
 import com.ideas2it.management.model.Employee;
 import com.ideas2it.management.exception.CustomException;
-import com.ideas2it.management.utils.ValidationUtil;
 
 import java.util.ArrayList;
 import java.sql.Connection;
@@ -15,8 +14,6 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 public class EmployeeDao extends BaseDao {  
 
@@ -84,7 +81,7 @@ public class EmployeeDao extends BaseDao {
     public boolean updateEmployee(Employee employee, int employeeId) throws CustomException { 
 	try {
             String query = "update employee_detail set first_name = ?, last_name = ?, address = ?, mobile_no = ?, date_of_birth = ?, gender = ?, email_id = ?,"
-		+ "batch = ?, date_of_joining = ?, designation = ? where employeeId = ?";
+		+ "batch = ?, date_of_joining = ?, designation = ? , modified_date = current_timestamp where employeeId = " +employeeId;
             return preparedStatement(query, employee);                   	                          
         } catch (Exception error) {
             System.out.println(error.getMessage());
@@ -97,7 +94,6 @@ public class EmployeeDao extends BaseDao {
         try {
             String query = "update employee_detail set " + fieldName + " = ? where id = ?";  
             PreparedStatement preparedStatement = connection.prepareStatement(query);                             
-            // preparedStatement.setString(1, fieldName);
             preparedStatement.setString(1, fieldValue);
             preparedStatement.setInt(2, employeeId);             
             int rowsUpdated = preparedStatement.executeUpdate();    
@@ -177,7 +173,9 @@ public class EmployeeDao extends BaseDao {
 		employee.setEmailId(resultSet.getString("email_id"));
 		employee.setBatch(resultSet.getInt("batch"));
                 employee.setDateOfJoining(resultSet.getDate("date_of_joining").toLocalDate());
-		employee.setDesignation(resultSet.getString("designation"));		
+		employee.setDesignation(resultSet.getString("designation"));	
+                employee.setCreatedDate(resultSet.getTimestamp("created_date").toLocalDateTime().toLocalDate());
+                employee.setModifiedDate(resultSet.getTimestamp("modified_date").toLocalDateTime().toLocalDate());	
             }        
             return employee;         	                                                                       
         } catch (Exception error) {
