@@ -4,8 +4,6 @@ import com.ideas2it.management.constant.Constants;
 import com.ideas2it.management.exception.CustomException;
 import com.ideas2it.management.dto.EmployeeDto;
 import com.ideas2it.management.service.EmployeeService;
-import com.ideas2it.management.service.ProjectService;
-import com.ideas2it.management.dto.ProjectDto;
 import com.ideas2it.management.utils.DateUtil;
 import com.ideas2it.management.utils.ValidationUtil;
 
@@ -24,7 +22,7 @@ public class EmployeeController {
    
     private static Scanner scanner = new Scanner(System.in);
     private EmployeeService employeeService = new EmployeeService();
-    private ProjectService projectService = new ProjectService();	           
+    private ProjectController projectController = new ProjectController();	           
 
     private static boolean isContinue = true;
     private static int index = 0;
@@ -32,10 +30,10 @@ public class EmployeeController {
     public static void main(String[] args) throws CustomException {
 
 	EmployeeController controller = new EmployeeController();
-	
-	System.out.println("1.Trainee ,2.Trainer ,3.Manager, 4.exit");
-	int choice = scanner.nextInt();
+
         while (isContinue) {
+	    System.out.println("1.Trainee ,2.Trainer ,3.Manager, 4.exit");
+	    int choice = scanner.nextInt();
 	    switch (choice) { 		
 	        case 1:
 	            controller.trainee(Constants.TRAINEE);
@@ -46,6 +44,11 @@ public class EmployeeController {
 	        case 3:
 	            controller.manager(Constants.MANAGER);
 	            break;
+	        case 4:
+	            System.out.println("Thank you");
+                    System.exit(0);
+	            break;
+   
             } 
         }
     }
@@ -55,13 +58,13 @@ public class EmployeeController {
 	int option = scanner.nextInt();
 	switch (option) {				       
             case 1:
-                addEmployee(userType, option);
+                addAndUpdateEmployee(userType, option);
                 break;
             case 2:
                 displayEmployee();
                 break;
             case 3:
-                addEmployee(userType, option);
+                addAndUpdateEmployee(userType, option);
                 break;
             case 4:
                 deleteEmployee(userType);
@@ -78,13 +81,13 @@ public class EmployeeController {
 	int option = scanner.nextInt();
 	switch (option) {				       
             case 1:
-                addEmployee(userType, option);
+                addAndUpdateEmployee(userType, option);
                 break;
             case 2:
                 displayEmployee();
                 break;
             case 3:
-                addEmployee(userType, option);
+                addAndUpdateEmployee(userType, option);
                 break;
             case 4:
                 deleteEmployee(userType);
@@ -96,28 +99,32 @@ public class EmployeeController {
     }
 
     public void manager(String userType) {
-	System.out.println("1.Insert Details\n2.Display Trainer\n3.Update Trainer\n4.Delete Trainer\n5.All Employees\n6.Modify Trainer");
+	System.out.println("1.Insert Details\n2.Display Manager\n3.Update Manager\n4.Delete Manager\n5.Display All Trainers\n6.Display All Trainees"
+            + "\n7.Modify Manager\n8.Manage Projects");
 	int option = scanner.nextInt();
 	switch (option) {				       
             case 1:
-                addEmployee(userType, option);
+                addAndUpdateEmployee(userType, option);
                 break;
             case 2:
                 displayEmployee();
                 break;
             case 3:
-                addEmployee(userType, option);
+                addAndUpdateEmployee(userType, option);
                 break;
             case 4:
                 deleteEmployee(userType);
                 break;
             case 5:
-                displayAllEmployee(userType);
+                displayAllEmployee(Constants.TRAINER);
                 break;
             case 6:
-                modifyEmployee(userType);
+                displayAllEmployee(Constants.TRAINEE);
                 break;
             case 7:
+                modifyEmployee(userType);
+                break;
+            case 8:
                 manageProject();
                 break;
          }
@@ -198,7 +205,7 @@ public class EmployeeController {
     private Date getDateOfJoining() throws CustomException{
     	System.out.println("Enter your Date Of joining in this format dd-mm-yyyy");
 	String join_date = scanner.next();
-	Date dateOfJoining = DateUtil.validateDateOfJoining(join_date);
+	Date dateOfJoining = DateUtil.validateDate(join_date);
 	return dateOfJoining;  
     }
 
@@ -244,8 +251,7 @@ public class EmployeeController {
 	return emailId;  
     }
 
-
-    public void addEmployee(String userType,int option) {
+    public void addAndUpdateEmployee(String userType,int option) {
         EmployeeDto employeeDto = new EmployeeDto();
         int employeeId = 0;
         if (option == 1) {
@@ -309,7 +315,7 @@ public class EmployeeController {
   
     public void displayAllEmployee(String userType) {
         try {
-	    for (EmployeeDto employeeDto : employeeService.getAllEmployee()) {
+	    for (EmployeeDto employeeDto : employeeService.getAllEmployee(userType)) {
 	        System.out.println(employeeDto);	   
 	    }
         } catch (CustomException error) {
@@ -378,8 +384,8 @@ public class EmployeeController {
         try {
             boolean isAvailable = employeeService.findEmployeeId(employeeId);
             if (isAvailable) {
-                boolean isAdded = employeeService.deleteEmployeeById(employeeId);
-                if (isAdded) {
+                boolean isDeleted = employeeService.deleteEmployeeById(employeeId);
+                if (isDeleted) {
                     System.out.println("employee deleted successfully");
                 }
             } else {
@@ -395,54 +401,21 @@ public class EmployeeController {
 	int option = scanner.nextInt();
 	switch (option) {				       
             case 1:
-                createProject();
+                projectController.createProject();
                 break;
-       /*     case 2:
-                updateProject();
+            case 2:
+                projectController.updateProject();
                 break;
             case 3:
-                deleteProject();
+                projectController.deleteProject();
                 break;
             case 4:
-                displayProject();
-                break;      */
+                projectController.displayProject();
+                break;  
+            case 5:
+                projectController.modifyProject();
+                break;    
          }
     }
 
-    private Date getProjectDate() throws CustomException{
-    	System.out.println("Enter your Project Started Date in this format dd-mm-yyyy");
-	String startDate = scanner.next();
-	Date startedDate = DateUtil.validateDateOfJoining(startDate);
-	return startedDate;  
-    }
-
-    private Date getDeadline() throws CustomException{
-    	System.out.println("Enter your Project DeadLine Date in this format dd-mm-yyyy");
-	String deadlineDate = scanner.next();
-	Date deadline = DateUtil.validateDateOfJoining(deadlineDate);
-	return deadline;  
-    }
-
-    public void createProject() {
-        ProjectDto projectDto = new ProjectDto();
-        System.out.println("Enter your project name: ");
-        String name = scanner.next();
-        projectDto.setName(name);
-        System.out.println("Enter the project client name: ");
-        String clientName = scanner.next();
-        projectDto.setClientName(clientName);
-        System.out.println("Enter the company name: ");
-        String companyName = scanner.next();
-        projectDto.setCompanyName(companyName);
-        try {
-            projectDto.setStartedDate(getProjectDate());
-            projectDto.setDeadline(getDeadline());
-            System.out.println("Enter the project Status: ");
-            String status= scanner.next();
-            projectDto.setStatus(status);
-            projectService.addProject(projectDto);  
-        } catch (CustomException e) {
-            System.out.println(e);
-        }
-   }
 }

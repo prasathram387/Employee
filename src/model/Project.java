@@ -16,7 +16,7 @@ public class Project {
     
     }    
 
-    public Project(int id, String Name, String clientName, String companyName, LocalDate startedDate, LocalDate deadLine, String status) {
+    public Project(int id, String name, String clientName, String companyName, LocalDate startedDate, LocalDate deadline, String status) {
 
         this.id = id;
         this.name = name;
@@ -55,6 +55,11 @@ public class Project {
 	return status;
     }
 
+
+    public void setId(int id) {
+	this.id = id;
+    }
+
     public void setName(String name) {
 	this.name = name;
     }
@@ -63,7 +68,7 @@ public class Project {
 	this.companyName = companyName;
     }
 
-    public void setclientName(String clientName) {
+    public void setClientName(String clientName) {
 	this.clientName = clientName;
     }
 

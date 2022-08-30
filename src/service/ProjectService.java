@@ -15,4 +15,29 @@ public class ProjectService {
 	Project project = mapper.fromDto(projectDto);
 	int projectId = projectDao.insertProject(project);	
     }
+
+    public boolean findProjectId(int projectId) throws CustomException {
+        return projectDao.searchProjectId(projectId);
+    }
+
+    public ProjectDto getProject(int projectId) throws CustomException {
+        Project project = projectDao.retrieveProject(projectId);
+	ProjectDto projectDto = mapper.toDto(project);
+        return projectDto;
+    }
+
+    public boolean updateProject(ProjectDto projectDto, int projectId) throws CustomException {   
+	Project project = mapper.fromDto(projectDto);
+	return projectDao.updateProject(project, projectId);	
+    }
+
+    public boolean modifyProject(String fieldName, String updatedData, int projectId) throws CustomException{
+        return projectDao.modifyProject(fieldName, updatedData, projectId);
+    }
+
+    public boolean deleteProjectById(int projectId) throws CustomException{
+        boolean isDeleted = projectDao.deleteProject(projectId);
+        return isDeleted;
+    }
+
 }

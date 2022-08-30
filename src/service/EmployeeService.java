@@ -21,20 +21,20 @@ public class EmployeeService {
 
     public void addEmployee(EmployeeDto employeeDto, String roleName) throws CustomException {   
 	Employee employee = mapper.fromDto(employeeDto);
-        System.out.println(employee);
 	int employeeId = employeeDao.insertEmployee(employee);
         int roleId = roleDao.reteriveRoleByName(roleName);
-        System.out.println("employee id--" + employeeId + "roleId" + roleId);
         roleDao.insertEmployeeRole(employeeId, roleId);	
     }
 
     public boolean findEmployeeId(int employeeId) throws CustomException {
-        return employeeDao.searchEmployee(employeeId);
+        return employeeDao.searchEmployeeId(employeeId);
     }
 
-    public List<EmployeeDto> getAllEmployee() throws CustomException {   
+    public List<EmployeeDto> getAllEmployee(String userType) throws CustomException {   
         List<EmployeeDto> employeeDtos = new ArrayList<EmployeeDto>();
-        for (Employee employee : employeeDao.retrieveAllEmployee()) {
+        int roleId = roleDao.reteriveRoleByName(userType);
+        System.out.println(roleId);
+        for (Employee employee : employeeDao.retrieveAllEmployee(roleId)) {
 	    EmployeeDto employeeDto = mapper.toDto(employee);
             employeeDtos.add(employeeDto);
         }

@@ -25,11 +25,11 @@ public class DateUtil {
         }
     }
 
-    public static Date validateDateOfJoining(String dateOfJoining) throws CustomException {
+    public static Date validateDate(String date) throws CustomException {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 	try {
-            Date date = formatter.parse(dateOfJoining);
-	    return date;
+            Date parsedDate = formatter.parse(date);
+	    return parsedDate;
 	} catch(Exception e) {
 	    throw new CustomException("enter valid date ",e);
         }

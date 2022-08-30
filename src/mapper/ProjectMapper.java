@@ -14,6 +14,7 @@ public class ProjectMapper {
         LocalDate deadline = DateUtil.convertToLocalDate(projectDto.getDeadline());
         Project project = new Project(projectDto.getId(), projectDto.getName(), projectDto.getClientName(), projectDto.getCompanyName(),
             startedDate, deadline, projectDto.getStatus());
+        System.out.println("after insert "+ project.getDeadline());
         return project;
     }
 

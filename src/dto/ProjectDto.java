@@ -15,7 +15,7 @@ public class ProjectDto {
     
     }    
 
-    public ProjectDto(int id, String Name, String clientName, String companyName, Date startedDate, Date deadline, String status) {
+    public ProjectDto(int id, String name, String clientName, String companyName, Date startedDate, Date deadline, String status) {
 
         this.id = id;
         this.name = name;
@@ -80,5 +80,11 @@ public class ProjectDto {
 
     public void setStatus(String status) {
 	this.status = status;
+    }
+
+    public String toString() {
+        return "\n" +"Employee Details" +"\n"+"Project Name        :" + getName()+ "\n" + "Company Name        :" + getCompanyName() +"\n"+
+		      "Client Name         :"+getClientName()+"\n"+"Project Started Date:"+getStartedDate()+"\n"+"Project Deadline    :"+getDeadline()+
+                      "\n"+"Status              :"+getStatus();   
     }
 }

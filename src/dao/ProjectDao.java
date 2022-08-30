@@ -20,7 +20,7 @@ public class ProjectDao extends BaseDao {
 	int projectId = 0;
 	try {
             String query = "INSERT INTO project_detail(name, client_name, company_name, started_date, deadline, status) VALUES (?, ?,"
-                + " ?, current_timestamp, ?, ?)";
+                + " ?, ?, ?, ?)";
             boolean isInserted = preparedStatement(query, project);
             String idQuery = "SELECT id FROM project_detail order by id DESC LIMIT 1";            
             projectId = lastInsertedProjectId(idQuery);                 	                          
@@ -32,6 +32,17 @@ public class ProjectDao extends BaseDao {
 	return projectId;
     }
 
+    public Project retrieveProject(int projectId) throws CustomException {
+	try {
+            String query = "select * from project_detail where id = " + projectId ; 
+            return preparedStatementRetrieveProject(query);
+        } catch (Exception error) {
+            error.printStackTrace();
+            throw new CustomException(error.getMessage());
+        }
+    }
+
+
     public boolean preparedStatement(String query, Project project) throws CustomException {
         Date startedDate = Date.valueOf(project.getStartedDate());
         Date deadline = Date.valueOf(project.getDeadline());
@@ -40,12 +51,99 @@ public class ProjectDao extends BaseDao {
             preparedStatement.setString(1, project.getName());
             preparedStatement.setString(2, project.getClientName());
             preparedStatement.setString(3, project.getCompanyName());
-            preparedStatement.setDate(4, deadline);
+            preparedStatement.setDate(4, startedDate); 
+            preparedStatement.setDate(5, deadline);
+            preparedStatement.setString(6, project.getStatus()); 
             return preparedStatement.execute(); 
-        } catch (Exception e) {
-            throw new CustomException(e.getMessage());
+        } catch (Exception error) {
+            error.printStackTrace();
+            throw new CustomException(error.getMessage());
         }
     }
+
+    public Project preparedStatementRetrieveProject(String query) throws CustomException {
+        Project project = new Project();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);  
+            ResultSet resultSet = preparedStatement.executeQuery();  
+            while(resultSet.next()) {
+                project.setId(resultSet.getInt("id"));
+                project.setName(resultSet.getString("name"));
+                project.setClientName(resultSet.getString("client_name"));
+                project.setCompanyName(resultSet.getString("company_name"));
+                project.setStartedDate(resultSet.getDate("started_date").toLocalDate());     
+                project.setDeadline(resultSet.getDate("deadline").toLocalDate());
+                project.setStatus(resultSet.getString("status"));
+            } 
+            return project;
+        } catch (Exception error) {
+            error.printStackTrace();
+            throw new CustomException(error.getMessage());
+        }
+    }
+
+    public boolean searchProjectId(int projectId) throws CustomException {
+        int id = 0;
+        try {
+	    String query = "SELECT id FROM project_detail where id = '" + projectId + "' ";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);          
+            ResultSet resultSet = preparedStatement.executeQuery(query);
+            while(resultSet.next()) {
+                id = resultSet.getInt(1);
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+	    throw new CustomException(error.getMessage());
+        } 
+        if (id == projectId) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean updateProject(Project project, int projectId) throws CustomException { 
+	try {
+            String query = "update project_detail set name = ?, client_name = ?, company_name = ?, started_date = ?, deadline = ?,"
+		+ " status = ? where id = " + projectId;
+            return preparedStatement(query, project);                   	                          
+        } catch (Exception error) {
+            System.out.println(error.getMessage());
+            error.printStackTrace();
+	    throw new CustomException(error.getMessage());
+        }
+    }
+
+    public boolean modifyProject(String fieldName, String fieldValue, int projectId) throws CustomException {
+        try {
+            String query = "update project_detail set " + fieldName + " = ? where id = ?";  
+            PreparedStatement preparedStatement = connection.prepareStatement(query);                             
+            preparedStatement.setString(1, fieldValue);
+            preparedStatement.setInt(2, projectId);             
+            int rowsUpdated = preparedStatement.executeUpdate();    
+            if (rowsUpdated > 0) {
+                return true;
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+            throw new CustomException(error.getMessage());
+        } 
+        return false;
+    }
+
+    public boolean deleteProject(int projectId) throws CustomException {
+        try {
+	    String query = "update employee_detail set status = 'inactive' WHERE id = '" + projectId + "' ";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);                             
+            int rowsDeleted = preparedStatement.executeUpdate();    
+            if (rowsDeleted > 0) {
+                return true;
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+            throw new CustomException(error.getMessage());
+        } 
+        return false;     
+    }  
 
     public int lastInsertedProjectId(String query) throws CustomException {
         try {
@@ -56,8 +154,9 @@ public class ProjectDao extends BaseDao {
                projectId = rs.getInt(1);
             } 
             return projectId;
-        } catch (Exception e) {
-            throw new CustomException(e.getMessage());
+        } catch (Exception error) {
+            error.printStackTrace();
+            throw new CustomException(error.getMessage());
         }
     }
 }
