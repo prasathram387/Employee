@@ -40,10 +40,12 @@ public class EmployeeDao extends BaseDao {
         List<Employee> employees = new ArrayList<Employee>();
         System.out.println(roleId);
 	try {
-            String query = "select employee_detail.id, employee_detail.first_name, employee_detail.last_name, employee_detail.address, employee_detail.mobile_no," +
-                "employee_detail.date_of_birth, employee_detail.gender, employee_detail.email_id, employee_detail.batch," + 
-                "employee_detail.date_of_joining, employee_detail.designation, employee_detail.created_date, employee_detail.modified_date, employee_roles.role_id from employee_roles inner join " +
-                "employee_detail on employee_detail.id = employee_roles.employee_id where employee_roles.role_id =" + roleId ;
+            String query = "select employee_detail.id, employee_detail.first_name, employee_detail.last_name, " +
+                "employee_detail.address, employee_detail.mobile_no, employee_detail.date_of_birth, employee_detail.gender," +
+                "employee_detail.email_id, employee_detail.batch, employee_detail.date_of_joining, employee_detail.designation," +
+                "employee_detail.created_date, employee_detail.modified_date, employee_roles.role_id from employee_roles inner join " +
+                "employee_detail on employee_detail.id = employee_roles.employee_id where employee_roles.role_id = " + roleId + " "+
+                "and employee_detail.status = 'active' " ;
             employees.add(preparedStatementRetrieveEmployee(query)); 
             return employees;                 	                                                                       
         } catch (Exception error) {

@@ -125,7 +125,7 @@ public class EmployeeController {
                 modifyEmployee(userType);
                 break;
             case 8:
-                manageProject();
+                projectController.manageProject();
                 break;
          }
     }
@@ -395,27 +395,4 @@ public class EmployeeController {
             System.out.println(e);
         }
     }
-
-    public void manageProject() {
-	System.out.println("1.Create Project\n2.Update Project\n3.Delete Project\n4.Display project");
-	int option = scanner.nextInt();
-	switch (option) {				       
-            case 1:
-                projectController.createProject();
-                break;
-            case 2:
-                projectController.updateProject();
-                break;
-            case 3:
-                projectController.deleteProject();
-                break;
-            case 4:
-                projectController.displayProject();
-                break;  
-            case 5:
-                projectController.modifyProject();
-                break;    
-         }
-    }
-
 }
