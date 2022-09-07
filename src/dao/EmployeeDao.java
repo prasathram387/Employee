@@ -1,6 +1,7 @@
 package com.ideas2it.management.dao;  
 
 import com.ideas2it.management.model.Employee;
+import com.ideas2it.management.model.Role;
 import com.ideas2it.management.exception.CustomException;
 
 import java.util.ArrayList;
@@ -15,49 +16,42 @@ import java.sql.Statement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.cfg.Configuration;  
+import org.hibernate.Session;    
+import org.hibernate.SessionFactory;    
+import org.hibernate.Transaction;    
+import org.hibernate.boot.registry.StandardServiceRegistry;  
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;  
+
 public class EmployeeDao extends BaseDao {  
 
-    Connection connection = databaseConnection();
+    static SessionFactory factory = new Configuration().configure().buildSessionFactory();  
 
     public int insertEmployee(Employee employee) throws CustomException {
-	int employeeId = 0;
-	try {
-            String query = "INSERT INTO employee_detail(first_name, last_name, address, mobile_no, date_of_birth, gender, email_id, "
-		+ "batch, date_of_joining, designation, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,'active')";
-            boolean isInserted = preparedStatement(query, employee);
-            String idQuery = "SELECT id FROM employee_detail order by id DESC LIMIT 1";            
-            employeeId = lastInsertedEmployeeId(idQuery);
-                 	                          
+        try {
+            Session session = factory.openSession();  
+            Transaction transaction = session.beginTransaction();   
+            session.save(employee);  
+            int employeeId = employee.getId();
+            transaction.commit();      
+            session.close();  
+            return employeeId; 
         } catch (Exception error) {
-            System.out.println(error.getMessage());
             error.printStackTrace();
-	    throw new CustomException(error.getMessage());
+            throw new CustomException(error.getMessage());
         }
-	return employeeId;
     }
 
-    public List<Employee> retrieveAllEmployee(int roleId) throws CustomException {
-        List<Employee> employees = new ArrayList<Employee>();
-        System.out.println(roleId);
-	try {
-            String query = "select employee_detail.id, employee_detail.first_name, employee_detail.last_name, " +
-                "employee_detail.address, employee_detail.mobile_no, employee_detail.date_of_birth, employee_detail.gender," +
-                "employee_detail.email_id, employee_detail.batch, employee_detail.date_of_joining, employee_detail.designation," +
-                "employee_detail.created_date, employee_detail.modified_date, employee_roles.role_id from employee_roles inner join " +
-                "employee_detail on employee_detail.id = employee_roles.employee_id where employee_roles.role_id = " + roleId + " "+
-                "and employee_detail.status = 'active' " ;
-            employees.add(preparedStatementRetrieveEmployee(query)); 
-            return employees;                 	                                                                       
-        } catch (Exception error) {
-            error.printStackTrace();
-	    throw new CustomException(error.getMessage());
-        }
-    } 
-
     public Employee retrieveEmployee(int employeeId) throws CustomException {
-	try {
-            String query = "select * from employee_detail where id = " + employeeId ; 
-            return preparedStatementRetrieveEmployee(query);
+       try {
+            Session session = factory.openSession(); 
+            session.beginTransaction();       
+            Criteria criteria = session.createCriteria(Employee.class);
+            criteria.add(Restrictions.eq("id", employeeId));
+            Employee employee = (Employee) criteria.uniqueResult();
+            return employee;
         } catch (Exception error) {
             error.printStackTrace();
             throw new CustomException(error.getMessage());
@@ -148,8 +142,9 @@ public class EmployeeDao extends BaseDao {
         }
     }
 
-    public int lastInsertedEmployeeId(String query) throws CustomException {
+    public int lastInsertedEmployeeId() throws CustomException {
         try {
+            String query = "SELECT id FROM employee_detail order by id DESC LIMIT 1";            
             PreparedStatement preparedStatement = connection.prepareStatement(query); 
             ResultSet rs = preparedStatement.executeQuery(query);
             int employeeId = 0;
@@ -189,4 +184,5 @@ public class EmployeeDao extends BaseDao {
 	    throw new CustomException(error.getMessage());
         }
     }
+
 }

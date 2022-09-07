@@ -2,15 +2,44 @@ package com.ideas2it.management.model;
 
 import java.time.LocalDate;
 
+import java.util.List;
+import java.util.ArrayList;
+import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;  
+import javax.persistence.Id;  
+import javax.persistence.GeneratedValue;
+import javax.persistence.Table;  
+
+@Entity
+@Table(name = "project")
 public class Project {
 
+    @Id 
+    @GeneratedValue
+    @Column(name = "id")
     private int id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "client_name")
     private String clientName;
+    @Column(name = "company_name")
     private String companyName;
+    @Column(name = "started_date")
     private LocalDate startedDate;
+    @Column(name = "deadline")
     private LocalDate deadline;
+    @Column(name = "status")
     private String status;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+    @JoinTable(
+        name = "employee_project", 
+        joinColumns = { @JoinColumn(name = "employee_id") }, 
+        inverseJoinColumns = { @JoinColumn(name = "project_id") }
+    )
+    private List<Employee> employees = new ArrayList<Employee>();
+
    
     public Project() {
     
@@ -55,6 +84,9 @@ public class Project {
 	return status;
     }
 
+    public List<Employee> getEmployee() {
+        return employees;
+    } 
 
     public void setId(int id) {
 	this.id = id;
@@ -83,4 +115,8 @@ public class Project {
     public void setStatus(String status) {
 	this.status = status;
     }
+    public void setEmployeeProject(List<Employee> employees) {
+        this.employees = employees;
+    } 
+
 }

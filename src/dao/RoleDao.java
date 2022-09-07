@@ -1,52 +1,63 @@
 package com.ideas2it.management.dao;  
 
+
 import com.ideas2it.management.model.Employee;
+import com.ideas2it.management.model.Role;
 import com.ideas2it.management.exception.CustomException;
 
-import java.sql.Connection;
-import java.sql.*;
-import java.sql.Statement;
-import java.sql.SQLException;
-import java.sql.ResultSet;
-import java.sql.DriverManager;
-import java.sql.Date;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
-public class RoleDao extends BaseDao {  
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.cfg.Configuration;  
+import org.hibernate.Session;    
+import org.hibernate.SessionFactory;    
+import org.hibernate.Transaction;    
+import org.hibernate.boot.registry.StandardServiceRegistry;  
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;  
 
-    public int reteriveRoleByName(String role) throws CustomException {
-	int roleId = 0;
+public class RoleDao {  
+
+    static SessionFactory factory = new Configuration().configure().buildSessionFactory(); 
+
+    public Role retrieveRoleByName(String roleName) throws CustomException {
 	try {
-            String query = "Select id from role where name ='" + role + "'";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);  
-            ResultSet rs = preparedStatement.executeQuery(); 
-            while (rs.next()) {
-                roleId = rs.getInt("id");
-            } 
-            return roleId;                  	                                                                       
+            Session session = factory.openSession(); 
+            session.beginTransaction();       
+            Criteria criteria = session.createCriteria(Role.class);
+            criteria.add(Restrictions.eq("name", roleName));
+            Role role = (Role) criteria.uniqueResult();
+            return role;
         } catch (Exception error) {
-            System.out.println(error.getMessage());
             error.printStackTrace();
-	    throw new CustomException(error.getMessage());
-        }          
-    }
-
-    public boolean insertEmployeeRole(int employeeId, int roleId) throws CustomException {
-        boolean isAdded = false;
-	try {
-            String query = "INSERT INTO employee_roles(employee_id , role_id) VALUES (?,?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, employeeId);
-            preparedStatement.setInt(2, roleId);
-            isAdded = preparedStatement.execute();                                              
-        } catch (Exception error) {
-            System.out.println(error.getMessage());
-            error.printStackTrace();
-	    throw new CustomException(error.getMessage());
+            throw new CustomException(error.getMessage());
         }
-        return isAdded; 
     }
+
+    public List<Employee> retrieveAllEmployee() {
+        Session session = factory.openSession();
+        return session.createQuery("select employees from Role").list();
+    }    
+
+    public Role retrieveRoleIdByName(String roleName) throws CustomException {
+	try {
+            Session session = factory.openSession(); 
+            session.beginTransaction();       
+            Criteria criteria = session.createCriteria(Role.class);
+            criteria.add(Restrictions.eq("name", roleName));
+            Role role = (Role) criteria.uniqueResult();
+            return role;
+        } catch (Exception error) {
+            error.printStackTrace();
+            throw new CustomException(error.getMessage());
+        }
+    }
+
+    public List<Employee> retrieveEmployeeByRole(int roleId) {
+        Session session = factory.openSession();
+        return session.createQuery("select employees from Role where id = "+roleId).list();
+    } 
+
 }            
 
-// select employee_detail.first_name, employee_detail.last_name, employee_detail.address, employee_detail.mobile_no, date_format(employee_detail.date_of_birth,"%d %M %y"), employee_detail.email_id, employee_detail.batch, date_format(employee_detail.date_of_joining,"%d %M %y"), employee_detail.designation, employee_roles.role_id from employee_roles inner join employee_detail on employee_detail.id = employee_roles.employee_id where employee_roles.role_id = '1';

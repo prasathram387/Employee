@@ -1,6 +1,5 @@
 package com.ideas2it.management.dao;  
 
-
 import com.ideas2it.management.model.EmployeeProject;
 import com.ideas2it.management.model.Project;
 import com.ideas2it.management.exception.CustomException;
@@ -13,25 +12,28 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.Session;    
+import org.hibernate.SessionFactory;    
+import org.hibernate.Transaction;  
+import org.hibernate.boot.Metadata;  
+import org.hibernate.boot.MetadataSources;  
+import org.hibernate.boot.registry.StandardServiceRegistry;  
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;  
 
 public class ProjectDao extends BaseDao {  
 
-    Connection connection = databaseConnection();
+    Connection connection = databaseConnection();     
+ static SessionFactory factory = new Configuration().configure().buildSessionFactory();
 
-    public int insertProject(Project project) throws CustomException {
-	int projectId = 0;
-	try {
-            String query = "INSERT INTO project_detail(name, client_name, company_name, started_date, deadline, status) VALUES (?, ?,"
-                + " ?, ?, ?, ?)";
-            boolean isInserted = preparedStatement(query, project);
-            String idQuery = "SELECT id FROM project_detail order by id DESC LIMIT 1";            
-            projectId = lastInsertedProjectId(idQuery);                 	                          
-        } catch (Exception error) {
-            System.out.println(error.getMessage());
-            error.printStackTrace();
-	    throw new CustomException(error.getMessage());
-        }
-	return projectId;
+    public void insertProject(Project project) throws CustomException {
+        Session session = factory.openSession();  
+        Transaction t = session.beginTransaction();   
+        session.save(project);  
+        t.commit();  
+        System.out.println("successfully saved");    
+        factory.close();  
+        session.close();   
     }
 
     public Project retrieveProject(int projectId) throws CustomException {
@@ -162,25 +164,15 @@ public class ProjectDao extends BaseDao {
         }
     }
 
-    public int assignEmployeesForProject(EmployeeProject employeeProject) throws CustomException {    
-        int employeeProjectId = 0;
-        try {
-            String query = "INSERT INTO employee_project(project_id, employee_id, started_date, relieved_date, status) values(?, ?, ? ,?, 'active')";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);                        
-            preparedStatement.setInt(1, employeeProject.getProjectId());
-            preparedStatement.setInt(2, employeeProject.getEmployeeId());
-            Date startedDate = Date.valueOf(employeeProject.getStartedDate());
-            preparedStatement.setDate(3, startedDate); 
-            Date relievedDate = Date.valueOf(employeeProject.getRelievedDate()); 
-            preparedStatement.setDate(4, relievedDate);
-            preparedStatement.execute();
-            String idQuery = "SELECT id FROM employee_project order by id DESC LIMIT 1";            
-            employeeProjectId = lastInsertedProjectId(idQuery);  
-        } catch (Exception error) {
-            error.printStackTrace();
-            throw new CustomException(error.getMessage());
-        }
-        return employeeProjectId;
+    public void assignEmployeesForProject(EmployeeProject employeeProject) throws CustomException {    
+
+        Session session = factory.openSession();  
+        Transaction t = session.beginTransaction();   
+        session.save(employeeProject);  
+        t.commit();  
+        System.out.println("successfully saved");    
+        factory.close();  
+        session.close();     
     }      
 
     public EmployeeProject retrieveEmployeeProjects(int employeeProjectId) throws CustomException {

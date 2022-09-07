@@ -3,6 +3,7 @@ package com.ideas2it.management.controller;
 import com.ideas2it.management.constant.Constants;
 import com.ideas2it.management.exception.CustomException;
 import com.ideas2it.management.dto.EmployeeDto;
+import com.ideas2it.management.dto.RoleDto;
 import com.ideas2it.management.service.EmployeeService;
 import com.ideas2it.management.utils.DateUtil;
 import com.ideas2it.management.utils.ValidationUtil;
@@ -47,7 +48,7 @@ public class EmployeeController {
 	        case 4:
 	            System.out.println("Thank you");
                     System.exit(0);
-	            break;
+	            break;                
    
             } 
         }
@@ -71,10 +72,9 @@ public class EmployeeController {
                 break;
             case 5:
                 modifyEmployee(userType);
-                break;
+                break; 
          }
     }
-
 
     public void trainer(String userType) {
 	System.out.println("1.Insert Details\n2.Display Trainer\n3.Update Trainer\n4.Delete Trainer\n5.Modify Trainer");
@@ -116,10 +116,10 @@ public class EmployeeController {
                 deleteEmployee(userType);
                 break;
             case 5:
-                displayAllEmployee(Constants.TRAINER);
+                displayEmployeeByRole(Constants.TRAINEE);
                 break;
             case 6:
-                displayAllEmployee(Constants.TRAINEE);
+                displayEmployeeByRole(Constants.TRAINER);
                 break;
             case 7:
                 modifyEmployee(userType);
@@ -128,7 +128,7 @@ public class EmployeeController {
                 projectController.manageProject();
                 break;
          }
-    }
+    }   
 
     private String getFirstName() {
 	String firstName = null;	
@@ -252,6 +252,7 @@ public class EmployeeController {
     }
 
     public void addAndUpdateEmployee(String userType,int option) {
+        
         EmployeeDto employeeDto = new EmployeeDto();
         int employeeId = 0;
         if (option == 1) {
@@ -298,6 +299,8 @@ public class EmployeeController {
         employeeDto.setCreatedDate(createdDate);
         Date modifiedDate = new Date();
         employeeDto.setModifiedDate(modifiedDate);
+        employeeDto.setStatus("active");
+
         if (option == 1) {
             try {
 	        employeeService.addEmployee(employeeDto, userType);
@@ -313,9 +316,19 @@ public class EmployeeController {
         } 
     }
   
-    public void displayAllEmployee(String userType) {
+    public void displayAllEmployee() {
         try {
-	    for (EmployeeDto employeeDto : employeeService.getAllEmployee(userType)) {
+	    for (EmployeeDto employeeDto : employeeService.getAllEmployee()) {
+	        System.out.println(employeeDto);	   
+	    }
+        } catch (CustomException error) {
+            System.out.println(error.getMessage());
+        }
+    }
+
+    public void displayEmployeeByRole(String userType) {
+        try {
+	    for (EmployeeDto employeeDto : employeeService.getEmployeeByRole(userType)) {
 	        System.out.println(employeeDto);	   
 	    }
         } catch (CustomException error) {
@@ -394,5 +407,5 @@ public class EmployeeController {
         } catch (CustomException e) {
             System.out.println(e);
         }
-    }
+    }  
 }

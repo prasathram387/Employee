@@ -9,18 +9,20 @@ public class EmployeeProjectDto {
     private int employeeId;
     private Date startedDate;
     private Date relievedDate;
+    private String status;
     
     public EmployeeProjectDto(){
 
     }
 
-    public EmployeeProjectDto(int id, int projectId, int employeeId, Date startedDate, Date relievedDate){
+    public EmployeeProjectDto(int id, int projectId, int employeeId, Date startedDate, Date relievedDate, String status){
 
         this.id = id;
         this.projectId = projectId;
         this.employeeId = employeeId;
         this.startedDate = startedDate;
         this.relievedDate = relievedDate;
+        this.status = status;
     }
 
     public int getId(){
@@ -43,6 +45,10 @@ public class EmployeeProjectDto {
         return relievedDate;
     } 
 
+    public String getStatus() {
+        return status;
+    } 
+
     public void setId(int id){
         this.id = id;
     }    
@@ -62,6 +68,10 @@ public class EmployeeProjectDto {
     public void setRelievedDate(Date relievedDate){
         this.relievedDate = relievedDate;
     } 
+
+    public void setStatus(String status) {
+	this.status = status;
+    }
 
     public String toString() {
         return "\n" +"Employee Project Details" +"\n"+"Employee Project Id  :" + getId()+ "\n" + "Project Id           :" + getProjectId() +"\n"+

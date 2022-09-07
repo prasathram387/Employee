@@ -4,6 +4,7 @@ import com.ideas2it.management.dto.EmployeeDto;
 import com.ideas2it.management.dao.EmployeeDao;
 import com.ideas2it.management.dao.RoleDao;
 import com.ideas2it.management.model.Employee;
+import com.ideas2it.management.model.Role;
 import com.ideas2it.management.mapper.EmployeeMapper;
 import com.ideas2it.management.exception.CustomException;
 
@@ -19,24 +20,32 @@ public class EmployeeService {
     private EmployeeDao employeeDao = new EmployeeDao();
     private RoleDao roleDao = new RoleDao();
 
-    public void addEmployee(EmployeeDto employeeDto, String roleName) throws CustomException {   
+    public void addEmployee(EmployeeDto employeeDto, String userType) throws CustomException {   
 	Employee employee = mapper.fromDto(employeeDto);
-	int employeeId = employeeDao.insertEmployee(employee);
-        int roleId = roleDao.reteriveRoleByName(roleName);
-        roleDao.insertEmployeeRole(employeeId, roleId);	
+        Role roles = roleDao.retrieveRoleByName(userType);
+        List<Role> role = new ArrayList<Role>();
+        role.add(roles);
+        employee.setRole(role);
+	int employeeId = employeeDao.insertEmployee(employee);	
     }
 
     public boolean findEmployeeId(int employeeId) throws CustomException {
         return employeeDao.searchEmployeeId(employeeId);
     }
 
-    public List<EmployeeDto> getAllEmployee(String userType) throws CustomException {   
+    public List<EmployeeDto> getAllEmployee() throws CustomException {   
         List<EmployeeDto> employeeDtos = new ArrayList<EmployeeDto>();
-        int roleId = roleDao.reteriveRoleByName(userType);
-        System.out.println(roleId);
-        for (Employee employee : employeeDao.retrieveAllEmployee(roleId)) {
-	    EmployeeDto employeeDto = mapper.toDto(employee);
-            employeeDtos.add(employeeDto);
+        for (Employee employee : roleDao.retrieveAllEmployee()) {
+            employeeDtos.add(mapper.toDto(employee));
+        }
+        return employeeDtos;	              
+    }  
+
+    public List<EmployeeDto> getEmployeeByRole(String roleName) throws CustomException { 
+        Role role = roleDao.retrieveRoleByName(roleName);
+        List<EmployeeDto> employeeDtos = new ArrayList<EmployeeDto>();
+        for (Employee employee : roleDao.retrieveEmployeeByRole(role.getId())) {
+            employeeDtos.add(mapper.toDto(employee));
         }
         return employeeDtos;	              
     }  

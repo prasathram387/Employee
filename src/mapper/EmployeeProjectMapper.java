@@ -14,8 +14,8 @@ public class EmployeeProjectMapper {
     public EmployeeProject fromDto(EmployeeProjectDto employeeProjectDto) {
          LocalDate startedDate = DateUtil.convertToLocalDate(employeeProjectDto.getStartedDate());
          LocalDate relievedDate = DateUtil.convertToLocalDate(employeeProjectDto.getRelievedDate());
-        EmployeeProject employeeProject = new EmployeeProject(employeeProjectDto.getId(), employeeProjectDto.getProjectId(), employeeProjectDto.getEmployeeId(),
-            startedDate, relievedDate);
+        EmployeeProject employeeProject = new EmployeeProject(employeeProjectDto.getId(), employeeProjectDto.getProjectId(), 
+            employeeProjectDto.getEmployeeId(), startedDate, relievedDate,employeeProjectDto.getStatus());
         return employeeProject;
     }
 
@@ -23,7 +23,7 @@ public class EmployeeProjectMapper {
         Date startedDate = DateUtil.convertToDate(employeeProject.getStartedDate());
         Date relievedDate = DateUtil.convertToDate(employeeProject.getRelievedDate());
         EmployeeProjectDto employeeProjectDto = new EmployeeProjectDto(employeeProject.getId(), employeeProject.getProjectId(), employeeProject.getEmployeeId(),
-            startedDate, relievedDate);
+            startedDate, relievedDate, employeeProject.getStatus());
         return employeeProjectDto;
     }
 }

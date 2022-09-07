@@ -1,6 +1,8 @@
 package com.ideas2it.management.dto;
 
 import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EmployeeDto {
  
@@ -17,13 +19,15 @@ public class EmployeeDto {
     private String designation;
     private Date createdDate;
     private Date modifiedDate;
+    private String status;
+    private List<RoleDto> roles = new ArrayList<RoleDto>();
 
     public EmployeeDto() {
 
     }
    
     public EmployeeDto(int id, String firstName, String lastName, String address, long mobileNo, Date dateOfBirth, String gender, String emailId,
-            int batch, Date dateOfJoining, String designation,  Date createdDate, Date modifiedDate) {
+            int batch, Date dateOfJoining, String designation,  Date createdDate, Date modifiedDate, String status, List<RoleDto> roles) {
         this.id = id;
 	this.firstName = firstName;
 	this.lastName = lastName;
@@ -37,6 +41,8 @@ public class EmployeeDto {
 	this.designation = designation;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
+        this.status = status;
+        this.roles = roles;
     }
 
     public int getId() {
@@ -91,6 +97,14 @@ public class EmployeeDto {
 	return modifiedDate;
     }
 
+    public String getStatus() {
+        return status;
+    } 
+
+    public List<RoleDto> getRoles() {
+        return roles;
+    }
+
     public void setId(int id) {
 	this.id = id;
     }
@@ -143,10 +157,19 @@ public class EmployeeDto {
 	this.modifiedDate = modifiedDate;
     }
 
+    public void setStatus(String status) {
+	this.status = status;
+    }
+
+    public void setRoles(List<RoleDto> roles) {
+        this.roles = roles;
+    } 
+
     public String toString() {
     return "\n" +"Employee Details" +"\n"+"Name            :" + getFirstName()+getLastName() + "\n" + "Email Id        :" + getEmailId() +"\n"+
 		      "Gender          :"+getGender()+"\n"+"Date of Birth   :"+getDateOfBirth()+"\n" + "MobileNo        :" + getMobileNo()+
 		      "\n"  + "Address         :" +getAddress()+"\n" +"EmailId         :"+ getEmailId()+"\n" +
-		      "\n" + "Batch           :"+getBatch()+"\n"+"Designation      :"+ getDesignation()+"\n"+"dateofjoining  :"+getDateOfJoining();
+		      "\n" + "Batch           :"+getBatch()+"\n"+"Designation     :"+ getDesignation()+"\n"+"dateofjoining   :"+getDateOfJoining()+
+                      "\n"+"Role            :"+getRoles();
     }
 }

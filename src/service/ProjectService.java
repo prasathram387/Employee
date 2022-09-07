@@ -23,7 +23,7 @@ public class ProjectService {
 
     public void addProject(ProjectDto projectDto) throws CustomException {   
 	Project project = mapper.fromDto(projectDto);
-	int projectId = projectDao.insertProject(project);	
+	projectDao.insertProject(project);	
     }
 
     public boolean findProjectId(int projectId) throws CustomException {
@@ -54,10 +54,9 @@ public class ProjectService {
         return employeeService.findEmployeeId(employeeId);
     }
      
-    public int assignEmployeesForProject(EmployeeProjectDto employeeProjectDto) throws CustomException{
+    public void assignEmployeesForProject(EmployeeProjectDto employeeProjectDto) throws CustomException{
 	EmployeeProject employeeProject = projectMapper.fromDto(employeeProjectDto);
-	int employeeProjectId = projectDao.assignEmployeesForProject(employeeProject);
-        return employeeProjectId;
+	projectDao.assignEmployeesForProject(employeeProject);
     }
 
     public EmployeeProjectDto getEmployeeProject(int employeeProjectId) throws CustomException {

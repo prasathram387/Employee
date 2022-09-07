@@ -217,8 +217,9 @@ public class ProjectController {
                     String date = scanner.next();
 	            Date relievedDate = DateUtil.validateDate(date);
                     employeeProjectDto.setRelievedDate(relievedDate);
+                    employeeProjectDto.setStatus("active");
                 }
-                int employeeProjectId = projectService.assignEmployeesForProject(employeeProjectDto);
+                projectService.assignEmployeesForProject(employeeProjectDto);
             }
         } catch (CustomException error) {
             System.out.println(error);
