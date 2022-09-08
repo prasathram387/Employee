@@ -80,7 +80,6 @@ public class EmployeeDao {
             transaction.commit();         
         } catch (Exception error) {
             error.printStackTrace();
-            System.out.println(error.getMessage());
             throw new CustomException(error.getMessage());
         } finally {
             if (session != null) {

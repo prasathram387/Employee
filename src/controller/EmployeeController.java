@@ -15,6 +15,8 @@ import java.util.List;
 import java.time.LocalDate; 
 import java.util.Map;
 import java.util.Scanner;
+import org.apache.log4j.Logger;
+import org.apache.log4j.BasicConfigurator;
 
 /**
  * It can be implemented for input and output operation of trainer,trainee and manager.
@@ -23,7 +25,7 @@ public class EmployeeController {
    
     private static Scanner scanner = new Scanner(System.in);
     private EmployeeService employeeService = new EmployeeService();
-    private ProjectController projectController = new ProjectController();	           
+    private static Logger logger = Logger.getLogger(EmployeeController.class);	           
 
     private static boolean isContinue = true;
     private static int index = 0;
@@ -31,9 +33,10 @@ public class EmployeeController {
     public static void main(String[] args) throws CustomException {
 
 	EmployeeController controller = new EmployeeController();
+	BasicConfigurator.configure();
 
         while (isContinue) {
-	    System.out.println("1.Trainee ,2.Trainer ,3.Manager, 4.exit");
+	    logger.info("1.Trainee ,2.Trainer ,3.Manager, 4.exit");
 	    int choice = scanner.nextInt();
 	    switch (choice) { 		
 	        case 1:
@@ -46,7 +49,7 @@ public class EmployeeController {
 	            controller.manager(Constants.MANAGER);
 	            break;
 	        case 4:
-	            System.out.println("Thank you");
+	            logger.info("Thank you");
                     System.exit(0);
 	            break;                
    
@@ -55,7 +58,7 @@ public class EmployeeController {
     }
 
     public void trainee(String userType) {
-	System.out.println("1.Insert Details\n2.Display Trainee\n3.Update Trainee\n4.Delete Trainee data\n5.Modify Trainee");
+	logger.info("1.Insert Details\n2.Display Trainee\n3.Update Trainee\n4.Delete Trainee data");
 	int option = scanner.nextInt();
 	switch (option) {				       
             case 1:
@@ -70,14 +73,11 @@ public class EmployeeController {
             case 4:
                 deleteEmployee(userType);
                 break;
-            case 5:
-                modifyEmployee(userType);
-                break; 
          }
     }
 
     public void trainer(String userType) {
-	System.out.println("1.Insert Details\n2.Display Trainer\n3.Update Trainer\n4.Delete Trainer\n5.Modify Trainer");
+	logger.info("1.Insert Details\n2.Display Trainer\n3.Update Trainer\n4.Delete Trainer");
 	int option = scanner.nextInt();
 	switch (option) {				       
             case 1:
@@ -91,16 +91,12 @@ public class EmployeeController {
                 break;
             case 4:
                 deleteEmployee(userType);
-                break;
-            case 5:
-                modifyEmployee(userType);
                 break;
          }
     }
 
     public void manager(String userType) {
-	System.out.println("1.Insert Details\n2.Display Manager\n3.Update Manager\n4.Delete Manager\n5.Display All Trainers\n6.Display All Trainees"
-            + "\n7.Modify Manager\n8.Manage Projects");
+	logger.info("1.Insert Details\n2.Display Manager\n3.Update Manager\n4.Delete Manager\n5.Display All Trainers\n6.Display All Trainees");
 	int option = scanner.nextInt();
 	switch (option) {				       
             case 1:
@@ -121,25 +117,19 @@ public class EmployeeController {
             case 6:
                 displayEmployeeByRole(Constants.TRAINER);
                 break;
-            case 7:
-                modifyEmployee(userType);
-                break;
-            case 8:
-                projectController.manageProject();
-                break;
          }
     }   
 
     private String getFirstName() {
 	String firstName = null;	
 	while (isContinue) {
-            System.out.println("Enter your First Name");
+            logger.info("Enter your First Name");
 	    firstName = scanner.next();
 	    boolean isCorrect = ValidationUtil.validateInput(firstName, ValidationUtil.NAME_PATTERN);
 	    if (isCorrect) {
 		break;
             } else {
-	        System.out.println("enter valid input");
+	        logger.info("enter valid input");
 	        isContinue = true;
 	    }
 	}
@@ -149,13 +139,13 @@ public class EmployeeController {
     private String getLastName() {
 	String lastName = null;	
 	while (isContinue) {
-            System.out.println("Enter your Last Name");
+            logger.info("Enter your Last Name");
 	    lastName = scanner.next();
 	    boolean isCorrect = ValidationUtil.validateInput(lastName, ValidationUtil.NAME_PATTERN);
 	    if (isCorrect) {
 		break;
             } else {
-	        System.out.println("enter valid input");
+	        logger.info("enter valid input");
 	        isContinue = true;
 	    }
 	}
@@ -165,13 +155,13 @@ public class EmployeeController {
     private long getMobileNo() {
 	String phoneNumber = null;
 	while (isContinue) {
-	    System.out.println("Enter your mobileNo");
+	    logger.info("Enter your mobileNo");
 	    phoneNumber = scanner.next();
 	    boolean isCorrect = ValidationUtil.validateInput(phoneNumber, ValidationUtil.PHONE_NO);
 	    if (isCorrect) {
 	        break;
             } else {
-	        System.out.println("enter valid input");
+	        logger.info("enter valid input");
 	        isContinue = true;
 	    }
 	}
@@ -182,13 +172,13 @@ public class EmployeeController {
     public String getGender() throws CustomException {
         String gender = null;
 	while (isContinue) {
-    	    System.out.println("Enter your gender");
+    	    logger.info("Enter your gender");
 	    gender = scanner.next();
 	    boolean isCorrect = ValidationUtil.validateGender(gender);
 	    if (isCorrect) {
 	        break;
             } else {
-	        System.out.println("enter valid input");
+	        logger.info("enter valid input");
 	        isContinue = true;
 	    }
 	}
@@ -196,14 +186,14 @@ public class EmployeeController {
     }
 
     private Date getDateOfBirth() throws CustomException {
-    	System.out.println("Enter your Date Of Birth in this format dd-mm-yyyy");
+    	logger.info("Enter your Date Of Birth in this format dd-mm-yyyy");
 	String birthDate = scanner.next();
 	Date dateOfBirth = DateUtil.validateDateOfBirth(birthDate);
 	return dateOfBirth;  
     }
 
     private Date getDateOfJoining() throws CustomException{
-    	System.out.println("Enter your Date Of joining in this format dd-mm-yyyy");
+    	logger.info("Enter your Date Of joining in this format dd-mm-yyyy");
 	String join_date = scanner.next();
 	Date dateOfJoining = DateUtil.validateDate(join_date);
 	return dateOfJoining;  
@@ -222,13 +212,13 @@ public class EmployeeController {
     private String getDesignation() {
 	String designation = null;
 	while (isContinue) {
-    	    System.out.println("Enter your designation");
+    	    logger.info("Enter your designation");
 	    designation = scanner.next();
 	    boolean isCorrect = ValidationUtil.validateInput(designation, ValidationUtil.DESIGNATION_REGEX);
 	    if (isCorrect ) {
 	        break;
             } else {
-	        System.out.println("enter valid input");
+	        logger.info("enter valid input");
 	        isContinue = true;
 	    }
 	}
@@ -238,13 +228,13 @@ public class EmployeeController {
     private String getEmailId() {
 	String emailId = null;
 	while (isContinue) {
-    	    System.out.println("Enter your emailId");
+    	    logger.info("Enter your emailId");
 	    emailId = scanner.next();
 	    boolean isCorrect = ValidationUtil.validateInput(emailId, ValidationUtil.MAILID_REGEX);
 	    if (isCorrect) {
 	        break;
             } else {
-	        System.out.println("enter valid input");
+	        logger.info("enter valid input");
 	        isContinue = true;
 	    }
 	}
@@ -259,13 +249,13 @@ public class EmployeeController {
             employeeId = 0;
             employeeDto.setId(employeeId);
         } else if (option == 3) {
-            System.out.println("Enter your employee id");
+            logger.info("Enter your employee id");
             employeeId = scanner.nextInt();
             employeeDto.setId(employeeId);
         }
 	employeeDto.setFirstName(getFirstName());
 	employeeDto.setLastName(getLastName());
-	System.out.println("Enter your address");
+	logger.info("Enter your address");
 	String address = scanner.next();
         employeeDto.setAddress(address);
 	employeeDto.setMobileNo(getMobileNo());
@@ -273,14 +263,14 @@ public class EmployeeController {
 	try {
 	    dateOfBirth = getDateOfBirth();
 	} catch (CustomException e) {
-            System.out.println(e);
+            logger.info(e);
         }
         employeeDto.setDateOfBirth(dateOfBirth);
         String gender = null;
         try {
 	    gender = getGender();
         } catch (CustomException e) {
-            System.out.println(e);
+            logger.info(e);
         }
         employeeDto.setGender(gender);
 	employeeDto.setEmailId(getEmailId());
@@ -288,11 +278,11 @@ public class EmployeeController {
 	try {
 	    dateOfJoining = getDateOfJoining();
 	} catch (CustomException e) {
-            System.out.println(e);
+            logger.info(e);
         }
         employeeDto.setDateOfJoining(dateOfJoining);
 	employeeDto.setDesignation(getDesignation());
-	System.out.println("Enter the batch");
+	logger.info("Enter the batch");
 	int batch = scanner.nextInt();	    
         employeeDto.setBatch(batch);
         Date createdDate = new Date();
@@ -305,13 +295,13 @@ public class EmployeeController {
             try {
 	        employeeService.addEmployee(employeeDto, userType);
             } catch (CustomException e) {
-                System.out.println(e);
+                logger.info(e);
             }
         } else if (option == 3) {
             try {
-	        employeeService.updateEmployee(employeeDto, employeeId);
+	        employeeService.updateEmployee(employeeDto);
             } catch (CustomException e) {
-                System.out.println(e);
+                logger.info(e);
             }
         } 
     }
@@ -319,93 +309,41 @@ public class EmployeeController {
     public void displayAllEmployee() {
         try {
 	    for (EmployeeDto employeeDto : employeeService.getAllEmployee()) {
-	        System.out.println(employeeDto);	   
+	        logger.info(employeeDto);	   
 	    }
         } catch (CustomException error) {
-            System.out.println(error.getMessage());
+            logger.info(error.getMessage());
         }
     }
 
     public void displayEmployeeByRole(String userType) {
         try {
 	    for (EmployeeDto employeeDto : employeeService.getEmployeeByRole(userType)) {
-	        System.out.println(employeeDto);	   
+	        logger.info(employeeDto);	   
 	    }
         } catch (CustomException error) {
-            System.out.println(error.getMessage());
+            logger.info(error.getMessage());
         }
     }
 
     public void displayEmployee() {
-        System.out.println("Enter the Employee Id");
+        logger.info("Enter the Employee Id");
         int employeeId = scanner.nextInt(); 
         try {
-            EmployeeDto employeeDto = employeeService.getEmployee(employeeId);
-	    System.out.println(employeeDto);	   
+            EmployeeDto employeeDto = employeeService.getEmployeeById(employeeId);
+	    logger.info(employeeDto);	   
         } catch (CustomException error) {
-            System.out.println(error.getMessage());
+            logger.info(error.getMessage());
         }
     }
 
-    public void modifyEmployee(String userType) {
-        System.out.println("Enter your Employee Id");
+   public void deleteEmployee(String userType) {
+        logger.info("Enter your EmployeeId");
         int employeeId = scanner.nextInt();
         try {
-            boolean isAvailable = employeeService.findEmployeeId(employeeId);
-            if (isAvailable) {
-	        System.out.println("1.First name 2.Last Name 3.address 4.Gender 5.Email Id 6.Designation");
-	        int option = scanner.nextInt();
-	        switch (option) {				       
-                    case 1:
-		        String firstName = getFirstName();
-                        employeeService.modifyEmployee("first_name", firstName, employeeId);
-                        break;
-                    case 2:
-		        String lastName = getLastName();
-                        employeeService.modifyEmployee("last_name", lastName, employeeId);
-                        break;
-                    case 3:
-                        System.out.println("Enter your address");
-		        String address = scanner.next();
-                        employeeService.modifyEmployee("address", address , employeeId);
-                        break;
-                    case 4:
-	                String gender = getGender();
-                        employeeService.modifyEmployee("gender", gender, employeeId);
-                        break;
-                    case 5:
-                        String emailId = getEmailId();
-                        employeeService.modifyEmployee("email_id", emailId, employeeId);
-                        break;
-                    case 6:
-                        String designation = getDesignation();
-                        employeeService.modifyEmployee("designation", designation, employeeId);
-                        break;
-                }
-
-            } else {
-            System.out.println("Id Not Found"); 
-            }
-        } catch (CustomException error) {
-            System.out.println(error.getMessage());
-        }
-    }
-
-    public void deleteEmployee(String userType) {
-        System.out.println("Enter your EmployeeId");
-        int employeeId = scanner.nextInt();
-        try {
-            boolean isAvailable = employeeService.findEmployeeId(employeeId);
-            if (isAvailable) {
-                boolean isDeleted = employeeService.deleteEmployeeById(employeeId);
-                if (isDeleted) {
-                    System.out.println("employee deleted successfully");
-                }
-            } else {
-                System.out.println("Your Id is not found");
-            }
+            employeeService.deleteEmployee(employeeId);
         } catch (CustomException e) {
-            System.out.println(e);
+            logger.info(e);
         }
     }  
 }

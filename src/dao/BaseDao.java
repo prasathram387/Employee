@@ -1,22 +1,24 @@
 package com.ideas2it.management.dao;
 
-import com.ideas2it.management.constant.Constants;
 import com.ideas2it.management.exception.CustomException;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import org.hibernate.cfg.Configuration;      
+import org.hibernate.SessionFactory;
 
 public class BaseDao {
 
-    protected static Connection connection = null;
+    protected static SessionFactory factory; 
 
-    public Connection databaseConnection(){
-	try {   
-            connection = DriverManager.getConnection(Constants.URL, Constants.SQL_USER_NAME, Constants.SQL_PASSWORD); 
-	} catch (Exception e) {
-            System.out.println(e.getMessage());
+    private BaseDao() {
+  
+    }
+
+    public static SessionFactory getInstance() {
+
+        if (factory == null) {
+            factory = new Configuration().configure().buildSessionFactory();
         }
-        return connection;
-    }    
+        return factory;
+    }
 }
+        

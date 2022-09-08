@@ -29,13 +29,9 @@ public class EmployeeService {
 	int employeeId = employeeDao.insertEmployee(employee);	
     }
 
-    public boolean findEmployeeId(int employeeId) throws CustomException {
-        return employeeDao.searchEmployeeId(employeeId);
-    }
-
     public List<EmployeeDto> getAllEmployee() throws CustomException {   
         List<EmployeeDto> employeeDtos = new ArrayList<EmployeeDto>();
-        for (Employee employee : roleDao.retrieveAllEmployee()) {
+        for (Employee employee : employeeDao.retrieveAllEmployees()) {
             employeeDtos.add(mapper.toDto(employee));
         }
         return employeeDtos;	              
@@ -44,30 +40,28 @@ public class EmployeeService {
     public List<EmployeeDto> getEmployeeByRole(String roleName) throws CustomException { 
         Role role = roleDao.retrieveRoleByName(roleName);
         List<EmployeeDto> employeeDtos = new ArrayList<EmployeeDto>();
-        for (Employee employee : roleDao.retrieveEmployeeByRole(role.getId())) {
+        for (Employee employee : role.getEmployee()) {
             employeeDtos.add(mapper.toDto(employee));
         }
         return employeeDtos;	              
     }  
 
-    public EmployeeDto getEmployee(int employeeId) throws CustomException {
-        Employee employee = employeeDao.retrieveEmployee(employeeId);
+    public EmployeeDto getEmployeeById(int employeeId) throws CustomException {
+        Employee employee = employeeDao.retrieveEmployeeById(employeeId);
 	EmployeeDto employeeDto = mapper.toDto(employee);
         return employeeDto;
     }
 
-    public boolean updateEmployee(EmployeeDto employeeDto, int employeeId) throws CustomException {   
+    public boolean updateEmployee(EmployeeDto employeeDto) throws CustomException {
 	Employee employee = mapper.fromDto(employeeDto);
-	return employeeDao.updateEmployee(employee, employeeId);	
+        employeeDao.updateEmployee(employee);
+        return true;
     }
 
-    public boolean modifyEmployee(String fieldName, String updatedData, int employeeId) throws CustomException{
-        return employeeDao.modifyEmployee(fieldName, updatedData, employeeId);
-    }
-
-    public boolean deleteEmployeeById(int employeeId) throws CustomException{
-        boolean isDeleted = employeeDao.deleteEmployee(employeeId);
-        return isDeleted;
-    }
+    public void deleteEmployee(int employeeId) throws CustomException {
+        Employee employee = employeeDao.retrieveEmployeeById(employeeId);
+        employee.setStatus("inactive");
+        employeeDao.deleteEmployee(employee);
+    } 
 
 }

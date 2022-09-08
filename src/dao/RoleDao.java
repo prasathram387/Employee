@@ -14,50 +14,26 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.Session;    
 import org.hibernate.SessionFactory;    
 import org.hibernate.Transaction;    
-import org.hibernate.boot.registry.StandardServiceRegistry;  
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;  
 
-public class RoleDao {  
-
-    static SessionFactory factory = new Configuration().configure().buildSessionFactory(); 
+public class RoleDao {    
 
     public Role retrieveRoleByName(String roleName) throws CustomException {
+        Session session = null;
 	try {
-            Session session = factory.openSession(); 
+            session = BaseDao.getInstance().openSession(); 
             session.beginTransaction();       
             Criteria criteria = session.createCriteria(Role.class);
             criteria.add(Restrictions.eq("name", roleName));
-            Role role = (Role) criteria.uniqueResult();
-            return role;
+            List<Role> role = criteria.list();
+            return role.get(0);
         } catch (Exception error) {
             error.printStackTrace();
             throw new CustomException(error.getMessage());
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
-
-    public List<Employee> retrieveAllEmployee() {
-        Session session = factory.openSession();
-        return session.createQuery("select employees from Role").list();
-    }    
-
-    public Role retrieveRoleIdByName(String roleName) throws CustomException {
-	try {
-            Session session = factory.openSession(); 
-            session.beginTransaction();       
-            Criteria criteria = session.createCriteria(Role.class);
-            criteria.add(Restrictions.eq("name", roleName));
-            Role role = (Role) criteria.uniqueResult();
-            return role;
-        } catch (Exception error) {
-            error.printStackTrace();
-            throw new CustomException(error.getMessage());
-        }
-    }
-
-    public List<Employee> retrieveEmployeeByRole(int roleId) {
-        Session session = factory.openSession();
-        return session.createQuery("select employees from Role where id = "+roleId).list();
-    } 
-
 }            
 

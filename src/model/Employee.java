@@ -46,7 +46,7 @@ public class Employee {
     @Column(name = "status")
     private String status;
 
-    @ManyToMany()
+    @ManyToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
     @JoinTable(
         name = "employee_role", 
         joinColumns = { @JoinColumn(name = "employee_id") }, 

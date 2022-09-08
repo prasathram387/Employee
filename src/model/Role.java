@@ -21,7 +21,7 @@ public class Role {
     int id;
     @Column(name = "name")
     String name;
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles",cascade = CascadeType.ALL, fetch=FetchType.EAGER)
     private List<Employee> employees = new ArrayList<Employee>();
 
     public Role() {

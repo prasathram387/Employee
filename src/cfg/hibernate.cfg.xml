@@ -28,7 +28,6 @@
       <property name="format_sql">true</property>
     
       <mapping class = "com.ideas2it.management.model.Employee"/>
-      <mapping class = "com.ideas2it.management.model.Project"/>
       <mapping class = "com.ideas2it.management.model.Role"/>
    </session-factory>
 </hibernate-configuration>
