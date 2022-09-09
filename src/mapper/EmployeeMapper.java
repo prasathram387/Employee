@@ -1,15 +1,15 @@
-package com.ideas2it.management.mapper;
+package com.ideas2it.mapper;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
-import java.time.LocalDate;
 import java.util.List;
 
-import com.ideas2it.management.dto.EmployeeDto;
-import com.ideas2it.management.model.Employee;
-import com.ideas2it.management.dto.RoleDto;
-import com.ideas2it.management.model.Role;
-import com.ideas2it.management.utils.DateUtil;
+import com.ideas2it.dto.EmployeeDto;
+import com.ideas2it.dto.RoleDto;
+import com.ideas2it.model.Employee;
+import com.ideas2it.model.Role;
+import com.ideas2it.utils.DateUtil;
 
 public class EmployeeMapper {
 
@@ -35,7 +35,7 @@ public class EmployeeMapper {
         }
         Employee employee = new Employee(employeeDto.getId(), employeeDto.getFirstName(), employeeDto.getLastName(), employeeDto.getAddress(), 
             employeeDto.getMobileNo(), dateOfBirth, employeeDto.getGender(), employeeDto.getEmailId(), employeeDto.getBatch(),
-	    dateOfJoining, employeeDto.getDesignation(), createdDate, modifiedDate, employeeDto.getStatus(), roles);
+	    dateOfJoining, employeeDto.getDesignation(), createdDate, modifiedDate, employeeDto.getStatus(), roles, employeeDto.getEmployeeProject());
 	    return employee; 
     }
 
@@ -50,7 +50,7 @@ public class EmployeeMapper {
         }
         EmployeeDto employeeDto = new EmployeeDto(employee.getId(), employee.getFirstName(), employee.getLastName(), employee.getAddress(), 
             employee.getMobileNo(), dateOfBirth, employee.getGender(), employee.getEmailId(), employee.getBatch(),
-	    dateOfJoining, employee.getDesignation(), createdDate, modifiedDate, employee.getStatus(), roles);
+	    dateOfJoining, employee.getDesignation(), createdDate, modifiedDate, employee.getStatus(), roles, employee.getEmployeeProject());
 	return employeeDto;
     }
 }

@@ -29,5 +29,7 @@
     
       <mapping class = "com.ideas2it.management.model.Employee"/>
       <mapping class = "com.ideas2it.management.model.Role"/>
+      <mapping class = "com.ideas2it.management.model.Project"/>
+      <mapping class = "com.ideas2it.management.model.EmployeeProject"/>
    </session-factory>
 </hibernate-configuration>

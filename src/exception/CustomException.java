@@ -1,8 +1,9 @@
-package com.ideas2it.management.exception;
+package com.ideas2it.exception;
 
 import java.lang.RuntimeException; 
 
 public class CustomException extends Exception {
+
     public CustomException() {
 	super();
     }

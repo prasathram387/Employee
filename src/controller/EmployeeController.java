@@ -1,20 +1,21 @@
-package com.ideas2it.management.controller;
+package com.ideas2it.controller;
 
-import com.ideas2it.management.constant.Constants;
-import com.ideas2it.management.exception.CustomException;
-import com.ideas2it.management.dto.EmployeeDto;
-import com.ideas2it.management.dto.RoleDto;
-import com.ideas2it.management.service.EmployeeService;
-import com.ideas2it.management.utils.DateUtil;
-import com.ideas2it.management.utils.ValidationUtil;
+import com.ideas2it.constant.Constants;
+import com.ideas2it.dto.EmployeeDto;
+import com.ideas2it.dto.RoleDto;
+import com.ideas2it.exception.CustomException;
+import com.ideas2it.service.EmployeeService;
+import com.ideas2it.utils.DateUtil;
+import com.ideas2it.utils.ValidationUtil;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;  
 import java.util.InputMismatchException;
-import java.util.List;
-import java.time.LocalDate; 
+import java.util.List; 
 import java.util.Map;
 import java.util.Scanner;
+
 import org.apache.log4j.Logger;
 import org.apache.log4j.BasicConfigurator;
 
@@ -25,6 +26,7 @@ public class EmployeeController {
    
     private static Scanner scanner = new Scanner(System.in);
     private EmployeeService employeeService = new EmployeeService();
+    private ProjectController projectController = new ProjectController();
     private static Logger logger = Logger.getLogger(EmployeeController.class);	           
 
     private static boolean isContinue = true;
@@ -96,7 +98,8 @@ public class EmployeeController {
     }
 
     public void manager(String userType) {
-	logger.info("1.Insert Details\n2.Display Manager\n3.Update Manager\n4.Delete Manager\n5.Display All Trainers\n6.Display All Trainees");
+	logger.info("1.Insert Details\n2.Display Manager\n3.Update Manager\n4.Delete Manager\n5.Display All Trainers\n6.Display All Trainees"
+            + "\n7.Manage Projects");
 	int option = scanner.nextInt();
 	switch (option) {				       
             case 1:
@@ -116,6 +119,9 @@ public class EmployeeController {
                 break;
             case 6:
                 displayEmployeeByRole(Constants.TRAINER);
+                break;
+            case 7:
+                projectController.manageProject();
                 break;
          }
     }   
@@ -293,13 +299,13 @@ public class EmployeeController {
 
         if (option == 1) {
             try {
-	        employeeService.addEmployee(employeeDto, userType);
+	        logger.info(employeeService.addEmployee(employeeDto, userType));
             } catch (CustomException e) {
                 logger.info(e);
             }
         } else if (option == 3) {
             try {
-	        employeeService.updateEmployee(employeeDto);
+	        logger.info(employeeService.updateEmployee(employeeDto));
             } catch (CustomException e) {
                 logger.info(e);
             }
@@ -337,13 +343,13 @@ public class EmployeeController {
         }
     }
 
-   public void deleteEmployee(String userType) {
+    public void deleteEmployee(String userType) {
         logger.info("Enter your EmployeeId");
         int employeeId = scanner.nextInt();
         try {
-            employeeService.deleteEmployee(employeeId);
+           logger.info(employeeService.deleteEmployee(employeeId));
         } catch (CustomException e) {
             logger.info(e);
         }
-    }  
+    } 
 }

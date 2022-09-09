@@ -1,4 +1,4 @@
-package com.ideas2it.management.dto;
+package com.ideas2it.dto;
 
 import java.util.List;
 import java.util.ArrayList;

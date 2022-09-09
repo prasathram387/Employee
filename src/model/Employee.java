@@ -1,9 +1,9 @@
-package com.ideas2it.management.model;
+package com.ideas2it.model;
 
 import java.time.LocalDate;
-
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;  
@@ -53,13 +53,17 @@ public class Employee {
         inverseJoinColumns = { @JoinColumn(name = "role_id") }
     )
     private List<Role> roles = new ArrayList<Role>();
+
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
+    private List<EmployeeProject> employeeProjects = new ArrayList<EmployeeProject>();
   
     public Employee() {
     
     }
  
     public Employee(int id, String firstName, String lastName, String address, long mobileNo, LocalDate dateOfBirth, String gender, String emailId,
-            int batch, LocalDate dateOfJoining, String designation, LocalDate createdDate, LocalDate modifiedDate, String status, List<Role> roles) {
+            int batch, LocalDate dateOfJoining, String designation, LocalDate createdDate, LocalDate modifiedDate, String status, List<Role> roles,
+            List<EmployeeProject> employeeProjects) {
         this.id = id;
 	this.firstName = firstName;
 	this.lastName = lastName;
@@ -75,6 +79,7 @@ public class Employee {
         this.modifiedDate = modifiedDate;
         this.status = status;
         this.roles = roles;
+        this.employeeProjects = employeeProjects; 	
     }
 
     public int getId() {
@@ -137,6 +142,10 @@ public class Employee {
         return roles;
     }
 
+    public List<EmployeeProject> getEmployeeProject() {
+        return employeeProjects;
+    }
+
     public void setId(int id) {
 	this.id = id;
     }
@@ -195,6 +204,10 @@ public class Employee {
 
     public void setRole(List<Role> roles) {
         this.roles = roles;
+    } 
+
+    public void setEmployeeProject(List<EmployeeProject> employeeprojects) {
+        this.employeeProjects = employeeProjects;
     } 
 
 }

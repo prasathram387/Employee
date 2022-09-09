@@ -1,18 +1,18 @@
-package com.ideas2it.management.service;
+package com.ideas2it.service;
 
-import com.ideas2it.management.dto.EmployeeDto;
-import com.ideas2it.management.dao.EmployeeDao;
-import com.ideas2it.management.dao.RoleDao;
-import com.ideas2it.management.model.Employee;
-import com.ideas2it.management.model.Role;
-import com.ideas2it.management.mapper.EmployeeMapper;
-import com.ideas2it.management.exception.CustomException;
+import com.ideas2it.dao.EmployeeDao;
+import com.ideas2it.dao.RoleDao;
+import com.ideas2it.dto.EmployeeDto;
+import com.ideas2it.exception.CustomException;
+import com.ideas2it.mapper.EmployeeMapper;
+import com.ideas2it.model.Employee;
+import com.ideas2it.model.Role;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.text.Format;
 import java.util.List;
-import java.text.SimpleDateFormat;
 
 public class EmployeeService {	
 
@@ -20,13 +20,14 @@ public class EmployeeService {
     private EmployeeDao employeeDao = new EmployeeDao();
     private RoleDao roleDao = new RoleDao();
 
-    public void addEmployee(EmployeeDto employeeDto, String userType) throws CustomException {   
+    public String addEmployee(EmployeeDto employeeDto, String userType) throws CustomException {   
 	Employee employee = mapper.fromDto(employeeDto);
         Role roles = roleDao.retrieveRoleByName(userType);
         List<Role> role = new ArrayList<Role>();
         role.add(roles);
         employee.setRole(role);
 	int employeeId = employeeDao.insertEmployee(employee);	
+        return "ADDED SUCCESSFULLY";
     }
 
     public List<EmployeeDto> getAllEmployee() throws CustomException {   
@@ -48,20 +49,24 @@ public class EmployeeService {
 
     public EmployeeDto getEmployeeById(int employeeId) throws CustomException {
         Employee employee = employeeDao.retrieveEmployeeById(employeeId);
-	EmployeeDto employeeDto = mapper.toDto(employee);
-        return employeeDto;
+        if (employee != null) {
+	    return mapper.toDto(employee);
+        }
+        return null;
     }
 
-    public boolean updateEmployee(EmployeeDto employeeDto) throws CustomException {
+    public String updateEmployee(EmployeeDto employeeDto) throws CustomException {
 	Employee employee = mapper.fromDto(employeeDto);
         employeeDao.updateEmployee(employee);
-        return true;
+        return "UPDATED SUCCESSFULLY";
     }
 
-    public void deleteEmployee(int employeeId) throws CustomException {
+    public String deleteEmployee(int employeeId) throws CustomException {
+        List<Role> roles = new ArrayList<>(); 
         Employee employee = employeeDao.retrieveEmployeeById(employeeId);
+        employee.setRole(roles);
         employee.setStatus("inactive");
         employeeDao.deleteEmployee(employee);
+        return "DELETED SUCCESSFULLY";
     } 
-
 }

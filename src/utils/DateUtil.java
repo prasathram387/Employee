@@ -1,16 +1,16 @@
-package com.ideas2it.management.utils;
+package com.ideas2it.utils;
 
-import com.ideas2it.management.exception.CustomException;
+import com.ideas2it.exception.CustomException;
 
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.text.ParseException;
 import java.time.Period;
-import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Date;
 
 public class DateUtil {
 

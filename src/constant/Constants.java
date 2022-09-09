@@ -1,4 +1,4 @@
-package com.ideas2it.management.constant;
+package com.ideas2it.constant;
 
 public class Constants {
 

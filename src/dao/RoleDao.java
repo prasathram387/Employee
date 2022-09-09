@@ -1,9 +1,8 @@
-package com.ideas2it.management.dao;  
+package com.ideas2it.dao;  
 
-
-import com.ideas2it.management.model.Employee;
-import com.ideas2it.management.model.Role;
-import com.ideas2it.management.exception.CustomException;
+import com.ideas2it.exception.CustomException;
+import com.ideas2it.model.Employee;
+import com.ideas2it.model.Role;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,14 +1,16 @@
-package com.ideas2it.management.model;
+package com.ideas2it.model;
 
 import java.util.List;
 import java.util.ArrayList;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity

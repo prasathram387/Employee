@@ -1,6 +1,6 @@
-package com.ideas2it.management.dao;
+package com.ideas2it.dao;
 
-import com.ideas2it.management.exception.CustomException;
+import com.ideas2it.exception.CustomException;
 
 import org.hibernate.cfg.Configuration;      
 import org.hibernate.SessionFactory;

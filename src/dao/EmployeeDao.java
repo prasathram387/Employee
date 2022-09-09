@@ -1,14 +1,15 @@
-package com.ideas2it.management.dao;  
+package com.ideas2it.dao;  
 
-import com.ideas2it.management.model.Employee;
-import com.ideas2it.management.model.Role;
-import com.ideas2it.management.exception.CustomException;
+import com.ideas2it.model.Employee;
+import com.ideas2it.model.Role;
+import com.ideas2it.exception.CustomException;
 
 import java.util.List;
 import java.util.ArrayList;
+
+import org.hibernate.cfg.Configuration;  
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.cfg.Configuration;  
 import org.hibernate.Session;    
 import org.hibernate.SessionFactory;    
 import org.hibernate.Transaction;      

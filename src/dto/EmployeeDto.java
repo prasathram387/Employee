@@ -1,7 +1,9 @@
-package com.ideas2it.management.dto;
+package com.ideas2it.dto;
 
-import java.util.Date;
+import com.ideas2it.model.EmployeeProject;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class EmployeeDto {
@@ -21,13 +23,15 @@ public class EmployeeDto {
     private Date modifiedDate;
     private String status;
     private List<RoleDto> roles = new ArrayList<RoleDto>();
+    private List<EmployeeProject> employeeProject = new ArrayList<EmployeeProject>();
 
     public EmployeeDto() {
 
     }
    
     public EmployeeDto(int id, String firstName, String lastName, String address, long mobileNo, Date dateOfBirth, String gender, String emailId,
-            int batch, Date dateOfJoining, String designation,  Date createdDate, Date modifiedDate, String status, List<RoleDto> roles) {
+            int batch, Date dateOfJoining, String designation,  Date createdDate, Date modifiedDate, String status, List<RoleDto> roles,
+            List<EmployeeProject> employeeProject) {
         this.id = id;
 	this.firstName = firstName;
 	this.lastName = lastName;
@@ -43,6 +47,7 @@ public class EmployeeDto {
         this.modifiedDate = modifiedDate;
         this.status = status;
         this.roles = roles;
+        this.employeeProject = employeeProject;  
     }
 
     public int getId() {
@@ -105,6 +110,10 @@ public class EmployeeDto {
         return roles;
     }
 
+    public List<EmployeeProject> getEmployeeProject() {
+	return employeeProject;
+    }
+
     public void setId(int id) {
 	this.id = id;
     }
@@ -164,6 +173,10 @@ public class EmployeeDto {
     public void setRoles(List<RoleDto> roles) {
         this.roles = roles;
     } 
+
+    public void setEmployeeProject(List<EmployeeProject> employeeProject) {
+	this.employeeProject = employeeProject;
+    }
 
     public String toString() {
     return "\n" +"Employee Details" +"\n"+"Name            :" + getFirstName()+getLastName() + "\n" + "Email Id        :" + getEmailId() +"\n"+
