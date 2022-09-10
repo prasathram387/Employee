@@ -27,9 +27,9 @@
       <property name="show_sql">true</property>
       <property name="format_sql">true</property>
     
-      <mapping class = "com.ideas2it.management.model.Employee"/>
-      <mapping class = "com.ideas2it.management.model.Role"/>
-      <mapping class = "com.ideas2it.management.model.Project"/>
-      <mapping class = "com.ideas2it.management.model.EmployeeProject"/>
+      <mapping class = "com.ideas2it.model.Employee"/>
+      <mapping class = "com.ideas2it.model.Role"/>
+      <mapping class = "com.ideas2it.model.Project"/>
+      <mapping class = "com.ideas2it.model.EmployeeProject"/>
    </session-factory>
 </hibernate-configuration>

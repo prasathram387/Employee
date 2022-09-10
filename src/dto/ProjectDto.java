@@ -1,8 +1,8 @@
 package com.ideas2it.dto;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 import com.ideas2it.model.EmployeeProject;
 
@@ -14,14 +14,13 @@ public class ProjectDto {
     private Date startedDate;
     private Date deadline;
     private String status;
-    private List<EmployeeProject> employeeProjects = new ArrayList<EmployeeProject>();
-   
+    private Set<EmployeeProject> employeeProjects = new HashSet<EmployeeProject>(); 
     public ProjectDto() {
     
     }    
 
     public ProjectDto(int id, String name, String clientName, String companyName, Date startedDate, Date deadline, String status,
-                      List<EmployeeProject> employeeProjects) {
+                      Set<EmployeeProject> employeeProjects) {
 
         this.id = id;
         this.name = name;
@@ -61,7 +60,7 @@ public class ProjectDto {
 	return status;
     }
 
-    public List<EmployeeProject> getEmployeeProject() {
+    public Set<EmployeeProject> getEmployeeProject() {
 	return employeeProjects;
     }
 
@@ -93,7 +92,7 @@ public class ProjectDto {
 	this.status = status;
     }
 
-    public void setEmployeeProjectDto(List<EmployeeProject> employeeProjects) {
+    public void setEmployeeProjectDto(Set<EmployeeProject> employeeProjects) {
 	this.employeeProjects = employeeProjects;
     }
 

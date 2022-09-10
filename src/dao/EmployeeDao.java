@@ -5,7 +5,8 @@ import com.ideas2it.model.Role;
 import com.ideas2it.exception.CustomException;
 
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 
 import org.hibernate.cfg.Configuration;  
 import org.hibernate.Criteria;
@@ -54,13 +55,15 @@ public class EmployeeDao {
         }
     }
 
-    public List<Employee> retrieveAllEmployees() throws CustomException {
+    public Set<Employee> retrieveAllEmployees() throws CustomException {
+        
         Session session = null;
        try {
             SessionFactory factory = BaseDao.getInstance();
             session = factory.openSession();  
-            return session.createQuery("from Employee where status = :status").
+            List<Employee> employee = session.createQuery("from Employee where status = :status").
                 setParameter("status", "active").list(); 
+            return new HashSet<Employee>(employee);
         } catch (Exception error) {
             error.printStackTrace();
             throw new CustomException(error.getMessage());

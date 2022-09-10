@@ -1,9 +1,9 @@
 package com.ideas2it.mapper;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 import com.ideas2it.dto.EmployeeDto;
 import com.ideas2it.dto.RoleDto;
@@ -29,7 +29,7 @@ public class EmployeeMapper {
         LocalDate createdDate = DateUtil.convertToLocalDate(employeeDto.getCreatedDate());
         LocalDate modifiedDate = DateUtil.convertToLocalDate(employeeDto.getModifiedDate());
 
-        List<Role> roles = new ArrayList<Role>();
+        Set<Role> roles = new HashSet<Role>();
         for (RoleDto role : employeeDto.getRoles()) {
             roles.add(fromRoleDto(role));
         }
@@ -44,7 +44,7 @@ public class EmployeeMapper {
         Date dateOfJoining = DateUtil.convertToDate(employee.getDateOfJoining());
         Date createdDate = DateUtil.convertToDate(employee.getCreatedDate());
         Date modifiedDate = DateUtil.convertToDate(employee.getModifiedDate());
-        List<RoleDto> roles = new ArrayList<RoleDto>();
+        Set<RoleDto> roles = new HashSet<RoleDto>();
         for (Role role : employee.getRole()) {
             roles.add(toRoleDto(role));
         }

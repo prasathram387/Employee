@@ -1,9 +1,10 @@
 package com.ideas2it.model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
+import org.hibernate.annotations.IndexColumn;
 import javax.persistence.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;  
@@ -52,18 +53,18 @@ public class Employee {
         joinColumns = { @JoinColumn(name = "employee_id") }, 
         inverseJoinColumns = { @JoinColumn(name = "role_id") }
     )
-    private List<Role> roles = new ArrayList<Role>();
+    private Set<Role> roles = new HashSet<Role>();
 
-    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
-    private List<EmployeeProject> employeeProjects = new ArrayList<EmployeeProject>();
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<EmployeeProject> employeeProjects = new HashSet<EmployeeProject>();
   
     public Employee() {
     
     }
  
     public Employee(int id, String firstName, String lastName, String address, long mobileNo, LocalDate dateOfBirth, String gender, String emailId,
-            int batch, LocalDate dateOfJoining, String designation, LocalDate createdDate, LocalDate modifiedDate, String status, List<Role> roles,
-            List<EmployeeProject> employeeProjects) {
+            int batch, LocalDate dateOfJoining, String designation, LocalDate createdDate, LocalDate modifiedDate, String status, Set<Role> roles,
+            Set<EmployeeProject> employeeProjects) {
         this.id = id;
 	this.firstName = firstName;
 	this.lastName = lastName;
@@ -138,11 +139,11 @@ public class Employee {
         return status;
     } 
 
-    public List<Role> getRole() {
+    public Set<Role> getRole() {
         return roles;
     }
 
-    public List<EmployeeProject> getEmployeeProject() {
+    public Set<EmployeeProject> getEmployeeProject() {
         return employeeProjects;
     }
 
@@ -202,11 +203,11 @@ public class Employee {
 	this.status = status;
     }
 
-    public void setRole(List<Role> roles) {
+    public void setRole(Set<Role> roles) {
         this.roles = roles;
     } 
 
-    public void setEmployeeProject(List<EmployeeProject> employeeprojects) {
+    public void setEmployeeProject(Set<EmployeeProject> employeeprojects) {
         this.employeeProjects = employeeProjects;
     } 
 

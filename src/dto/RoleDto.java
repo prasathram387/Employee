@@ -1,8 +1,5 @@
 package com.ideas2it.dto;
 
-import java.util.List;
-import java.util.ArrayList;
-
 public class RoleDto {
 
     int id;

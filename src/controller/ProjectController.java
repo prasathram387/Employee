@@ -2,7 +2,7 @@ package com.ideas2it.controller;
 
 import java.time.LocalDate;
 import java.util.Date;  
-import java.util.List;
+import java.util.Set;
 import java.util.Scanner;
 
 import org.apache.log4j.Logger;
@@ -24,7 +24,7 @@ public class ProjectController {
 
     public void manageProject() {
 	logger.info("1.Create Project\n2.Update Project\n3.Delete Project\n4.Display Project\n5.Assign Employees For Project"
-            + "\n6.Display All Projects");
+            + "\n6.Display All Projects\n7.Display Assigned Projects to Employee");
 	int option = scanner.nextInt();
 	switch (option) {				       
             case 1:
@@ -44,6 +44,9 @@ public class ProjectController {
                 break;    
             case 6:
                 displayAllProjects();
+                break;  
+            case 7:
+                displayAssignedProjectsById();
                 break;  
         }
     }
@@ -117,12 +120,13 @@ public class ProjectController {
                     String date = scanner.next();
 	            Date relievedDate = DateUtil.validateDate(date);
                     employeeProjectDto.setRelievedDate(relievedDate);
-                    String isAssigned = projectService.assignEmployeesForProject(employeeProjectDto);
-                    logger.info("isAssigned");
+                    employeeProjectDto.setStatus("active");
+                    logger.info(projectService.assignEmployeesForProject(employeeProjectDto));
                 }
             } catch (CustomException error) {
                 System.out.println(error);
             }
+            break;
         }
     }
 
@@ -213,6 +217,18 @@ public class ProjectController {
             logger.info(isDeleted);
         } catch (CustomException e) {
             logger.info(e);
+        }
+    }
+
+    public void displayAssignedProjectsById() {
+        logger.info("Enter Your Employee Id");
+        int employeeId = scanner.nextInt();
+        try {
+	    for (EmployeeProjectDto employeeProjectDto : projectService.getAssignedProjectsById(employeeId)) {
+	        logger.info(employeeProjectDto);	   
+	    }
+        } catch (CustomException error) {
+            logger.info(error.getMessage());
         }
     }
 

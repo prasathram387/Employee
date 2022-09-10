@@ -1,7 +1,7 @@
 package com.ideas2it.model;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,7 +24,7 @@ public class Role {
     @Column(name = "name")
     String name;
     @ManyToMany(mappedBy = "roles",cascade = CascadeType.ALL, fetch=FetchType.EAGER)
-    private List<Employee> employees = new ArrayList<Employee>();
+    private Set<Employee> employees = new HashSet<Employee>();
 
     public Role() {
 
@@ -52,11 +52,11 @@ public class Role {
         this.name = name;
     }    
 
-    public List<Employee> getEmployee(){
+    public Set<Employee> getEmployee(){
         return employees;
     }
    
-    public void setEmployee(List<Employee> employees){
+    public void setEmployee(Set<Employee> employees){
         this.employees = employees;
     }
 }

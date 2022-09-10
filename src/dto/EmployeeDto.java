@@ -2,9 +2,9 @@ package com.ideas2it.dto;
 
 import com.ideas2it.model.EmployeeProject;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 public class EmployeeDto {
  
@@ -22,16 +22,16 @@ public class EmployeeDto {
     private Date createdDate;
     private Date modifiedDate;
     private String status;
-    private List<RoleDto> roles = new ArrayList<RoleDto>();
-    private List<EmployeeProject> employeeProject = new ArrayList<EmployeeProject>();
+    private Set<RoleDto> roles = new HashSet<RoleDto>();
+    private Set<EmployeeProject> employeeProject = new HashSet<EmployeeProject>();
 
     public EmployeeDto() {
 
     }
    
     public EmployeeDto(int id, String firstName, String lastName, String address, long mobileNo, Date dateOfBirth, String gender, String emailId,
-            int batch, Date dateOfJoining, String designation,  Date createdDate, Date modifiedDate, String status, List<RoleDto> roles,
-            List<EmployeeProject> employeeProject) {
+            int batch, Date dateOfJoining, String designation,  Date createdDate, Date modifiedDate, String status, Set<RoleDto> roles,
+            Set<EmployeeProject> employeeProject) {
         this.id = id;
 	this.firstName = firstName;
 	this.lastName = lastName;
@@ -106,11 +106,11 @@ public class EmployeeDto {
         return status;
     } 
 
-    public List<RoleDto> getRoles() {
+    public Set<RoleDto> getRoles() {
         return roles;
     }
 
-    public List<EmployeeProject> getEmployeeProject() {
+    public Set<EmployeeProject> getEmployeeProject() {
 	return employeeProject;
     }
 
@@ -170,11 +170,11 @@ public class EmployeeDto {
 	this.status = status;
     }
 
-    public void setRoles(List<RoleDto> roles) {
+    public void setRoles(Set<RoleDto> roles) {
         this.roles = roles;
     } 
 
-    public void setEmployeeProject(List<EmployeeProject> employeeProject) {
+    public void setEmployeeProject(Set<EmployeeProject> employeeProject) {
 	this.employeeProject = employeeProject;
     }
 

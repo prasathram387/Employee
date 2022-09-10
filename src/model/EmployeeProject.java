@@ -1,12 +1,13 @@
 package com.ideas2it.model;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 
 import javax.persistence.Column;
 import javax.persistence.Entity; 
-import javax.persistence.CascadeType; 
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType; 
 import javax.persistence.GeneratedValue; 
 import javax.persistence.Id; 
 import javax.persistence.JoinColumn;  
@@ -28,11 +29,11 @@ public class EmployeeProject {
     @Column(name = "status")
     private String status;
        
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
     private Project project;
     

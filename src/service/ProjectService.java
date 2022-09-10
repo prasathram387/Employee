@@ -1,7 +1,7 @@
 package com.ideas2it.service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.ideas2it.dao.ProjectDao;
 import com.ideas2it.dto.EmployeeDto;
@@ -10,6 +10,7 @@ import com.ideas2it.dto.ProjectDto;
 import com.ideas2it.exception.CustomException;
 import com.ideas2it.mapper.EmployeeProjectMapper;
 import com.ideas2it.mapper.ProjectMapper;
+import com.ideas2it.model.Employee;
 import com.ideas2it.model.Project;
 import com.ideas2it.model.EmployeeProject;
 
@@ -44,8 +45,8 @@ public class ProjectService {
         return null;
     }
 
-    public List<ProjectDto> getAllProject() throws CustomException {   
-        List<ProjectDto> projectDtos = new ArrayList<ProjectDto>();
+    public Set<ProjectDto> getAllProject() throws CustomException {   
+        Set<ProjectDto> projectDtos = new HashSet<ProjectDto>();
         for (Project project : projectDao.retrieveAllProjects()) {
             projectDtos.add(mapper.toDto(project));
         }
@@ -63,5 +64,18 @@ public class ProjectService {
         projectDao.deleteProject(project);
         return "DELETED SUCCESSFULLY";
     } 
+
+    public Set<EmployeeProjectDto> getAssignedProjectsById(int employeeId) throws CustomException {
+        EmployeeProjectMapper mapper = new EmployeeProjectMapper();
+        Set<EmployeeProjectDto> employeeProjectDto = new HashSet<>();
+        EmployeeDto employeeDto = employeeService.getEmployeeById(employeeId);
+        if (employeeDto != null) {         
+            for (EmployeeProject project :employeeDto.getEmployeeProject()) {
+	        employeeProjectDto.add(mapper.toDto(project));
+            }
+            return employeeProjectDto;
+        }
+        return null;
+    }
 
 }

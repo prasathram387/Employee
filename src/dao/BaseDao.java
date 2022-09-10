@@ -7,7 +7,7 @@ import org.hibernate.SessionFactory;
 
 public class BaseDao {
 
-    protected static SessionFactory factory; 
+    protected static SessionFactory factory = null; 
 
     private BaseDao() {
   

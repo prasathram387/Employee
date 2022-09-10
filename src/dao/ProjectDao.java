@@ -1,11 +1,13 @@
 package com.ideas2it.dao;  
 
+import com.ideas2it.model.Employee;
 import com.ideas2it.model.Project;
 import com.ideas2it.model.EmployeeProject;
 import com.ideas2it.exception.CustomException;
 
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
@@ -53,12 +55,13 @@ public class ProjectDao {
         }
     }
 
-    public List<Project> retrieveAllProjects() throws CustomException {
+    public Set<Project> retrieveAllProjects() throws CustomException {
         Session session = null;
        try {
             SessionFactory factory = BaseDao.getInstance();
             session = factory.openSession();  
-            return session.createQuery("from Project").list(); 
+            List<Project> project = session.createQuery("from Project").list();
+            return new HashSet<Project>(project); 
         } catch (Exception error) {
             error.printStackTrace();
             throw new CustomException(error.getMessage());
@@ -125,5 +128,4 @@ public class ProjectDao {
             }
         }
     } 
-
 }

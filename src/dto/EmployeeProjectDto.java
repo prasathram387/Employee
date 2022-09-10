@@ -74,7 +74,7 @@ public class EmployeeProjectDto {
     } 
 
     public String toString() {
-        return "\n" +"Employee Project Details" +"\n"+"Employee Project Id  :" + getId()+"\n"+
+        return "\n" +"Employee Project Details" +"\n"+"Employee Project Id  :" + getId()+"\n"+"Employee Id     :"+ employeeDto.getId() +
 		    "\n"+"Employee Started Date:"+getStartedDate()+"\n"+"Employee Relieved Date:"+getRelievedDate();   
     }
 }

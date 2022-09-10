@@ -2,8 +2,8 @@ package com.ideas2it.model;
 
 import java.time.LocalDate;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,15 +34,15 @@ public class Project {
     private LocalDate deadline;
     @Column(name = "status")
     private String status;
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
-    private List<EmployeeProject> employeeProjects = new ArrayList<EmployeeProject>();
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    private Set<EmployeeProject> employeeProjects = new HashSet<EmployeeProject>();
    
     public Project() {
     
     }    
 
     public Project(int id, String name, String clientName, String companyName, LocalDate startedDate, LocalDate deadline,
-        String status, List<EmployeeProject> employeeProject) {
+        String status, Set<EmployeeProject> employeeProject) {
 
         this.id = id;
         this.name = name;
@@ -111,11 +111,11 @@ public class Project {
 	this.status = status;
     }
 
-    public List<EmployeeProject> getEmployeeProject(){
+    public Set<EmployeeProject> getEmployeeProject(){
         return employeeProjects;
     }
    
-    public void setEmployeeProject(List<EmployeeProject> employeeProject){
+    public void setEmployeeProject(Set<EmployeeProject> employeeProject){
         this.employeeProjects = employeeProjects;
     }
 }
