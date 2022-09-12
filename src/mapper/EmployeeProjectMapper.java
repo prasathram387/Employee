@@ -1,8 +1,8 @@
 package com.ideas2it.mapper;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import com.ideas2it.dto.EmployeeProjectDto;
@@ -21,9 +21,9 @@ public class EmployeeProjectMapper {
     public EmployeeProject fromDto(EmployeeProjectDto employeeProjectDto) {
          Employee employee = employeeMapper.fromDto(employeeProjectDto.getEmployeeDto());
          Project project = projectMapper.fromDto(employeeProjectDto.getProjectDto());
-         LocalDate startedDate = DateUtil.convertToLocalDate(employeeProjectDto.getStartedDate());
+         LocalDate startDate = DateUtil.convertToLocalDate(employeeProjectDto.getStartDate());
          LocalDate relievedDate = DateUtil.convertToLocalDate(employeeProjectDto.getRelievedDate());
-        EmployeeProject employeeProject = new EmployeeProject(employeeProjectDto.getId(),  startedDate, relievedDate, 
+        EmployeeProject employeeProject = new EmployeeProject(employeeProjectDto.getId(),  startDate, relievedDate, 
             employeeProjectDto.getStatus(), employee, project);
         return employeeProject;
     }
@@ -31,9 +31,9 @@ public class EmployeeProjectMapper {
     public EmployeeProjectDto toDto(EmployeeProject employeeProject) {
         EmployeeDto employee = employeeMapper.toDto(employeeProject.getEmployee());
         ProjectDto project = projectMapper.toDto(employeeProject.getProject());
-        Date startedDate = DateUtil.convertToDate(employeeProject.getStartedDate());
+        Date startDate = DateUtil.convertToDate(employeeProject.getStartDate());
         Date relievedDate = DateUtil.convertToDate(employeeProject.getRelievedDate());
-        EmployeeProjectDto employeeProjectDto = new EmployeeProjectDto(employeeProject.getId(), startedDate, relievedDate, 
+        EmployeeProjectDto employeeProjectDto = new EmployeeProjectDto(employeeProject.getId(), startDate, relievedDate, 
             employeeProject.getStatus(), employee, project);
         return employeeProjectDto;
     }

@@ -23,7 +23,7 @@ public class EmployeeDto {
     private Date modifiedDate;
     private String status;
     private Set<RoleDto> roles = new HashSet<RoleDto>();
-    private Set<EmployeeProject> employeeProject = new HashSet<EmployeeProject>();
+    private Set<EmployeeProject> employeeProjects = new HashSet<EmployeeProject>();
 
     public EmployeeDto() {
 
@@ -31,7 +31,7 @@ public class EmployeeDto {
    
     public EmployeeDto(int id, String firstName, String lastName, String address, long mobileNo, Date dateOfBirth, String gender, String emailId,
             int batch, Date dateOfJoining, String designation,  Date createdDate, Date modifiedDate, String status, Set<RoleDto> roles,
-            Set<EmployeeProject> employeeProject) {
+            Set<EmployeeProject> employeeProjects) {
         this.id = id;
 	this.firstName = firstName;
 	this.lastName = lastName;
@@ -47,7 +47,7 @@ public class EmployeeDto {
         this.modifiedDate = modifiedDate;
         this.status = status;
         this.roles = roles;
-        this.employeeProject = employeeProject;  
+        this.employeeProjects = employeeProjects;  
     }
 
     public int getId() {
@@ -110,8 +110,8 @@ public class EmployeeDto {
         return roles;
     }
 
-    public Set<EmployeeProject> getEmployeeProject() {
-	return employeeProject;
+    public Set<EmployeeProject> getEmployeeProjects() {
+	return employeeProjects;
     }
 
     public void setId(int id) {
@@ -174,8 +174,8 @@ public class EmployeeDto {
         this.roles = roles;
     } 
 
-    public void setEmployeeProject(Set<EmployeeProject> employeeProject) {
-	this.employeeProject = employeeProject;
+    public void setEmployeeProject(Set<EmployeeProject> employeeProjects) {
+	this.employeeProjects = employeeProjects;
     }
 
     public String toString() {

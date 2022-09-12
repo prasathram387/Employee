@@ -22,10 +22,13 @@ public class EmployeeProject {
     @GeneratedValue
     @Column(name = "id")
     private int id;
+
     @Column(name = "started_date")
-    private LocalDate startedDate;
+    private LocalDate startDate;
+
     @Column(name = "relieved_date")
     private LocalDate relievedDate;
+
     @Column(name = "status")
     private String status;
        
@@ -44,7 +47,7 @@ public class EmployeeProject {
     public EmployeeProject(int id, LocalDate startedDate, LocalDate relievedDate, String status, Employee employee, Project project){
 
         this.id = id;
-        this.startedDate = startedDate;
+        this.startDate = startDate;
         this.relievedDate = relievedDate;
         this.status = status;
         this.employee = employee;
@@ -55,8 +58,8 @@ public class EmployeeProject {
         return id;
     }
 
-    public LocalDate getStartedDate(){
-        return startedDate;
+    public LocalDate getStartDate(){
+        return startDate;
     }
   
     public LocalDate getRelievedDate(){
@@ -79,8 +82,8 @@ public class EmployeeProject {
         this.id = id;
     }    
 
-    public void setStartedDate(LocalDate startedDate){
-        this.startedDate = startedDate;
+    public void setStartDate(LocalDate startDate){
+        this.startDate = startDate;
     } 
 
     public void setRelievedDate(LocalDate relievedDate){

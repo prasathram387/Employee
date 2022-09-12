@@ -15,7 +15,6 @@ import java.util.InputMismatchException;
 import java.util.List; 
 import java.util.Map;
 import java.util.Scanner;
-
 import org.apache.log4j.Logger;
 import org.apache.log4j.BasicConfigurator;
 
@@ -36,27 +35,34 @@ public class EmployeeController {
 
 	EmployeeController controller = new EmployeeController();
 	BasicConfigurator.configure();
+        controller.userInput();
+    }
 
-        while (isContinue) {
-	    logger.info("1.Trainee ,2.Trainer ,3.Manager, 4.exit");
-	    int choice = scanner.nextInt();
+    public void userInput() {
+        Scanner userInput = new Scanner(System.in); 
+        try {
+ 	    logger.info("1.Trainee ,2.Trainer ,3.Manager, 4.exit");
+	    int choice = userInput.nextInt();
 	    switch (choice) { 		
 	        case 1:
-	            controller.trainee(Constants.TRAINEE);
+	            trainee(Constants.TRAINEE);
 	            break;
 	        case 2:
-	            controller.trainer(Constants.TRAINER);
+	            trainer(Constants.TRAINER);
 	            break;
 	        case 3:
-	            controller.manager(Constants.MANAGER);
+	            manager(Constants.MANAGER);
 	            break;
 	        case 4:
 	            logger.info("Thank you");
-                    System.exit(0);
-	            break;                
-   
-            } 
-        }
+	            break;     
+                default:
+                    logger.info("Please Enter the valid input");
+                    userInput();   
+             }
+         } catch (InputMismatchException error) {
+             logger.error("Enter Valid Input",error);
+         }        
     }
 
     public void trainee(String userType) {
@@ -75,6 +81,9 @@ public class EmployeeController {
             case 4:
                 deleteEmployee(userType);
                 break;
+            default:
+                logger.info("Enter the Valid Input");
+                trainee(userType);
          }
     }
 
@@ -94,6 +103,9 @@ public class EmployeeController {
             case 4:
                 deleteEmployee(userType);
                 break;
+            default:
+                logger.info("Enter the Valid Input");
+                trainer(userType);
          }
     }
 
@@ -123,6 +135,9 @@ public class EmployeeController {
             case 7:
                 projectController.manageProject();
                 break;
+            default:
+                logger.info("Enter the Valid Input");
+                manager(userType);
          }
     }   
 
@@ -248,67 +263,48 @@ public class EmployeeController {
     }
 
     public void addAndUpdateEmployee(String userType,int option) {
-        
-        EmployeeDto employeeDto = new EmployeeDto();
-        int employeeId = 0;
-        if (option == 1) {
-            employeeId = 0;
-            employeeDto.setId(employeeId);
-        } else if (option == 3) {
-            logger.info("Enter your employee id");
-            employeeId = scanner.nextInt();
-            employeeDto.setId(employeeId);
-        }
-	employeeDto.setFirstName(getFirstName());
-	employeeDto.setLastName(getLastName());
-	logger.info("Enter your address");
-	String address = scanner.next();
-        employeeDto.setAddress(address);
-	employeeDto.setMobileNo(getMobileNo());
-	Date dateOfBirth = null;
-	try {
-	    dateOfBirth = getDateOfBirth();
-	} catch (CustomException e) {
-            logger.info(e);
-        }
-        employeeDto.setDateOfBirth(dateOfBirth);
-        String gender = null;
         try {
-	    gender = getGender();
-        } catch (CustomException e) {
-            logger.info(e);
-        }
-        employeeDto.setGender(gender);
-	employeeDto.setEmailId(getEmailId());
-	Date dateOfJoining = null;
-	try {
-	    dateOfJoining = getDateOfJoining();
-	} catch (CustomException e) {
-            logger.info(e);
-        }
-        employeeDto.setDateOfJoining(dateOfJoining);
-	employeeDto.setDesignation(getDesignation());
-	logger.info("Enter the batch");
-	int batch = scanner.nextInt();	    
-        employeeDto.setBatch(batch);
-        Date createdDate = new Date();
-        employeeDto.setCreatedDate(createdDate);
-        Date modifiedDate = new Date();
-        employeeDto.setModifiedDate(modifiedDate);
-        employeeDto.setStatus("active");
+            EmployeeDto employeeDto = new EmployeeDto();
+            int employeeId = 0;
+            if (option == 1) {
+                employeeId = 0;
+                employeeDto.setId(employeeId);
+            } else if (option == 3) {
+                logger.info("Enter your employee id");
+                employeeId = scanner.nextInt();
+                employeeDto.setId(employeeId);
+            }
+	    employeeDto.setFirstName(getFirstName());
+	    employeeDto.setLastName(getLastName());
+	    logger.info("Enter your address");
+	    String address = scanner.next();
+            employeeDto.setAddress(address);
+	    employeeDto.setMobileNo(getMobileNo());
+	    Date dateOfBirth = getDateOfBirth();;
+            employeeDto.setDateOfBirth(dateOfBirth);
+            String gender = getGender();
+            employeeDto.setGender(gender);
+	    employeeDto.setEmailId(getEmailId());
+	    Date dateOfJoining = getDateOfJoining();
+            employeeDto.setDateOfJoining(dateOfJoining);
+	    employeeDto.setDesignation(getDesignation());
+	    logger.info("Enter the batch");
+	    int batch = scanner.nextInt();	    
+            employeeDto.setBatch(batch);
+            Date createdDate = new Date();
+            employeeDto.setCreatedDate(createdDate);
+            Date modifiedDate = new Date();
+            employeeDto.setModifiedDate(modifiedDate);
+            employeeDto.setStatus("active");
 
-        if (option == 1) {
-            try {
+            if (option == 1) {
 	        logger.info(employeeService.addEmployee(employeeDto, userType));
-            } catch (CustomException e) {
-                logger.info(e);
-            }
-        } else if (option == 3) {
-            try {
+            } else if (option == 3) {
 	        logger.info(employeeService.updateEmployee(employeeDto));
-            } catch (CustomException e) {
-                logger.info(e);
             }
+        } catch (CustomException error) {
+            logger.error(error);
+            addAndUpdateEmployee(userType, option);
         } 
     }
   

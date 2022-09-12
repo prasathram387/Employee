@@ -4,16 +4,14 @@ import com.ideas2it.exception.CustomException;
 import com.ideas2it.model.Employee;
 import com.ideas2it.model.Role;
 
-import java.util.List;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.cfg.Configuration;  
 import org.hibernate.Session;    
 import org.hibernate.SessionFactory;    
-import org.hibernate.Transaction;    
+import org.hibernate.Transaction;  
+
+import java.util.List;  
 
 public class RoleDao {    
 

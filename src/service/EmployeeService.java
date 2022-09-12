@@ -11,10 +11,7 @@ import com.ideas2it.model.Employee;
 import com.ideas2it.model.EmployeeProject;
 import com.ideas2it.model.Role;
 
-import java.text.Format;
-import java.text.SimpleDateFormat;
 import java.util.HashSet;
-import java.util.Date;
 import java.util.Set;
 
 public class EmployeeService {	

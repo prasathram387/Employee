@@ -1,18 +1,16 @@
 package com.ideas2it.controller;
 
-import java.time.LocalDate;
 import java.util.Date;  
 import java.util.Set;
 import java.util.Scanner;
-
 import org.apache.log4j.Logger;
 import org.apache.log4j.BasicConfigurator;
 
 import com.ideas2it.exception.CustomException;
-import com.ideas2it.service.ProjectService;
 import com.ideas2it.dto.EmployeeDto;
-import com.ideas2it.dto.ProjectDto;
 import com.ideas2it.dto.EmployeeProjectDto;
+import com.ideas2it.dto.ProjectDto;
+import com.ideas2it.service.ProjectService;
 import com.ideas2it.utils.DateUtil;
 
 public class ProjectController {
@@ -24,7 +22,7 @@ public class ProjectController {
 
     public void manageProject() {
 	logger.info("1.Create Project\n2.Update Project\n3.Delete Project\n4.Display Project\n5.Assign Employees For Project"
-            + "\n6.Display All Projects\n7.Display Assigned Projects to Employee");
+            + "\n6.Display All Projects\n7.Display Assigned Projects to Employee\n8.Display Assigned Employees to Project");
 	int option = scanner.nextInt();
 	switch (option) {				       
             case 1:
@@ -46,8 +44,13 @@ public class ProjectController {
                 displayAllProjects();
                 break;  
             case 7:
-                displayAssignedProjectsById();
+                displayAssignedProjectsByEmployeeId();
                 break;  
+            case 8:
+                displayAssignedProjectsByProjectId();
+                break;  
+            default:
+                manageProject();
         }
     }
 
@@ -69,7 +72,7 @@ public class ProjectController {
             System.out.println(e);
         }
         System.out.println(startedDate);
-        projectDto.setStartedDate(startedDate);
+        projectDto.setStartDate(startedDate);
         Date deadline = null;
         try {
             deadline = getDeadline();
@@ -115,7 +118,7 @@ public class ProjectController {
                     System.out.println("Enter the started Date in this format DD-MM-YYYY");
                     String startDate = scanner.next();
                     Date startedDate = DateUtil.validateDate(startDate);
-                    employeeProjectDto.setStartedDate(startedDate);                  
+                    employeeProjectDto.setStartDate(startedDate);                  
                     System.out.println("Enter the releive Date in this format DD-MM-YYYY");
                     String date = scanner.next();
 	            Date relievedDate = DateUtil.validateDate(date);
@@ -189,7 +192,7 @@ public class ProjectController {
             System.out.println(e);
         }
         System.out.println(startedDate);
-        projectDto.setStartedDate(startedDate);
+        projectDto.setStartDate(startedDate);
         Date deadline = null;
         try {
             deadline = getDeadline();
@@ -220,11 +223,23 @@ public class ProjectController {
         }
     }
 
-    public void displayAssignedProjectsById() {
+    public void displayAssignedProjectsByEmployeeId() {
         logger.info("Enter Your Employee Id");
         int employeeId = scanner.nextInt();
         try {
-	    for (EmployeeProjectDto employeeProjectDto : projectService.getAssignedProjectsById(employeeId)) {
+	    for (EmployeeProjectDto employeeProjectDto : projectService.getAssignedProjectsByEmployeeId(employeeId)) {
+	        logger.info(employeeProjectDto);	   
+	    }
+        } catch (CustomException error) {
+            logger.info(error.getMessage());
+        }
+    }
+
+    public void displayAssignedProjectsByProjectId() {
+        logger.info("Enter Your Project Id");
+        int projectId = scanner.nextInt();
+        try {
+	    for (EmployeeProjectDto employeeProjectDto : projectService.getAssignedProjectsByProjectId(projectId)) {
 	        logger.info(employeeProjectDto);	   
 	    }
         } catch (CustomException error) {

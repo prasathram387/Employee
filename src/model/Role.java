@@ -1,8 +1,5 @@
 package com.ideas2it.model;
 
-import java.util.Set;
-import java.util.HashSet;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import java.util.Set;
+import java.util.HashSet;
+
 @Entity
 @Table(name = "role")
 public class Role {
@@ -21,8 +21,10 @@ public class Role {
     @GeneratedValue
     @Column(name = "id")
     int id;
+
     @Column(name = "name")
     String name;
+
     @ManyToMany(mappedBy = "roles",cascade = CascadeType.ALL, fetch=FetchType.EAGER)
     private Set<Employee> employees = new HashSet<Employee>();
 

@@ -5,7 +5,7 @@ import java.util.Date;
 public class EmployeeProjectDto {
 
     private int id;
-    private Date startedDate;
+    private Date startDate;
     private Date relievedDate;
     private String status;
     private EmployeeDto employeeDto;
@@ -15,10 +15,10 @@ public class EmployeeProjectDto {
 
     }
 
-    public EmployeeProjectDto(int id, Date startedDate, Date relievedDate, String status, EmployeeDto employeeDto, ProjectDto projectDto){
+    public EmployeeProjectDto(int id, Date startDate, Date relievedDate, String status, EmployeeDto employeeDto, ProjectDto projectDto){
 
         this.id = id;
-        this.startedDate = startedDate;
+        this.startDate = startDate;
         this.relievedDate = relievedDate;
         this.status = status;
         this.employeeDto = employeeDto;
@@ -29,8 +29,8 @@ public class EmployeeProjectDto {
         return id;
     }
 
-    public Date getStartedDate(){
-        return startedDate;
+    public Date getStartDate(){
+        return startDate;
     }
   
     public Date getRelievedDate(){
@@ -53,8 +53,8 @@ public class EmployeeProjectDto {
         this.id = id;
     }    
 
-    public void setStartedDate(Date startedDate){
-        this.startedDate = startedDate;
+    public void setStartDate(Date startDate){
+        this.startDate = startDate;
     } 
 
     public void setRelievedDate(Date relievedDate){
@@ -75,6 +75,7 @@ public class EmployeeProjectDto {
 
     public String toString() {
         return "\n" +"Employee Project Details" +"\n"+"Employee Project Id  :" + getId()+"\n"+"Employee Id     :"+ employeeDto.getId() +
-		    "\n"+"Employee Started Date:"+getStartedDate()+"\n"+"Employee Relieved Date:"+getRelievedDate();   
+		    "\n"+"Project Id          :"+projectDto.getId()+"\n"+"Employee Started Date:"+getStartDate()+"\n"+
+                    "Employee Relieved Date:"+getRelievedDate();   
     }
 }

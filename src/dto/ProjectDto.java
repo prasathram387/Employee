@@ -1,32 +1,33 @@
 package com.ideas2it.dto;
 
+import com.ideas2it.model.EmployeeProject;
+
 import java.util.HashSet;
 import java.util.Date;
 import java.util.Set;
-
-import com.ideas2it.model.EmployeeProject;
 
 public class ProjectDto {
     private int id;
     private String name;
     private String clientName;
     private String companyName;
-    private Date startedDate;
+    private Date startDate;
     private Date deadline;
     private String status;
     private Set<EmployeeProject> employeeProjects = new HashSet<EmployeeProject>(); 
+
     public ProjectDto() {
     
     }    
 
-    public ProjectDto(int id, String name, String clientName, String companyName, Date startedDate, Date deadline, String status,
+    public ProjectDto(int id, String name, String clientName, String companyName, Date startDate, Date deadline, String status,
                       Set<EmployeeProject> employeeProjects) {
 
         this.id = id;
         this.name = name;
         this.companyName = companyName;
         this.clientName = clientName;
-        this.startedDate = startedDate;
+        this.startDate = startDate;
         this.deadline = deadline;
         this.status = status; 
         this.employeeProjects = employeeProjects;   
@@ -48,8 +49,8 @@ public class ProjectDto {
 	return companyName;
     }
 
-    public Date getStartedDate() {
-	return startedDate;
+    public Date getStartDate() {
+	return startDate;
     }
 
     public Date getDeadline() {
@@ -60,7 +61,7 @@ public class ProjectDto {
 	return status;
     }
 
-    public Set<EmployeeProject> getEmployeeProject() {
+    public Set<EmployeeProject> getEmployeeProjects() {
 	return employeeProjects;
     }
 
@@ -80,8 +81,8 @@ public class ProjectDto {
 	this.clientName = clientName;
     }
 
-    public void setStartedDate(Date startedDate) {
-	this.startedDate = startedDate;
+    public void setStartDate(Date startDate) {
+	this.startDate = startDate;
     }
 
     public void setDeadline(Date deadline) {
@@ -98,7 +99,7 @@ public class ProjectDto {
 
     public String toString() {
         return "\n" +"Project Details" +"\n"+"Project Name        :" + getName()+ "\n" + "Company Name        :" + getCompanyName() +"\n"+
-		      "Client Name         :"+getClientName()+"\n"+"Project Started Date:"+getStartedDate()+"\n"+"Project Deadline    :"+getDeadline()+
+		      "Client Name         :"+getClientName()+"\n"+"Project Started Date:"+getStartDate()+"\n"+"Project Deadline    :"+getDeadline()+
                       "\n"+"Status              :"+getStatus();   
     }
 }

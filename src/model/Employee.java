@@ -1,16 +1,23 @@
 package com.ideas2it.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hibernate.annotations.IndexColumn;
-import javax.persistence.*;
 import javax.persistence.Column;
-import javax.persistence.Entity;  
-import javax.persistence.Id;  
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;     
 import javax.persistence.GeneratedValue;
-import javax.persistence.Table;  
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table; 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp; 
 
 @Entity
 @Table(name = "employee")
@@ -20,30 +27,45 @@ public class Employee {
     @GeneratedValue
     @Column(name = "id")
     public int id;
+
     @Column(name = "first_name")
     private String firstName;
+
     @Column(name = "last_name")
     private String lastName;
+
     @Column(name = "address")
     private String address;
+
     @Column(name = "mobile_no")
     private long mobileNo;
+
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth; 
+
     @Column(name = "gender")
     private String gender;
+
     @Column(name = "email_id")
     private String emailId;
+
     @Column(name = "batch")
     private int batch;
+
     @Column(name = "date_of_joining")
     private LocalDate dateOfJoining;
+
     @Column(name = "designation")
     private String designation;
+
+    @CreationTimestamp
     @Column(name = "created_date")
-    private LocalDate createdDate;
+    private LocalDateTime createdDate;
+
+    @UpdateTimestamp
     @Column(name = "modified_date")
-    private LocalDate modifiedDate;
+    private LocalDateTime modifiedDate;
+
     @Column(name = "status")
     private String status;
 
@@ -63,7 +85,7 @@ public class Employee {
     }
  
     public Employee(int id, String firstName, String lastName, String address, long mobileNo, LocalDate dateOfBirth, String gender, String emailId,
-            int batch, LocalDate dateOfJoining, String designation, LocalDate createdDate, LocalDate modifiedDate, String status, Set<Role> roles,
+            int batch, LocalDate dateOfJoining, String designation, LocalDateTime createdDate, LocalDateTime modifiedDate, String status, Set<Role> roles,
             Set<EmployeeProject> employeeProjects) {
         this.id = id;
 	this.firstName = firstName;
@@ -127,11 +149,11 @@ public class Employee {
         return dateOfJoining;
     }
 
-    public LocalDate getCreatedDate() {
+    public LocalDateTime getCreatedDate() {
 	return createdDate;
     }
 
-    public LocalDate getModifiedDate() {
+    public LocalDateTime getModifiedDate() {
 	return modifiedDate;
     }
     
@@ -143,7 +165,7 @@ public class Employee {
         return roles;
     }
 
-    public Set<EmployeeProject> getEmployeeProject() {
+    public Set<EmployeeProject> getEmployeeProjects() {
         return employeeProjects;
     }
 
@@ -191,11 +213,11 @@ public class Employee {
 	this.designation = designation;
     }  
 
-    public void setCreatedDate(LocalDate createdDate) {
+    public void setCreatedDate(LocalDateTime createdDate) {
 	this.createdDate = createdDate;
     }
 
-    public void setModifiedDate(LocalDate modifiedDate) {
+    public void setModifiedDate(LocalDateTime modifiedDate) {
 	this.modifiedDate = modifiedDate;
     }
 

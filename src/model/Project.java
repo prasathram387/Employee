@@ -2,8 +2,8 @@ package com.ideas2it.model;
 
 import java.time.LocalDate;
 
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,18 +22,25 @@ public class Project {
     @GeneratedValue
     @Column(name = "id")
     private int id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "client_name")
     private String clientName;
+
     @Column(name = "company_name")
     private String companyName;
+
     @Column(name = "started_date")
-    private LocalDate startedDate;
+    private LocalDate startDate;
+
     @Column(name = "deadline")
     private LocalDate deadline;
+
     @Column(name = "status")
     private String status;
+
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
     private Set<EmployeeProject> employeeProjects = new HashSet<EmployeeProject>();
    
@@ -41,14 +48,14 @@ public class Project {
     
     }    
 
-    public Project(int id, String name, String clientName, String companyName, LocalDate startedDate, LocalDate deadline,
-        String status, Set<EmployeeProject> employeeProject) {
+    public Project(int id, String name, String clientName, String companyName, LocalDate startDate, LocalDate deadline,
+        String status, Set<EmployeeProject> employeeProjects) {
 
         this.id = id;
         this.name = name;
         this.companyName = companyName;
         this.clientName = clientName;
-        this.startedDate = startedDate;
+        this.startDate = startDate;
         this.deadline = deadline;
         this.status = status; 
         this.employeeProjects = employeeProjects;    
@@ -70,8 +77,8 @@ public class Project {
 	return companyName;
     }
 
-    public LocalDate getStartedDate() {
-	return startedDate;
+    public LocalDate getStartDate() {
+	return startDate;
     }
 
     public LocalDate getDeadline() {
@@ -99,8 +106,8 @@ public class Project {
 	this.clientName = clientName;
     }
 
-    public void setStartedDate(LocalDate startedDate) {
-	this.startedDate = startedDate;
+    public void setStartDate(LocalDate startDate) {
+	this.startDate = startDate;
     }
 
     public void setDeadline(LocalDate deadline) {
@@ -111,11 +118,11 @@ public class Project {
 	this.status = status;
     }
 
-    public Set<EmployeeProject> getEmployeeProject(){
+    public Set<EmployeeProject> getEmployeeProjects(){
         return employeeProjects;
     }
    
-    public void setEmployeeProject(Set<EmployeeProject> employeeProject){
+    public void setEmployeeProject(Set<EmployeeProject> employeeProjects){
         this.employeeProjects = employeeProjects;
     }
 }

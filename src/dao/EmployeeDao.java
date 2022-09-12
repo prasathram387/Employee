@@ -4,9 +4,9 @@ import com.ideas2it.model.Employee;
 import com.ideas2it.model.Role;
 import com.ideas2it.exception.CustomException;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.HashSet;
 
 import org.hibernate.cfg.Configuration;  
 import org.hibernate.Criteria;
