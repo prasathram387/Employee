@@ -108,24 +108,5 @@ public class ProjectDao {
                 session.close();
             }
         }
-    }
-
-    public void deleteProject(Project project) throws CustomException {
-        Session session = null;
-        Transaction transaction = null;
-        try {
-            session = BaseDao.getInstance().openSession();  
-            transaction = session.beginTransaction();   
-            session.saveOrUpdate(project);  
-            transaction.commit();         
-        } catch (Exception error) {
-            error.printStackTrace();
-            System.out.println(error.getMessage());
-            throw new CustomException(error.getMessage());
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
     } 
 }

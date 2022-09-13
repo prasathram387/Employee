@@ -25,29 +25,11 @@ public class ValidationUtil {
     public static String DESIGNATION_REGEX = "([a-zA-Z]\s*)+";
     public static String MAILID_REGEX = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
 	
-    /** 
-     * <p>
-     * To validate a userInput.
-     * </p>
-     *
-     * @param input , regex pattern it gets a name from controller
-     * @return it returns the boolean to controller.
-     * 
-     */
     public static boolean validateInput(String input, String regex ) {
 	boolean matcher = input.matches(regex);		   
 	return matcher;
     }
     
-    /** 
-     * <p>
-     * To calculate a age from date of birth 
-     * </p>
-     *
-     * @param dateOfBirth it gets a dateOfBirth from controller
-     * @return it returns the age to controller.
-     * 
-     */
     public static int calculateAge(Date dateOfBirth) {
         int age = 0;
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -77,15 +59,6 @@ public class ValidationUtil {
         return experience;
     }
 
-    /** 
-     * <p>
-     * To validate a gender.
-     * </p>
-     *
-     * @param emailId it gets a gender from controller
-     * @return it returns the boolean to controller.
-     * 
-     */
     public static boolean validateGender(String gender) throws CustomException {
 	try {
     	     Gender genderEnum = Gender.valueOf(gender);

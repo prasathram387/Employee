@@ -1,5 +1,6 @@
 package com.ideas2it.service;
 
+import com.ideas2it.constant.Constants;
 import com.ideas2it.dao.ProjectDao;
 import com.ideas2it.dto.EmployeeDto;
 import com.ideas2it.dto.EmployeeProjectDto;
@@ -61,8 +62,8 @@ public class ProjectService {
 
     public String deleteProject(int projectId) throws CustomException {
         Project project = projectDao.retrieveProjectById(projectId);
-        project.setStatus("inactive");
-        projectDao.deleteProject(project);
+        project.setStatus(Constants.INACTIVE);
+        projectDao.updateProject(project);
         return "DELETED SUCCESSFULLY";
     } 
 

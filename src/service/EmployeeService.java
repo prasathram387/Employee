@@ -1,5 +1,6 @@
 package com.ideas2it.service;
 
+import com.ideas2it.constant.Constants;
 import com.ideas2it.dao.EmployeeDao;
 import com.ideas2it.dao.RoleDao;
 import com.ideas2it.dto.EmployeeDto;
@@ -65,8 +66,8 @@ public class EmployeeService {
         Set<Role> roles = new HashSet<>(); 
         Employee employee = employeeDao.retrieveEmployeeById(employeeId);
         employee.setRole(roles);
-        employee.setStatus("inactive");
-        employeeDao.deleteEmployee(employee);
+        employee.setStatus(Constants.INACTIVE);
+        employeeDao.updateEmployee(employee);
         return "DELETED SUCCESSFULLY";
     } 
 }

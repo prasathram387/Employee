@@ -18,9 +18,6 @@ import java.util.Scanner;
 import org.apache.log4j.Logger;
 import org.apache.log4j.BasicConfigurator;
 
-/**
- * It can be implemented for input and output operation of trainer,trainee and manager.
- **/
 public class EmployeeController {
    
     private static Scanner scanner = new Scanner(System.in);
@@ -190,34 +187,45 @@ public class EmployeeController {
 	return mobileNo; 
     }
 
-    public String getGender() throws CustomException {
+    public String getGender() {
         String gender = null;
-	while (isContinue) {
-    	    logger.info("Enter your gender");
-	    gender = scanner.next();
+    	logger.info("Enter your gender");
+	gender = scanner.next();
+        try {
 	    boolean isCorrect = ValidationUtil.validateGender(gender);
-	    if (isCorrect) {
-	        break;
-            } else {
-	        logger.info("enter valid input");
-	        isContinue = true;
-	    }
+        } catch (CustomException error) {
+            logger.error(error);
+            getGender();
 	}
 	return gender;  
     }
 
-    private Date getDateOfBirth() throws CustomException {
-    	logger.info("Enter your Date Of Birth in this format dd-mm-yyyy");
-	String birthDate = scanner.next();
-	Date dateOfBirth = DateUtil.validateDateOfBirth(birthDate);
-	return dateOfBirth;  
+    private Date getDateOfBirth() {
+        Date dateOfBirth = null;
+        try {
+    	    logger.info("Enter your Date Of Birth in this format dd-mm-yyyy");
+	    String birthDate = scanner.next();
+	    dateOfBirth = DateUtil.validateDateOfBirth(birthDate);
+	    return dateOfBirth;
+        } catch (CustomException error) {
+            logger.error("Enter Valid Date Format");
+            getDateOfBirth();
+        }   
+        return dateOfBirth;  
     }
 
-    private Date getDateOfJoining() throws CustomException{
-    	logger.info("Enter your Date Of joining in this format dd-mm-yyyy");
-	String join_date = scanner.next();
-	Date dateOfJoining = DateUtil.validateDate(join_date);
-	return dateOfJoining;  
+    private Date getDateOfJoining() {
+        Date dateOfJoining = null;
+        try {
+    	    logger.info("Enter your Date Of joining in this format dd-mm-yyyy");
+	    String join_date = scanner.next();
+	    dateOfJoining = DateUtil.validateDate(join_date);
+	    return dateOfJoining;  
+        } catch (CustomException error) {
+            logger.error("Enter Valid Date Format");
+            getDateOfJoining();
+        }   
+        return dateOfJoining;         
     }
 
     public int getAge(Date dob) {
@@ -263,49 +271,44 @@ public class EmployeeController {
     }
 
     public void addAndUpdateEmployee(String userType,int option) {
+        EmployeeDto employeeDto = new EmployeeDto();
+        int employeeId = 0;
+        if (option == 1) {
+            employeeDto.setId(employeeId);
+        } else if (option == 3) {
+            logger.info("Enter your employee id");
+            employeeId = scanner.nextInt();
+            employeeDto.setId(employeeId);
+        }
+	employeeDto.setFirstName(getFirstName());
+	employeeDto.setLastName(getLastName());
+	logger.info("Enter your address");
+	String address = scanner.next();
+        employeeDto.setAddress(address);
+	employeeDto.setMobileNo(getMobileNo());
+        employeeDto.setDateOfBirth(getDateOfBirth());
+        String gender = getGender();
+        employeeDto.setGender(gender);
+	employeeDto.setEmailId(getEmailId());
+        employeeDto.setDateOfJoining(getDateOfJoining());
+	employeeDto.setDesignation(getDesignation());
+	logger.info("Enter the batch");
+	int batch = scanner.nextInt();	    
+        employeeDto.setBatch(batch);
+        Date createdDate = new Date();
+        employeeDto.setCreatedDate(createdDate);
+        Date modifiedDate = new Date();
+        employeeDto.setModifiedDate(modifiedDate);
+        employeeDto.setStatus(Constants.ACTIVE);
         try {
-            EmployeeDto employeeDto = new EmployeeDto();
-            int employeeId = 0;
-            if (option == 1) {
-                employeeId = 0;
-                employeeDto.setId(employeeId);
-            } else if (option == 3) {
-                logger.info("Enter your employee id");
-                employeeId = scanner.nextInt();
-                employeeDto.setId(employeeId);
-            }
-	    employeeDto.setFirstName(getFirstName());
-	    employeeDto.setLastName(getLastName());
-	    logger.info("Enter your address");
-	    String address = scanner.next();
-            employeeDto.setAddress(address);
-	    employeeDto.setMobileNo(getMobileNo());
-	    Date dateOfBirth = getDateOfBirth();;
-            employeeDto.setDateOfBirth(dateOfBirth);
-            String gender = getGender();
-            employeeDto.setGender(gender);
-	    employeeDto.setEmailId(getEmailId());
-	    Date dateOfJoining = getDateOfJoining();
-            employeeDto.setDateOfJoining(dateOfJoining);
-	    employeeDto.setDesignation(getDesignation());
-	    logger.info("Enter the batch");
-	    int batch = scanner.nextInt();	    
-            employeeDto.setBatch(batch);
-            Date createdDate = new Date();
-            employeeDto.setCreatedDate(createdDate);
-            Date modifiedDate = new Date();
-            employeeDto.setModifiedDate(modifiedDate);
-            employeeDto.setStatus("active");
-
             if (option == 1) {
 	        logger.info(employeeService.addEmployee(employeeDto, userType));
             } else if (option == 3) {
 	        logger.info(employeeService.updateEmployee(employeeDto));
             }
         } catch (CustomException error) {
-            logger.error(error);
-            addAndUpdateEmployee(userType, option);
-        } 
+            logger.info(error.getMessage());
+        }
     }
   
     public void displayAllEmployee() {

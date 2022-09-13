@@ -91,24 +91,5 @@ public class EmployeeDao {
                 session.close();
             }
         }
-    }  
-
-    public void deleteEmployee(Employee employee) throws CustomException {
-        Session session = null;
-        Transaction transaction = null;
-        try {
-            session = BaseDao.getInstance().openSession();  
-            transaction = session.beginTransaction();   
-            session.saveOrUpdate(employee);  
-            transaction.commit();         
-        } catch (Exception error) {
-            error.printStackTrace();
-            System.out.println(error.getMessage());
-            throw new CustomException(error.getMessage());
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-    }        
+    }          
 }

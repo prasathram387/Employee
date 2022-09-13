@@ -6,6 +6,7 @@ import java.util.Scanner;
 import org.apache.log4j.Logger;
 import org.apache.log4j.BasicConfigurator;
 
+import com.ideas2it.constant.Constants;
 import com.ideas2it.exception.CustomException;
 import com.ideas2it.dto.EmployeeDto;
 import com.ideas2it.dto.EmployeeProjectDto;
@@ -48,7 +49,10 @@ public class ProjectController {
                 break;  
             case 8:
                 displayAssignedProjectsByProjectId();
-                break;  
+                break; 
+            case 9:
+                logger.info("Thank You");
+                System.exit(0); 
             default:
                 manageProject();
         }
@@ -56,80 +60,73 @@ public class ProjectController {
 
     public void createProject() {
         ProjectDto projectDto = new ProjectDto();
-        System.out.println("Enter your project name: ");
+        logger.info("Enter your project name: ");
         String name = scanner.next();
         projectDto.setName(name);
-        System.out.println("Enter the project client name: ");
+        logger.info("Enter the project client name: ");
         String clientName = scanner.next();
         projectDto.setClientName(clientName);
-        System.out.println("Enter the company name: ");
+        logger.info("Enter the company name: ");
         String companyName = scanner.next();
         projectDto.setCompanyName(companyName);
-        Date startedDate = null;
-        try {
-            startedDate = getProjectDate();
-        } catch (CustomException e) {
-            System.out.println(e);
-        }
-        System.out.println(startedDate);
-        projectDto.setStartDate(startedDate);
-        Date deadline = null;
-        try {
-            deadline = getDeadline();
-        } catch (CustomException e) {
-            System.out.println(e);
-        }
-        System.out.println(deadline);
-        projectDto.setDeadline(deadline);
-        System.out.println("Enter the project Status: ");
+        projectDto.setStartDate(getStartDate());
+        projectDto.setDeadline(getDeadline());
+        logger.info("Enter the project Status: ");
         String status= scanner.next();
         projectDto.setStatus(status);
         try {
             String isAdded = projectService.addProject(projectDto); 
             logger.info(isAdded); 
         } catch (CustomException e) {
-            System.out.println(e);
+            logger.info(e);
         }
     }
 
-    private void assignEmployeesForProject() {
+    public EmployeeDto getEmployee() {
+        EmployeeDto employeeDto = null;
+        logger.info("Enter the Employee Id to Assign");
+        int employeeId = scanner.nextInt();
+        try {
+            employeeDto = projectService.getEmployeeById(employeeId);
+            if (employeeDto == null) {
+                logger.info("Enter the valid Employee Id");
+                getEmployee();
+            } 
+            return employeeDto;
+        } catch (CustomException error) {
+            logger.error(error);
+        }
+        return employeeDto;
+    }
+            
+    public void assignEmployeesForProject() {
         EmployeeProjectDto employeeProjectDto = new EmployeeProjectDto();
-        while (isAvailable) {
-            System.out.println("Enter the Project Id ");
-            int projectId = scanner.nextInt();
-            try {
-                ProjectDto projectDto = projectService.getProjectById(projectId);
-                if (projectDto == null) {
-                    System.out.println("Enter the valid ProjectId");
-                    break;
-                }
-                employeeProjectDto.setProject(projectDto);
-                System.out.println("How Many Employees to Assign for this Project");
-                int employeeCount = scanner.nextInt();
-                for (int count = 0; count < employeeCount; count++) {
-                    System.out.println("Enter the Employee Id to Assign");
-                    int employeeId = scanner.nextInt();
-                    EmployeeDto employeeDto = projectService.getEmployeeById(employeeId);
-                    if (employeeDto == null) {
-                        System.out.println("Enter the valid Employee Id");
-                        break;
-                    }
-                    employeeProjectDto.setEmployeeDto(employeeDto);
-                    System.out.println("Enter the started Date in this format DD-MM-YYYY");
-                    String startDate = scanner.next();
-                    Date startedDate = DateUtil.validateDate(startDate);
-                    employeeProjectDto.setStartDate(startedDate);                  
-                    System.out.println("Enter the releive Date in this format DD-MM-YYYY");
-                    String date = scanner.next();
-	            Date relievedDate = DateUtil.validateDate(date);
-                    employeeProjectDto.setRelievedDate(relievedDate);
-                    employeeProjectDto.setStatus("active");
-                    logger.info(projectService.assignEmployeesForProject(employeeProjectDto));
-                }
-            } catch (CustomException error) {
-                System.out.println(error);
+        logger.info("Enter the Project Id ");
+        int projectId = scanner.nextInt();
+        try {
+            ProjectDto projectDto = projectService.getProjectById(projectId);
+            if (projectDto == null) {
+                logger.info("Enter the valid ProjectId");
+                assignEmployeesForProject();
             }
-            break;
+            employeeProjectDto.setProject(projectDto);
+            logger.info("How Many Employees to Assign for this Project");
+            int employeeCount = scanner.nextInt();
+            for (int count = 0; count < employeeCount; count++) {  
+                employeeProjectDto.setEmployeeDto(getEmployee());
+                logger.info("Enter the started Date in this format DD-MM-YYYY");
+                String startDate = scanner.next();
+                Date startedDate = DateUtil.validateDate(startDate);
+                employeeProjectDto.setStartDate(startedDate);                  
+                logger.info("Enter the releive Date in this format DD-MM-YYYY");
+                String date = scanner.next();
+	        Date relievedDate = DateUtil.validateDate(date);
+                employeeProjectDto.setRelievedDate(relievedDate);
+                employeeProjectDto.setStatus(Constants.ACTIVE);
+                logger.info(projectService.assignEmployeesForProject(employeeProjectDto));
+            }
+        } catch (CustomException error) {
+            logger.info(error);
         }
     }
 
@@ -145,70 +142,43 @@ public class ProjectController {
 
     public void displayProjectById() {
         try {
-            System.out.println("Enter the Project Id ");
+            logger.info("Enter the Project Id ");
             int projectId = scanner.nextInt();
             ProjectDto projectDto = projectService.getProjectById(projectId);
             if (projectDto == null) {
-                System.out.println("Enter the valid ProjectId");
-                System.exit(0);
+                logger.info("Enter the valid ProjectId");
+                manageProject();
             }  
 	    logger.info (projectDto); 
         } catch (CustomException error) {
-            logger.info(error.getMessage());
+            logger.error(error.getMessage());
         }
     }
 
     public void updateProject() {
-        do {
-            System.out.println("Enter your Project Id");
-            int projectId = scanner.nextInt();
-            try {
-                ProjectDto projectDto = projectService.getProjectById(projectId);
-                if (projectDto == null) {
-                    System.out.println("Enter the valid ProjectId");
-                    isAvailable = true;
-                } else {
-                    isAvailable = false;
-                }
-            } catch (CustomException error) {
-                logger.info(error);
-            }
-        } while(isAvailable);   
-        ProjectDto projectDto = new ProjectDto();     
-        System.out.println("Enter your project name: ");
-        String name = scanner.next();
-        projectDto.setName(name);
-        System.out.println("Enter the project client name: ");
-        String clientName = scanner.next();
-        projectDto.setClientName(clientName);
-        System.out.println("Enter the company name: ");
-        String companyName = scanner.next();
-        projectDto.setCompanyName(companyName);
-        Date startedDate = null;
+        logger.info("Enter your Project Id");
+        int projectId = scanner.nextInt();
         try {
-            startedDate = getProjectDate();
-            System.out.println(startedDate);
+            ProjectDto projectDto = projectService.getProjectById(projectId);
+            if (projectDto == null) {
+                logger.info("Enter the valid ProjectId");
+                updateProject();
+            }     
+            logger.info("Enter your project name: ");
+            String name = scanner.next();
+            projectDto.setName(name);
+            logger.info("Enter the project client name: ");
+            String clientName = scanner.next();
+            projectDto.setClientName(clientName);
+            logger.info("Enter the company name: ");
+            String companyName = scanner.next();
+            projectDto.setCompanyName(companyName);
+            projectDto.setStartDate(getStartDate());
+            projectDto.setDeadline(getDeadline());
+            projectDto.setStatus(Constants.ACTIVE);
+            logger.info( projectService.updateProject(projectDto));
         } catch (CustomException e) {
-            System.out.println(e);
-        }
-        System.out.println(startedDate);
-        projectDto.setStartDate(startedDate);
-        Date deadline = null;
-        try {
-            deadline = getDeadline();
-        } catch (CustomException e) {
-            System.out.println(e);
-        }
-        System.out.println(deadline);
-        projectDto.setDeadline(deadline);
-        System.out.println("Enter the project Status: ");
-        String status= scanner.next();
-        projectDto.setStatus(status);
-        try {
-            String isUpdated = projectService.updateProject(projectDto);  
-            logger.info(isUpdated);
-        } catch (CustomException e) {
-            System.out.println(e);
+            logger.info(e);
         }
     }
 
@@ -216,8 +186,7 @@ public class ProjectController {
         logger.info("Enter your Project Id");
         int projectId = scanner.nextInt();
         try {
-            String isDeleted = projectService.deleteProject(projectId);
-            logger.info(isDeleted);
+            logger.info(projectService.deleteProject(projectId));
         } catch (CustomException e) {
             logger.info(e);
         }
@@ -231,7 +200,7 @@ public class ProjectController {
 	        logger.info(employeeProjectDto);	   
 	    }
         } catch (CustomException error) {
-            logger.info(error.getMessage());
+            logger.error(error.getMessage());
         }
     }
 
@@ -243,21 +212,33 @@ public class ProjectController {
 	        logger.info(employeeProjectDto);	   
 	    }
         } catch (CustomException error) {
-            logger.info(error.getMessage());
+            logger.error(error.getMessage());
         }
     }
 
-    private Date getProjectDate() throws CustomException{
-    	System.out.println("Enter your Project Started Date in this format dd-mm-yyyy");
-	String startDate = scanner.next();
-	Date startedDate = DateUtil.validateDate(startDate);
-	return startedDate;  
+    private Date getStartDate() {
+        Date startDate = null;
+        try {
+    	    logger.info("Enter your Project Started Date in this format dd-mm-yyyy");
+	    String startedDate = scanner.next();
+	    startDate = DateUtil.validateDate(startedDate);
+        } catch (CustomException error) {
+            logger.error(error.getMessage());
+            getStartDate();
+        }
+	return startDate;  
     }
 
-    private Date getDeadline() throws CustomException{
-    	System.out.println("Enter your Project DeadLine Date in this format dd-mm-yyyy");
-	String deadlineDate = scanner.next();
-	Date deadline = DateUtil.validateDate(deadlineDate);
+    private Date getDeadline() {
+        Date deadline = null;
+        try { 
+    	    logger.info("Enter your Project DeadLine Date in this format dd-mm-yyyy");
+	    String deadlineDate = scanner.next();
+            deadline = DateUtil.validateDate(deadlineDate);
+        } catch (CustomException error) {
+            logger.error(error.getMessage());
+            getDeadline();
+        }
 	return deadline;  
     }
 }

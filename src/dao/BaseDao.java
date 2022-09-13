@@ -8,7 +8,7 @@ import org.hibernate.SessionFactory;
 
 public class BaseDao {
 
-    protected static SessionFactory factory = null; 
+    private static SessionFactory factory = null; 
 
     private BaseDao() {
   
@@ -18,7 +18,7 @@ public class BaseDao {
         if (factory == null) {
             return new Configuration().configure().buildSessionFactory();
         }
-        return null;
+        return factory;
     }
 }
         
