@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2021, 2022, Ideas2it and/or its affiliates. All rights reserved.
+ * IDEAS2IT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
 package com.ideas2it.dao;  
 
 import com.ideas2it.model.Employee;
@@ -16,8 +20,22 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;    
 import org.hibernate.Transaction;
 
+/**
+ * <p>
+ * projectDao can be used for insert, retrieve, update operations of project on the database.
+ * </p> 
+ * @author Ramprasath
+ * @version 1.0
+ **/
 public class ProjectDao {  
 
+    /** 
+     * <p>
+     * To perform insert project data to the database.
+     * </p>
+     * 
+     * @param project it contains project information.
+     */  
     public int insertProject(Project project) throws CustomException {
         Session session = null;
         Transaction transaction = null;
@@ -38,6 +56,13 @@ public class ProjectDao {
         }
     }
 
+    /** 
+     * <p>
+     * To perform retrieve project from the database using project.
+     * </p>
+     * 
+     * @param projectId id of the project.
+     */  
     public Project retrieveProjectById(int projectId) throws CustomException {
         Session session = null;  
         Transaction transaction = null;
@@ -55,6 +80,12 @@ public class ProjectDao {
         }
     }
 
+    /** 
+     * <p>
+     * To perform retrieves all the projects from the database using project.
+     * </p>
+     * 
+     */ 
     public Set<Project> retrieveAllProjects() throws CustomException {
         Session session = null;
        try {
@@ -72,6 +103,13 @@ public class ProjectDao {
         }
     } 
 
+    /** 
+     * <p>
+     * To update project on the database.
+     * </p>
+     * 
+     * @param project it contains project information.
+     */ 
     public void updateProject(Project project) throws CustomException {
         Session session = null;
         Transaction transaction = null;
@@ -91,6 +129,13 @@ public class ProjectDao {
         }
     } 
 
+    /** 
+     * <p>
+     * To insert employee project to the database.
+     * </p>
+     * 
+     * @param employeeProject it contains employeeProject information.
+     */ 
     public void assignEmployeesForProject(EmployeeProject employeeProject) throws CustomException {
         Session session = null;
         Transaction transaction = null;

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2021, 2022, Ideas2it and/or its affiliates. All rights reserved.
+ * IDEAS2IT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
 package com.ideas2it.mapper;
 
 import java.time.LocalDate;
@@ -13,11 +17,25 @@ import com.ideas2it.model.Employee;
 import com.ideas2it.model.Project;
 import com.ideas2it.utils.DateUtil;
 
+/**
+ * <p>
+ * EmployeeProjectMapper class can be used for convert dto object to model object.
+ * </p> 
+ * @author Ramprasath 
+ * @version 1.0
+ **/
 public class EmployeeProjectMapper {
    
     private EmployeeMapper employeeMapper = new EmployeeMapper();
     private ProjectMapper projectMapper = new ProjectMapper();
 
+    /** 
+     * <p>
+     * it converts employee project dto object to employee project object.
+     * </p>
+     * 
+     * @employeeProjectDto it contains employeeProjectDto object data. 
+     */
     public EmployeeProject fromDto(EmployeeProjectDto employeeProjectDto) {
          Employee employee = employeeMapper.fromDto(employeeProjectDto.getEmployeeDto());
          Project project = projectMapper.fromDto(employeeProjectDto.getProjectDto());
@@ -28,6 +46,13 @@ public class EmployeeProjectMapper {
         return employeeProject;
     }
 
+    /** 
+     * <p>
+     * it converts employee project object to employee project dto object.
+     * </p>
+     * 
+     * @employeeProject it contains employeeProject data. 
+     */
     public EmployeeProjectDto toDto(EmployeeProject employeeProject) {
         EmployeeDto employee = employeeMapper.toDto(employeeProject.getEmployee());
         ProjectDto project = projectMapper.toDto(employeeProject.getProject());

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2021, 2022, Ideas2it and/or its affiliates. All rights reserved.
+ * IDEAS2IT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
 package com.ideas2it.service;
 
 import com.ideas2it.constant.Constants;
@@ -15,12 +19,29 @@ import com.ideas2it.model.Role;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * <p>
+ * EmployeeService class can be used for transfers data from employee controller to employee dao and employee dao to employee controller.
+ * </p> 
+ * @author Ramprasath
+ * @version 1.0
+ **/
 public class EmployeeService {	
 
     private EmployeeMapper mapper = new EmployeeMapper();
     private EmployeeDao employeeDao = new EmployeeDao();
     private RoleDao roleDao = new RoleDao();
 
+    /** 
+     * <p>
+     * To perform add employee details.
+     * </p>
+     * 
+     * @param employeeDto it contains employee dto object.
+     * @param userType it contains the user role.
+     *
+     * @return it returns the string value.
+     */
     public String addEmployee(EmployeeDto employeeDto, String userType) throws CustomException {   
 	Employee employee = mapper.fromDto(employeeDto);
         Role roles = roleDao.retrieveRoleByName(userType);
@@ -31,6 +52,12 @@ public class EmployeeService {
         return "ADDED SUCCESSFULLY";
     }
 
+    /** 
+     * <p>
+     * To get all the employees.
+     * </p>
+     * 
+     */
     public Set<EmployeeDto> getAllEmployee() throws CustomException {   
         Set<EmployeeDto> employeeDtos = new HashSet<EmployeeDto>();
         for (Employee employee : employeeDao.retrieveAllEmployees()) {
@@ -39,6 +66,15 @@ public class EmployeeService {
         return employeeDtos;	              
     }  
 
+    /** 
+     * <p>
+     * it get employee using user role.
+     * </p>
+     * 
+     * @param roleName Role of an user.
+     *
+     * @return employeeDtos it returns the set of employeeDtos object.
+     */
     public Set<EmployeeDto> getEmployeeByRole(String roleName) throws CustomException { 
         Role role = roleDao.retrieveRoleByName(roleName);
         Set<EmployeeDto> employeeDtos = new HashSet<EmployeeDto>();
@@ -48,6 +84,15 @@ public class EmployeeService {
         return employeeDtos;	              
     }  
 
+    /** 
+     * <p>
+     * it get employee using employee id.
+     * </p>
+     * 
+     * @param employeeId id of an user.
+     *
+     * @return employeeDto it returns the employeeDto object or null.
+     */
     public EmployeeDto getEmployeeById(int employeeId) throws CustomException {
         Employee employee = employeeDao.retrieveEmployeeById(employeeId);
         if (employee != null) {
@@ -56,12 +101,30 @@ public class EmployeeService {
         return null;
     }
 
+    /** 
+     * <p>
+     * To perform update employee details.
+     * </p>
+     * 
+     * @param employeeDto it contains employee dto object.
+     *
+     * @return it returns the string value.
+     */
     public String updateEmployee(EmployeeDto employeeDto) throws CustomException {
 	Employee employee = mapper.fromDto(employeeDto);
         employeeDao.updateEmployee(employee);
         return "UPDATED SUCCESSFULLY";
     }
 
+    /** 
+     * <p>
+     * To perform delete process of employee details.
+     * </p>
+     * 
+     * @param employeeid id of an user.
+     *
+     * @return it returns the string value.
+     */
     public String deleteEmployee(int employeeId) throws CustomException {
         Set<Role> roles = new HashSet<>(); 
         Employee employee = employeeDao.retrieveEmployeeById(employeeId);

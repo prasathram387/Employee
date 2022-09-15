@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2021, 2022, Ideas2it and/or its affiliates. All rights reserved.
+ * IDEAS2IT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
 package com.ideas2it.controller;
 
 import java.util.Date;  
@@ -14,6 +18,14 @@ import com.ideas2it.dto.ProjectDto;
 import com.ideas2it.service.ProjectService;
 import com.ideas2it.utils.DateUtil;
 
+/**
+ * <p>
+ * ProjectController can be used for control the project. It gets the input from user and sends its to 
+ * the project service. 
+ * </p> 
+ * @author Ramprasath
+ * @version 1.0
+ **/
 public class ProjectController {
    
     private static Scanner scanner = new Scanner(System.in);
@@ -21,6 +33,12 @@ public class ProjectController {
     private static boolean isAvailable = true;
     private static Logger logger = Logger.getLogger(ProjectController.class);	
 
+    /** 
+     * <p>
+     * To get a user input to perform CRUD operation on project management and assign employees to the project .
+     * </p>
+     * 
+     */
     public void manageProject() {
 	logger.info("1.Create Project\n2.Update Project\n3.Delete Project\n4.Display Project\n5.Assign Employees For Project"
             + "\n6.Display All Projects\n7.Display Assigned Projects to Employee\n8.Display Assigned Employees to Project");
@@ -58,6 +76,12 @@ public class ProjectController {
         }
     }
 
+    /** 
+     * <p>
+     * To get a user input to perform project Create operation.
+     * </p>
+     * 
+     */
     public void createProject() {
         ProjectDto projectDto = new ProjectDto();
         logger.info("Enter your project name: ");
@@ -82,6 +106,12 @@ public class ProjectController {
         }
     }
 
+    /** 
+     * <p>
+     * To get a employee dto from the project service.
+     * </p>
+     * 
+     */
     public EmployeeDto getEmployee() {
         EmployeeDto employeeDto = null;
         logger.info("Enter the Employee Id to Assign");
@@ -98,7 +128,13 @@ public class ProjectController {
         }
         return employeeDto;
     }
-            
+
+    /** 
+     * <p>
+     * Assign of employees to the project.
+     * </p>
+     * 
+     */            
     public void assignEmployeesForProject() {
         EmployeeProjectDto employeeProjectDto = new EmployeeProjectDto();
         logger.info("Enter the Project Id ");
@@ -130,6 +166,12 @@ public class ProjectController {
         }
     }
 
+    /** 
+     * <p>
+     * To display all the projects.
+     * </p>
+     * 
+     */
     public void displayAllProjects() {
         try {
 	    for (ProjectDto projectDto : projectService.getAllProject()) {
@@ -140,6 +182,12 @@ public class ProjectController {
         }
     }
 
+    /** 
+     * <p>
+     * To display project based on id.
+     * </p>
+     * 
+     */
     public void displayProjectById() {
         try {
             logger.info("Enter the Project Id ");
@@ -155,6 +203,12 @@ public class ProjectController {
         }
     }
 
+    /** 
+     * <p>
+     * Update process of the project .
+     * </p>
+     * 
+     */
     public void updateProject() {
         logger.info("Enter your Project Id");
         int projectId = scanner.nextInt();
@@ -182,6 +236,12 @@ public class ProjectController {
         }
     }
 
+    /** 
+     * <p>
+     * Delete process of the project.
+     * </p>
+     * 
+     */
     public void deleteProject() {
         logger.info("Enter your Project Id");
         int projectId = scanner.nextInt();
@@ -192,6 +252,12 @@ public class ProjectController {
         }
     }
 
+    /** 
+     * <p>
+     * To display assigned projects of an employee.
+     * </p>
+     * 
+     */
     public void displayAssignedProjectsByEmployeeId() {
         logger.info("Enter Your Employee Id");
         int employeeId = scanner.nextInt();
@@ -204,6 +270,12 @@ public class ProjectController {
         }
     }
 
+    /** 
+     * <p>
+     * To display assigned employees of the project.
+     * </p>
+     * 
+     */
     public void displayAssignedProjectsByProjectId() {
         logger.info("Enter Your Project Id");
         int projectId = scanner.nextInt();
@@ -216,6 +288,12 @@ public class ProjectController {
         }
     }
 
+    /** 
+     * <p>
+     * To get a start date of project from user.
+     * </p>
+     * 
+     */
     private Date getStartDate() {
         Date startDate = null;
         try {
@@ -229,6 +307,12 @@ public class ProjectController {
 	return startDate;  
     }
 
+    /** 
+     * <p>
+     * To get a deadline date of project from user.
+     * </p>
+     * 
+     */
     private Date getDeadline() {
         Date deadline = null;
         try { 

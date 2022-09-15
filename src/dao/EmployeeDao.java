@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2021, 2022, Ideas2it and/or its affiliates. All rights reserved.
+ * IDEAS2IT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
 package com.ideas2it.dao;  
 
 import com.ideas2it.model.Employee;
@@ -15,8 +19,22 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;    
 import org.hibernate.Transaction;      
 
+/**
+ * <p>
+ * EmployeeDao can be used for insert, retrieve, update operations on the database.
+ * </p> 
+ * @author Ramprasath
+ * @version 1.0
+ **/
 public class EmployeeDao {
-     
+
+    /** 
+     * <p>
+     * To perform insert employee data to the database.
+     * </p>
+     * 
+     * @param employee it contains employee information.
+     */     
     public int insertEmployee(Employee employee) throws CustomException {
         Session session = null;
         Transaction transaction = null;
@@ -37,6 +55,13 @@ public class EmployeeDao {
         }
     }
 
+    /** 
+     * <p>
+     * To perform retrieve employee data from the database.
+     * </p>
+     * 
+     * @param employeeId id of an employee.
+     */  
     public Employee retrieveEmployeeById(int employeeId) throws CustomException {
         Session session = null;  
         Transaction transaction = null;
@@ -55,6 +80,12 @@ public class EmployeeDao {
         }
     }
 
+    /** 
+     * <p>
+     * To retrieve all employees data from the database.
+     * </p>
+     * 
+     */  
     public Set<Employee> retrieveAllEmployees() throws CustomException {
         
         Session session = null;
@@ -74,6 +105,13 @@ public class EmployeeDao {
         }
     }    
 
+    /** 
+     * <p>
+     * To perform update employee data to the database.
+     * </p>
+     * 
+     * @param employee it contains employee information.
+     */  
     public void updateEmployee(Employee employee) throws CustomException {
         Session session = null;
         Transaction transaction = null;

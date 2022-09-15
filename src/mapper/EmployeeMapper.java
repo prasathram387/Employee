@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2021, 2022, Ideas2it and/or its affiliates. All rights reserved.
+ * IDEAS2IT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
 package com.ideas2it.mapper;
 
 import java.time.LocalDate;
@@ -12,18 +16,48 @@ import com.ideas2it.model.Employee;
 import com.ideas2it.model.Role;
 import com.ideas2it.utils.DateUtil;
 
+/**
+ * <p>
+ * EmployeeMapper class can be used for convert dto object to model object.
+ * </p> 
+ * @author Ramprasath 
+ * @version 1.0
+ **/
 public class EmployeeMapper {
 
+    /** 
+     * <p>
+     * it converts role dto object to role object.
+     * </p>
+     *
+     * @roleDto it contains role dto data.  
+     */
     public Role fromRoleDto(RoleDto roleDto) {
         Role role = new Role(roleDto.getId(), roleDto.getName());
         return role;
     }
 
+
+    /** 
+     * <p>
+     * it converts role object to role dto object.
+     * </p>
+     * 
+     * @role it contains role data. 
+     */
     public RoleDto toRoleDto(Role role) {
         RoleDto roleDto = new RoleDto(role.getId(), role.getName());
 	return roleDto;
     }
 
+
+    /** 
+     * <p>
+     * it converts employee dto object to employee object.
+     * </p>
+     * 
+     * @employeeDto it contains employee dto data. 
+     */
     public Employee fromDto(EmployeeDto employeeDto) {
         LocalDate dateOfBirth = DateUtil.convertToLocalDate(employeeDto.getDateOfBirth());
         LocalDate dateOfJoining = DateUtil.convertToLocalDate(employeeDto.getDateOfJoining());
@@ -40,6 +74,15 @@ public class EmployeeMapper {
 	    return employee; 
     }
 
+
+
+    /** 
+     * <p>
+     * it converts employee object to employee dto object.
+     * </p>
+     * 
+     * @employee it contains employee data. 
+     */ 
     public EmployeeDto toDto(Employee employee) {   
         Date dateOfBirth = DateUtil.convertToDate(employee.getDateOfBirth());
         Date dateOfJoining = DateUtil.convertToDate(employee.getDateOfJoining());

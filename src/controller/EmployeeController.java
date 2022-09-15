@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2021, 2022, Ideas2it and/or its affiliates. All rights reserved.
+ * IDEAS2IT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
 package com.ideas2it.controller;
 
 import com.ideas2it.constant.Constants;
@@ -18,6 +22,14 @@ import java.util.Scanner;
 import org.apache.log4j.Logger;
 import org.apache.log4j.BasicConfigurator;
 
+/**
+ * <p>
+ * EmployeeController can be used for control the full flow of project. It gets the input from user and sends its to 
+ * the employee service. 
+ * </p> 
+ * @author Ramprasath
+ * @version 1.0
+ **/
 public class EmployeeController {
    
     private static Scanner scanner = new Scanner(System.in);
@@ -35,6 +47,12 @@ public class EmployeeController {
         controller.userInput();
     }
 
+    /** 
+     * <p>
+     * it displays role for a user to select role.
+     * </p>
+     * 
+     */
     public void userInput() {
         Scanner userInput = new Scanner(System.in); 
         try {
@@ -62,6 +80,12 @@ public class EmployeeController {
          }        
     }
 
+    /** 
+     * <p>
+     * To get a user input to perform trainee CRUD operations.
+     * </p>
+     * 
+     */
     public void trainee(String userType) {
 	logger.info("1.Insert Details\n2.Display Trainee\n3.Update Trainee\n4.Delete Trainee data");
 	int option = scanner.nextInt();
@@ -84,6 +108,12 @@ public class EmployeeController {
          }
     }
 
+    /** 
+     * <p>
+     * To get a user input to perform trainer CRUD operations.
+     * </p>
+     * 
+     */
     public void trainer(String userType) {
 	logger.info("1.Insert Details\n2.Display Trainer\n3.Update Trainer\n4.Delete Trainer");
 	int option = scanner.nextInt();
@@ -106,6 +136,12 @@ public class EmployeeController {
          }
     }
 
+    /** 
+     * <p>
+     * To get a user input to perform manager CRUD operations and project management process.
+     * </p>
+     * 
+     */
     public void manager(String userType) {
 	logger.info("1.Insert Details\n2.Display Manager\n3.Update Manager\n4.Delete Manager\n5.Display All Trainers\n6.Display All Trainees"
             + "\n7.Manage Projects");
@@ -138,6 +174,12 @@ public class EmployeeController {
          }
     }   
 
+    /** 
+     * <p>
+     * To get a first name from user.
+     * </p>
+     * 
+     */
     private String getFirstName() {
 	String firstName = null;	
 	while (isContinue) {
@@ -154,6 +196,12 @@ public class EmployeeController {
 	return firstName;  
     }
 
+    /** 
+     * <p>
+     * To get a last name from user.
+     * </p>
+     * 
+     */
     private String getLastName() {
 	String lastName = null;	
 	while (isContinue) {
@@ -170,6 +218,12 @@ public class EmployeeController {
 	return lastName;  
     }
 
+    /** 
+     * <p>
+     * To get a mobile number input from user.
+     * </p>
+     * 
+     */
     private long getMobileNo() {
 	String phoneNumber = null;
 	while (isContinue) {
@@ -187,6 +241,12 @@ public class EmployeeController {
 	return mobileNo; 
     }
 
+    /** 
+     * <p>
+     * To get a gender input from user.
+     * </p>
+     * 
+     */
     public String getGender() {
         String gender = null;
     	logger.info("Enter your gender");
@@ -200,6 +260,12 @@ public class EmployeeController {
 	return gender;  
     }
 
+    /** 
+     * <p>
+     * To get a date of birth input from user.
+     * </p>
+     * 
+     */
     private Date getDateOfBirth() {
         Date dateOfBirth = null;
         try {
@@ -214,6 +280,12 @@ public class EmployeeController {
         return dateOfBirth;  
     }
 
+    /** 
+     * <p>
+     * To get a date of joining input from user.
+     * </p>
+     * 
+     */
     private Date getDateOfJoining() {
         Date dateOfJoining = null;
         try {
@@ -228,16 +300,36 @@ public class EmployeeController {
         return dateOfJoining;         
     }
 
-    public int getAge(Date dob) {
-	int age = ValidationUtil.calculateAge(dob);
+    /** 
+     * <p>
+     * To calculate user's age from dateOfBirth.
+     * </p>
+     * 
+     * @param dateOfBirth Date of birth of user.
+     */
+    public int getAge(Date dateOfBirth) {
+	int age = ValidationUtil.calculateAge(dateOfBirth);
 	return age;
     }
 
+    /** 
+     * <p>
+     * To calculate user's experience from dateOfJoining.
+     * </p>
+     * 
+     * @param dateOfJoining join date of user.
+     */
     public int getExperience(Date dateOfJoining) {
 	int experience = ValidationUtil.calculateExperience(dateOfJoining);
 	return experience;
     }
 
+    /** 
+     * <p>
+     * To get a designation input from user.
+     * </p>
+     * 
+     */
     private String getDesignation() {
 	String designation = null;
 	while (isContinue) {
@@ -254,6 +346,12 @@ public class EmployeeController {
 	return designation;
     }
 
+    /** 
+     * <p>
+     * To get a email id input from user.
+     * </p>
+     * 
+     */
     private String getEmailId() {
 	String emailId = null;
 	while (isContinue) {
@@ -270,6 +368,14 @@ public class EmployeeController {
 	return emailId;  
     }
 
+    /** 
+     * <p>
+     * To perform and add and update process.
+     * </p>
+     * 
+     * @param userType role of an user.
+     * @param option it's used for user choice to perform add or update.
+     */
     public void addAndUpdateEmployee(String userType,int option) {
         EmployeeDto employeeDto = new EmployeeDto();
         int employeeId = 0;
@@ -310,7 +416,13 @@ public class EmployeeController {
             logger.info(error.getMessage());
         }
     }
-  
+
+    /** 
+     * <p>
+     * To display all the employees.
+     * </p>
+     * 
+     */  
     public void displayAllEmployee() {
         try {
 	    for (EmployeeDto employeeDto : employeeService.getAllEmployee()) {
@@ -321,6 +433,13 @@ public class EmployeeController {
         }
     }
 
+    /** 
+     * <p>
+     * To display employees based on role.
+     * </p>
+     * 
+     * @param userType role of a user.
+     */ 
     public void displayEmployeeByRole(String userType) {
         try {
 	    for (EmployeeDto employeeDto : employeeService.getEmployeeByRole(userType)) {
@@ -331,6 +450,12 @@ public class EmployeeController {
         }
     }
 
+    /** 
+     * <p>
+     * To display a single employee.
+     * </p>
+     * 
+     */ 
     public void displayEmployee() {
         logger.info("Enter the Employee Id");
         int employeeId = scanner.nextInt(); 
@@ -342,6 +467,13 @@ public class EmployeeController {
         }
     }
 
+    /** 
+     * <p>
+     * To delete employee based on role.
+     * </p>
+     * 
+     * @param userType role of a user.
+     */ 
     public void deleteEmployee(String userType) {
         logger.info("Enter your EmployeeId");
         int employeeId = scanner.nextInt();
