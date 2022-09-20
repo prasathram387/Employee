@@ -18,6 +18,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;  
 
+
+/**
+ * <p>
+ * EmployeeProject class contains the employee project data.
+ * </p> 
+ * @author Ramprasath
+ * @version 1.0
+ **/
 @Entity
 @Table(name = "employee_project")
 public class EmployeeProject {

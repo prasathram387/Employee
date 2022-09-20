@@ -23,6 +23,13 @@ import javax.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp; 
 
+/**
+ * <p>
+ * Employee class contains the employee data.
+ * </p> 
+ * @author Ramprasath
+ * @version 1.0
+ **/
 @Entity
 @Table(name = "employee")
 public class Employee {

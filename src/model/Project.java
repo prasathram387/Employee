@@ -18,6 +18,14 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;  
 
+
+/**
+ * <p>
+ * Project class contains the project data.
+ * </p> 
+ * @author Ramprasath
+ * @version 1.0
+ **/
 @Entity
 @Table(name = "project")
 public class Project {

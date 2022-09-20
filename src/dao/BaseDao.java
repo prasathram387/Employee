@@ -29,6 +29,7 @@ public class BaseDao {
      * getInstance can be used for create session factory object.
      * </p>
      *
+     */
     public static SessionFactory getInstance() {
         if (factory == null) {
             return new Configuration().configure().buildSessionFactory();
