@@ -6,7 +6,6 @@ package com.ideas2it.service;
 
 import com.ideas2it.constant.Constants;
 import com.ideas2it.dao.EmployeeDao;
-import com.ideas2it.dao.RoleDao;
 import com.ideas2it.dto.EmployeeDto;
 import com.ideas2it.dto.EmployeeProjectDto;
 import com.ideas2it.exception.CustomException;
@@ -15,6 +14,7 @@ import com.ideas2it.mapper.EmployeeProjectMapper;
 import com.ideas2it.model.Employee;
 import com.ideas2it.model.EmployeeProject;
 import com.ideas2it.model.Role;
+import com.ideas2it.service.RoleService;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -30,7 +30,7 @@ public class EmployeeService {
 
     private EmployeeMapper mapper = new EmployeeMapper();
     private EmployeeDao employeeDao = new EmployeeDao();
-    private RoleDao roleDao = new RoleDao();
+    private RoleService roleService = new RoleService();
 
     /** 
      * <p>
@@ -44,10 +44,9 @@ public class EmployeeService {
      */
     public String addEmployee(EmployeeDto employeeDto, String userType) throws CustomException {   
 	Employee employee = mapper.fromDto(employeeDto);
-        Role roles = roleDao.retrieveRoleByName(userType);
-        Set<Role> role = new HashSet<Role>();
-        role.add(roles);
-        employee.setRole(role);
+        Set<Role> roles = new HashSet<Role>();
+        roles.add(roleService.getRoleByName(userType));
+        employee.setRole(roles);
 	int employeeId = employeeDao.insertEmployee(employee);	
         return "ADDED SUCCESSFULLY";
     }
@@ -76,7 +75,7 @@ public class EmployeeService {
      * @return employeeDtos it returns the set of employeeDtos object.
      */
     public Set<EmployeeDto> getEmployeeByRole(String roleName) throws CustomException { 
-        Role role = roleDao.retrieveRoleByName(roleName);
+        Role role = roleService.getRoleByName(roleName);
         Set<EmployeeDto> employeeDtos = new HashSet<EmployeeDto>();
         for (Employee employee : role.getEmployee()) {
             employeeDtos.add(mapper.toDto(employee));
@@ -126,9 +125,8 @@ public class EmployeeService {
      * @return it returns the string value.
      */
     public String deleteEmployee(int employeeId) throws CustomException {
-        Set<Role> roles = new HashSet<>(); 
         Employee employee = employeeDao.retrieveEmployeeById(employeeId);
-        employee.setRole(roles);
+        employee.setRole(new HashSet<>());
         employee.setStatus(Constants.INACTIVE);
         employeeDao.updateEmployee(employee);
         return "DELETED SUCCESSFULLY";

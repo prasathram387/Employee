@@ -47,8 +47,8 @@ public class ProjectDao {
             return projectId; 
         } catch (Exception error) {
             error.printStackTrace();
-            System.out.println(error.getMessage());
-            throw new CustomException(error.getMessage());
+            transaction.rollback();
+            throw new CustomException("Project insertion failed", error);
         } finally {
             if (session != null) {
                 session.close();
@@ -71,8 +71,7 @@ public class ProjectDao {
             session.beginTransaction();       
             return (Project) session.get(Project.class, projectId);
         } catch (Exception error) {
-            error.printStackTrace();
-            throw new CustomException("Project Id not Found",error);
+            throw new CustomException("Project id not found", error);
         } finally {
             if (session != null) {
                 session.close();
@@ -95,7 +94,7 @@ public class ProjectDao {
             return new HashSet<Project>(project); 
         } catch (Exception error) {
             error.printStackTrace();
-            throw new CustomException(error.getMessage());
+            throw new CustomException("Retrieve failed", error);
         } finally {
             if (session != null) {
                 session.close();
@@ -120,8 +119,8 @@ public class ProjectDao {
             transaction.commit();         
         } catch (Exception error) {
             error.printStackTrace();
-            System.out.println(error.getMessage());
-            throw new CustomException(error.getMessage());
+            transaction.rollback();
+            throw new CustomException("Project updation failed", error);
         } finally {
             if (session != null) {
                 session.close();
@@ -146,8 +145,8 @@ public class ProjectDao {
             transaction.commit();        
         } catch (Exception error) {
             error.printStackTrace();
-            System.out.println(error.getMessage());
-            throw new CustomException(error.getMessage());
+            transaction.rollback();
+            throw new CustomException("Assigning process failed", error);
         } finally {
             if (session != null) {
                 session.close();

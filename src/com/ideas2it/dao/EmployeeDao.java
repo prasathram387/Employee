@@ -46,8 +46,8 @@ public class EmployeeDao {
             return employeeId; 
         } catch (Exception error) {
             error.printStackTrace();
-            System.out.println(error.getMessage());
-            throw new CustomException(error.getMessage());
+            transaction.rollback();
+            throw new CustomException("Employee insertion failed", error);
         } finally {
             if (session != null) {
                 session.close();
@@ -72,7 +72,7 @@ public class EmployeeDao {
             return employee;
         } catch (Exception error) {
             error.printStackTrace();
-            throw new CustomException(error.getMessage());
+            throw new CustomException("Retrieve failed", error);
         } finally {
             if (session != null) {
                 session.close();
@@ -97,7 +97,7 @@ public class EmployeeDao {
             return new HashSet<Employee>(employee);
         } catch (Exception error) {
             error.printStackTrace();
-            throw new CustomException(error.getMessage());
+            throw new CustomException("Retrieve failed", error);
         } finally {
             if (session != null) {
                 session.close();
@@ -122,8 +122,8 @@ public class EmployeeDao {
             transaction.commit();         
         } catch (Exception error) {
             error.printStackTrace();
-            System.out.println(error.getMessage());
-            throw new CustomException(error.getMessage());
+            transaction.rollback();
+            throw new CustomException("Employee updation failed", error);
         } finally {
             if (session != null) {
                 session.close();

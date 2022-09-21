@@ -34,18 +34,10 @@ public class EmployeeController {
    
     private static Scanner scanner = new Scanner(System.in);
     private EmployeeService employeeService = new EmployeeService();
-    private ProjectController projectController = new ProjectController();
     private static Logger logger = Logger.getLogger(EmployeeController.class);	           
 
     private static boolean isContinue = true;
     private static int index = 0;
-
-    public static void main(String[] args) throws CustomException {
-
-	EmployeeController controller = new EmployeeController();
-	BasicConfigurator.configure();
-        controller.userInput();
-    }
 
     /** 
      * <p>
@@ -143,8 +135,7 @@ public class EmployeeController {
      * 
      */
     public void manager(String userType) {
-	logger.info("1.Insert Details\n2.Display Manager\n3.Update Manager\n4.Delete Manager\n5.Display All Trainers\n6.Display All Trainees"
-            + "\n7.Manage Projects");
+	logger.info("1.Insert Details\n2.Display Manager\n3.Update Manager\n4.Delete Manager\n5.Display All Trainers\n6.Display All Trainees");
 	int option = scanner.nextInt();
 	switch (option) {				       
             case 1:
@@ -164,9 +155,6 @@ public class EmployeeController {
                 break;
             case 6:
                 displayEmployeeByRole(Constants.TRAINER);
-                break;
-            case 7:
-                projectController.manageProject();
                 break;
             default:
                 logger.info("Enter the Valid Input");

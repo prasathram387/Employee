@@ -9,6 +9,7 @@ import com.ideas2it.model.Employee;
 import com.ideas2it.model.Role;
 
 import java.util.List; 
+
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.cfg.Configuration;  
@@ -43,7 +44,7 @@ public class RoleDao {
             return role.get(0);
         } catch (Exception error) {
             error.printStackTrace();
-            throw new CustomException(error.getMessage());
+            throw new CustomException("Retrieve role failed", error);
         } finally {
             if (session != null) {
                 session.close();
